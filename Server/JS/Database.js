@@ -75,10 +75,11 @@ function Database()
   var sqlite = require("sqlite3").verbose()
   
   //generate local variables
-  var versionPath = __dirname + "\\..\\..\\DatabaseVersion.txt"
-  var menusFolder =  __dirname + "\\..\\Menus\\"
+  var root = __dirname + "\\..\\..\\"
+  var versionPath = root + "DatabaseVersion.txt"
+  var menusFolder =  root + "server\\Menus\\"
+  var dbPath =  root + "Database.db"
   var version = -1
-  var dbPath =  __dirname + "\\..\\..\\Database.db"
   var venderData = []
   
   //boot up database
