@@ -1,0 +1,14 @@
+{
+  "name": "Corvallis.Menu",
+  "description": "The Corvallis.Menu website",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "express": "4.x",
+    "sqlite3": "x.x",
+    "jQuery": "x.x",
+    "passport": "x.x",
+    "passport-http-bearer": "x.x",
+    "stripe": "x.x"
+  }
+}

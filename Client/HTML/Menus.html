@@ -1,0 +1,76 @@
+{{#if Venders}}
+  <div id="accordion">
+    {{#Venders:vender}}
+      {{#VenderIsOpen(this)}}
+        {{>Vender}}
+      {{/VenderIsOpen}}
+    {{/venders}}
+  </div>
+{{/if}}
+
+
+<!-- {{>Vender}} -->
+  <h3>{{Name}}</h3>
+  <div>
+    {{#Items:item}}
+      {{>Item}}
+    {{/Items}}
+  </div>
+<!-- {{/Vender}} -->
+
+<!-- {{>Item}} -->
+  {{#if Header}}
+    <div class="itemHeader">{{Header}}</div>
+  {{else}}
+    <div {{#if ShowOptions}}class="showOptions" {{/if}}>
+      <div on-tap="ToggleOptions: {{item}}, {{vender}}">
+        <a href="#" {{#if Description}} title="{{Description}}" {{/if}}>{{Name}}</a>
+        ${{Price.toFixed(2)}}
+      </div>
+      {{#if ShowOptions}}
+        {{Description}}
+        {{#Options}}
+          {{>Option}}
+        {{/Options}}
+        <button on-tap="AddToCart:{{this}},{{Venders[vender]}}">Add to Cart</button>
+      {{/if}}
+    </div>
+  {{/if}}
+<!-- {{/Item}} -->
+
+<!-- {{>Option}} -->
+  <div>
+    <p>
+      {{Name}}:
+    </p>
+    <table>
+      <form>
+        {{#if Type=="Checkbox"}}
+          {{>Checkbox}}
+        {{/if}}
+        {{#if Type=="Select"}}
+          {{>Select}}
+        {{/if}}
+      </form>
+    </table>
+  </div>
+<!-- {{/Option}} -->
+
+<!-- {{>Select}} -->
+  <p>SELECT GOES HERE</p>
+<!-- {{/Select}} -->
+
+<!-- {{>Checkbox}} -->
+  {{#Options}}
+    <tr>
+      <td>
+        <input type="checkbox" checked="{{this.Selected}}">{{Name}}
+      </td>
+      <td>
+        {{#if Price > 0}}
+          ${{Price.toFixed(2)}}
+        {{/if}}
+      </td>
+    </tr>
+  {{/Options}}
+<!-- {{/Checkbox}} -->
