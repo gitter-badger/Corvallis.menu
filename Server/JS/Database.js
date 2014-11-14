@@ -72,7 +72,6 @@ function Database()
   
   // Load required packages
   var fs = require('fs');  
-  var md5 = require('MD5')
   var sqlite = require("sqlite3").verbose()
   
   //generate local variables
