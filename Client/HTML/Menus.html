@@ -29,38 +29,38 @@
       </div>
       {{#if ShowOptions}}
         {{Description}}
-        {{#Options}}
-          {{>Option}}
-        {{/Options}}
+        {{#Addons}}
+          {{>Addon}}
+        {{/Addons}}
         <button on-tap="AddToCart:{{this}},{{Venders[vender]}}">Add to Cart</button>
       {{/if}}
     </div>
   {{/if}}
 <!-- {{/Item}} -->
 
-<!-- {{>Option}} -->
+<!-- {{>Addon}} -->
   <div>
     <p>
       {{Name}}:
     </p>
     <table>
       <form>
-        {{#if Type=="Checkbox"}}
-          {{>Checkbox}}
+        {{#if InputType=="Checkboxes"}}
+          {{>Checkboxes}}
         {{/if}}
-        {{#if Type=="Select"}}
+        {{#if InputType=="Select"}}
           {{>Select}}
         {{/if}}
       </form>
     </table>
   </div>
-<!-- {{/Option}} -->
+<!-- {{/Addon}} -->
 
 <!-- {{>Select}} -->
   <p>SELECT GOES HERE</p>
 <!-- {{/Select}} -->
 
-<!-- {{>Checkbox}} -->
+<!-- {{>Checkboxes}} -->
   {{#Options}}
     <tr>
       <td>
@@ -73,4 +73,4 @@
       </td>
     </tr>
   {{/Options}}
-<!-- {{/Checkbox}} -->
+<!-- {{/Checkboxes}} -->

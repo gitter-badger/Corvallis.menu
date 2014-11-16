@@ -6,7 +6,138 @@ function Database()
   function GetVenderData(){ return venderData }
   function GetVersion(){ return version }
 
-  //generate private functions
+  //Takes an order and validates it against the local database,
+  //removing any properties that should not exist, and ensuring that
+  //items properties 
+  function ValidateOrder(order)
+  {
+    //generate helper method used repeatedly in this function.
+    //Compares the local and order objects, ensuring they are not too different.
+    //Returns boolean value reflecting whether or not the order object seems valid.
+    function compareObjects(local, order)
+    {
+      for(var prop in local)
+      {
+        //skip arrays
+        if(Object.prototype.toString.call(local[prop]) === '[object Array]')
+          continue
+         
+        if(!order.hasOwnProperty(prop))
+        {
+          console.log("Order object missing property from local database: " + prop)
+          return false
+        }
+          
+        //if the properties differ, 
+        if(order[prop] != local[prop])
+        {
+          console.log("Order object property did not match local database: " + prop)
+          return false
+        }
+      }        
+      return true
+    }
+    
+    //ensure Items sent
+    if(!order.Items)
+    {
+      console.log("Received order missing 'Items' property.")
+      return false
+    }
+     
+    //ensure Vender sent
+    if(!order.Vender)
+    {
+      console.log("Received order missing 'Vender' property.")
+      return false
+    }
+  
+    //trim items options to only the selected ones
+    order.Items.forEach(function(item)
+    {
+      item.Options = item.Options.find(function(itemOption)
+      {
+        //for each order.Item.Option.Option
+        itemOption.Options = itemOption.Options.find(function(optionOption)
+        {
+          return optionOption.Selected
+        })
+        
+        //if no options selected, delete this item option
+        return itemOption.Options
+      })
+    })
+    
+    //Get corresponding order vender from local database
+    var localVender = GetVenderData().find(function(vender)
+    {
+      return vender.Name && vender.Address == order.Vender.Address && vender.Name == order.Vender.Name
+    })
+    
+    //if no corresponding venders found
+    if(!localVender || localVender.length > 1)
+    {
+      console.log("Failed to isolate corresponding vender for given Order.")
+      return false
+    }
+    
+    //ensure properties of order.Vender and local vender do not differ
+    if( !compareObjects(localVender, order.Vender))
+      return false
+    
+    //ensure each item in the order matches with Server item data
+    for(var itemIndex = 0; itemIndex < order.Items.length; itemIndex++)
+    {
+      orderItem = order.Items[itemIndex]
+      
+      //get corresponding item in local storage
+      var localItem = localVender.Items.find(function(item)
+      {
+        return item.Name == orderItem.Name && item.Price == orderItem.Price
+      })
+      
+      //ensure item found
+      if(!localItem || localItem.length > 1)
+      {
+        console.log("Could not locate ordered item in local database: " + orderItem.Name)
+        return false
+      }
+      
+      //ensure local item properties and order item properties do not differ
+      if(!compareObjects(localItem, orderItem))
+        return false
+        
+      //loop through item options ensuring they exist in local database
+      _.each(orderItem.Options, function(orderOption)
+      {
+        //find corresponding local option
+        var localOption = localItem.Options.find(function(option)
+        {
+          return option.Name == orderOption.Name && option.Type == orderOption.Type
+        })
+        
+        //ensure option found
+        if(!localOption || localOption.length > 1)
+        {
+          console.log("Could not locate item option in local database: " + localOption.Name)
+          return false
+        }
+        
+        //compare options
+        if(!compareObjects(localOption, orderOption))
+          return false
+          
+        
+        console.log(orderOption.Name)
+      })    
+    }
+    
+    
+    return true
+  }
+  
+  
+  /* PRIVATE METHODS */
   var _execute = function(sql, callback)
   { 
     db.serialize(function()
@@ -22,6 +153,7 @@ function Database()
           });
       });
   }
+  
   
   //Goes through every file in the menus folder and loads
   //it into menusData
@@ -69,10 +201,20 @@ function Database()
     fs.writeFile(versionPath, version, function(err){});
   }
       
+      
+      
+      
+      
+      
+      
+      
+      
+  /* CONSTRUCTOR */
   
   // Load required packages
   var fs = require('fs');  
   var sqlite = require("sqlite3").verbose()
+  var _ = require("underscore")
   
   //generate local variables
   var root = __dirname + "\\..\\..\\"
@@ -124,6 +266,7 @@ function Database()
   //specify which variables/functions are public
   return{
     GetVenderData: GetVenderData,
-    GetVersion: GetVersion
+    GetVersion: GetVersion,
+    ValidateOrder: ValidateOrder
   }
 }

@@ -102,87 +102,28 @@ app.get('/MakeOrder', function(req, res)
   //validate request
   if(!req)
   {
-    DebugLog("empty request sent to MakeOrder.")
+    console.log("empty request sent to MakeOrder.")
     res.send(false)
     return
   }
   
   //parse request
-  var order = JSON.parse(req.query.Order)
+  var order = JSON.parse(req.query.Order)  
   
-  //ensure Items sent
-  if(!order.Items)
+  //attempt to validate the order
+  order = database.ValidateOrder(order)
+  //if the order is invalid
+  if(!order)
   {
-    DebugLog("null Items parameter sent to MakeOrder")
-    res.send(false)
-    return
-  }
-   
-  //ensure Vender set
-  if(!order.Vender)
-  {
-    DebugLog("null Vender parameter sent to MakeOrder")
     res.send(false)
     return
   }
   
-  //trim items options to only the selected ones
-  //and trim the selected property to make the objects perfectly match the json database
-  order.Items.forEach(function(item)
-  {
-    item.Options = item.Options.find(function(itemOption)
-    {
-      //for each order.Item.Option.Option
-      itemOption.Options = itemOption.Options.find(function(optionOption)
-      {
-        return optionOption.Selected
-      })
-      
-      //if no options selected, delete this item option
-      return itemOption.Options
-    })
-  })
+  //At this point, we know that the order is valid.
   
-  //Get corresponding order vender from local database
-  var vender = database.GetVenderData().find(function(vender)
-  {
-    return vender.Address == order.Vender.Address && vender.Name == order.Vender.Name
-  })
+  //Add it to the database
   
-  //if no corresponding venders found
-  if(!vender)
-  {
-    console.log("Failed to find corresponding vender for given Order.")
-    res.send(false)
-    return
-  }
-  
-  //if more than one corresponding vender found
-  if(vender.length > 1)
-  {
-    console.log("Found more than one matching vender for order.Vender")
-    res.send(false)
-    return
-  }
-  
-  for(orderItem in order.Items)
-  {
-    //get corresponding item in local storage
-    var localItem = vender.Items.find(function(item)
-    {
-      return item.Name == orderItem.Name && item.Price == orderItem.Price
-    })
-    
-    if(!localItem || localItem.length > 1)
-    {
-      console.log("Could not locate ordered item in local database: " + orderItem.Name)
-      res.send(false)
-      return
-    }
-  }
-  
-  //DebugLog(JSON.stringify(vender))
-  
+  //Return swipe response to get payment
   res.send(true)
 })
 

@@ -9,6 +9,7 @@
     "jQuery": "x.x",
     "passport": "x.x",
     "passport-http-bearer": "x.x",
-    "stripe": "x.x"
+    "stripe": "x.x",
+    "underscore": "x.x"
   }
 }

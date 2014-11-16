@@ -17,9 +17,9 @@ function Cart()
     delete parentVender.Items
     
     //if trying to add an item from a different restaurant
-    if(chosenVender && chosenVender == parentVender)
+    if(chosenVender && chosenVender != parentVender)
     {
-      alert("All items in an order must come from the same restaurant. Please clear your cart, or order from "+ractive.get("Items")[0].Vender.Name)
+      alert("All items in an order must come from the same restaurant. Please clear your cart, or order from " + chosenVender.Name)
       return
     }
     
