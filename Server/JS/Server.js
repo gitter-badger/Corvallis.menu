@@ -72,7 +72,7 @@ _makeAccessableToClient(root + "Shared")
 
 app.get('/', function(req, res)
 {
-  res.sendFile("./Client/HTML/index.html", {root: root})
+  res.sendFile(root+ "/Client/HTML/index.html")
 });
 
 
