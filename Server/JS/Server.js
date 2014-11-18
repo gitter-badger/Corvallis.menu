@@ -133,4 +133,4 @@ app.get('/MakeOrder', function(req, res)
 
 var server = app.listen(3000)
 
-DebugLog("Server started at: " + root)
+DebugLog("Server started at: " + __dirname)
