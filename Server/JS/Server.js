@@ -50,7 +50,7 @@ function _makeAccessableToClient(folder)
     {
       //compute 'GET' path, which is the absolute path
       //minus the prefixing location of the server
-      var getPath = filePath.substring(root.length, filePath.length)
+      var getPath = "/"+filePath.substring(root.length, filePath.length)
       getPath = getPath.replace(/\\/g,"/")
       
       //prepare server to handle GET requests for this file
@@ -67,12 +67,12 @@ function _makeAccessableToClient(folder)
 
 
 //make client side files accessible via GET
-_makeAccessableToClient(root + "./Client")
-_makeAccessableToClient(root + "./Shared")
+_makeAccessableToClient(root + "Client")
+_makeAccessableToClient(root + "Shared")
 
 app.get('/', function(req, res)
 {
-  res.sendFile("Client/HTML/index.html", {root: root})
+  res.sendFile("./Client/HTML/index.html", {root: root})
 });
 
 
