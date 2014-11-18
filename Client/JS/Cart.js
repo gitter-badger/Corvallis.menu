@@ -10,14 +10,20 @@ function Cart()
   //Adds the given item to the cart
   function AddToCart(item, parentVender)
   {
+    //validate parameters
     if(!item || !parentVender)
       throw "Null parameter given to Cart.AddToCart"
+      
+    //copy items
+    item = _.clone(item)
+    parentVender = _.clone(parentVender)
+    
       
     //trim unnecessary properties from vender
     delete parentVender.Items
     
     //if trying to add an item from a different restaurant
-    if(chosenVender && chosenVender != parentVender)
+    if(chosenVender && !_.isEqual(chosenVender, parentVender))
     {
       alert("All items in an order must come from the same restaurant. Please clear your cart, or order from " + chosenVender.Name)
       return
@@ -94,6 +100,7 @@ function Cart()
   
   /* CONSTRUCTOR */ 
  
+  
   //local variables
   var ractive
   var chosenVender

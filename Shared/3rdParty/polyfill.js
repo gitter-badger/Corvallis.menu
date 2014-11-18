@@ -21,6 +21,7 @@ if (!Array.prototype.find) {
   };
 }
 
+
 // Array.prototype.contains()
 // Reference : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/contains#Polyfill
 if (![].contains) {

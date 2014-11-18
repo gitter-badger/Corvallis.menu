@@ -6,9 +6,8 @@ function Database()
   function GetVenderData(){ return venderData }
   function GetVersion(){ return version }
 
-  //Takes an order and validates it against the local database,
-  //removing any properties that should not exist, and ensuring that
-  //items properties 
+  //Takes an order and validates it against the local database.
+  //Removes all nonselected items/options. Ensures 
   function ValidateOrder(order)
   {
     //generate helper method used repeatedly in this function.
@@ -34,9 +33,21 @@ function Database()
           console.log("Order object property did not match local database: " + prop)
           return false
         }
-      }        
+      }  
+
+      //Since we base all pricing off the Price value,
+      //we want to make sure the Order doesn't have a Price that
+      //doesn't exist in the local database. Prevents overcharging.
+      if(order.Price && order.Price != local.Price)
+      {
+        console.log("Order contained Price property that did not exist in the local database.")
+        return false
+      }
+        
       return true
     }
+    
+    
     
     //ensure Items sent
     if(!order.Items)
@@ -51,20 +62,21 @@ function Database()
       console.log("Received order missing 'Vender' property.")
       return false
     }
+
   
     //trim items options to only the selected ones
     order.Items.forEach(function(item)
     {
-      item.Options = item.Options.find(function(itemOption)
+      item.Addons = item.Addons.find(function(addon)
       {
         //for each order.Item.Option.Option
-        itemOption.Options = itemOption.Options.find(function(optionOption)
+        addon.Options = addon.Options.find(function(option)
         {
-          return optionOption.Selected
+          return option.Selected
         })
         
         //if no options selected, delete this item option
-        return itemOption.Options
+        return item.Addons.Options
       })
     })
     
@@ -81,15 +93,20 @@ function Database()
       return false
     }
     
+    //before we start validating, check to see that the vender is open
+    if(!_venderIsOpen(localVender))
+    {
+      console.log("Received order for closed vender.")
+      return false
+    }
+    
     //ensure properties of order.Vender and local vender do not differ
     if( !compareObjects(localVender, order.Vender))
       return false
     
     //ensure each item in the order matches with Server item data
-    for(var itemIndex = 0; itemIndex < order.Items.length; itemIndex++)
-    {
-      orderItem = order.Items[itemIndex]
-      
+    _.each(order.Items, function(orderItem)
+    {      
       //get corresponding item in local storage
       var localItem = localVender.Items.find(function(item)
       {
@@ -107,33 +124,51 @@ function Database()
       if(!compareObjects(localItem, orderItem))
         return false
         
-      //loop through item options ensuring they exist in local database
-      _.each(orderItem.Options, function(orderOption)
+      //loop through item.Addons ensuring they exist in local database
+      _.each(orderItem.Addons, function(orderAddon)
       {
-        //find corresponding local option
-        var localOption = localItem.Options.find(function(option)
+        //find corresponding local addon
+        var localAddon = localItem.Addons.find(function(addon)
         {
-          return option.Name == orderOption.Name && option.Type == orderOption.Type
+          return addon.Name == orderOption.Name && addon.InputType == orderOption.InputType
         })
         
-        //ensure option found
-        if(!localOption || localOption.length > 1)
+        //ensure addon found
+        if(!localAddon || localAddon.length > 1)
         {
-          console.log("Could not locate item option in local database: " + localOption.Name)
+          console.log("Could not locate item addon in local database: " + orderAddon.Name)
           return false
         }
         
-        //compare options
-        if(!compareObjects(localOption, orderOption))
+        //compare addons
+        if(!compareObjects(localAddon, orderAddon))
           return false
           
-        
-        console.log(orderOption.Name)
+        //loop through options
+        _.each(orderAddon.Options, function(orderOption)
+        {
+          //find corresponding local option
+          var localOption = localAddon.find(function(option)
+          {
+            return option.Name == orderOption.Name && option.Price == orderOption.Price
+          })
+          
+          //ensure correct option found
+          if(!localOption || localOption.length > 1)
+          {
+            console.log("Could not locate addon option in local database: " + orderOption.Name)
+            return false
+          }
+          
+          //compare options
+          if(!compareObjects(localOption, orderOption))
+            return false
+        })
       })    
-    }
+    })
     
-    
-    return true
+    //Validation successful.
+    return order
   }
   
   
@@ -201,11 +236,60 @@ function Database()
     fs.writeFile(versionPath, version, function(err){});
   }
       
+  //determines whether or not a vender is open
+  function _venderIsOpen(vender)
+  {
+    var date = new Date()
+    var currentDay = date.getDay()
+    var now = date.getHours() + date.getMinutes()/60
+    now = 12 //set now to noon for testing purposes
+    
+    //walk the open periods attempting to find the current one
+    var currentOpenPeriod = vender.Hours[currentDay].find(function(openPeriod)
+    {
+      //get the start and end of the open period
+      //default open to 0 if unprovided
+      var open = openPeriod.Open ? openPeriod.Open : 0
+      //default close to 24 if unprovided
+      var close = openPeriod.Close ? openPeriod.Close : 24
       
+      //if it is currently between open and close, return true
+      //NOTE: Subtracted a half hour from close to give deliverers
+      //time to get to the vender.
+      if(now >= open && now <= close - .5)
+        return true
+        
+      return false
+    })
+    
+    //if a current open period was found, we are open
+    return currentOpenPeriod != null
+  }  
       
+  function _heartbeat()
+  {
+    
+  }
       
+  function _findDeliverer()
+  {
+    //find available employee
+    twilioClient.sms.messages.create(
+    {
+      to: "15039410828", //"(541) 255-4410"
+      from: "5412554410",
+      body: "Message goes here pls"
+    },
+    function(error, message)
+    {
+      if(error)
+      {
+        console.log("Twilio failed to deliver message: " + error)
+        return
+      }
       
-      
+    })
+  }  
       
       
       
@@ -215,8 +299,10 @@ function Database()
   var fs = require('fs');  
   var sqlite = require("sqlite3").verbose()
   var _ = require("underscore")
+  var twilio = require("twilio")
   
   //generate local variables
+  var twilioClient = new twilio.ResetClient("AC952dab6ac06e4d2e0c7f13280deae972", "9073ee8c4f4cab08c3bf76a423da2dbb")
   var root = __dirname + "\\..\\..\\"
   var versionPath = root + "DatabaseVersion.txt"
   var menusFolder =  root + "server\\Menus\\"
@@ -258,9 +344,8 @@ function Database()
   //Instantiate tables if they do not yet exist
   db.serialize(function()
   {
-    db.run("CREATE TABLE IF NOT EXISTS Users(UserId INTEGER PRIMARY KEY ASC, Name TEXT, Address TEXT, Email TEXT, Phone INTEGER)");
-    db.run("CREATE TABLE IF NOT EXISTS Venders(VenderId INTEGER PRIMARY KEY ASC, Name TEXT, PicturePath TEXT, Address TEXT, Phone TEXT)");
-    db.run("CREATE TABLE IF NOT EXISTS Items(ItemId INTEGER PRIMARY KEY ASC, VenderId INTEGER, Name TEXT, PicturePath TEXT, Description TEXT, Price REAL)");
+    db.run("CREATE TABLE IF NOT EXISTS Users(userId INTEGER PRIMARY KEY ASC, name TEXT, address TEXT, email TEXT, phone TEXT)")
+    db.run("CREATE TABLE IF NOT EXISTS Orders(orderId INTEGER PRIMARY KEY ASC, deliverer INTEGER DEFAULT -1, value BLOB, timeOrdered TEXT, timePickedUp TEXT, timeDelivered TEXT)")
   })
   
   //specify which variables/functions are public

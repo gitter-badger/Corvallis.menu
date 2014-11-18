@@ -6,9 +6,10 @@ This file handles the initialization of the node server.
 var express = require("express")
 var passport = require("passport")
 var fs = require("fs")
+require("./../../Shared/3rdParty/polyfill.js")
+
 var database = require("./Database.js")
 var search = require("./Search.js")
-require("./../../Shared/3rdParty/polyfill.js")
 
 //generate local variables
 database = database()
@@ -119,11 +120,12 @@ app.get('/MakeOrder', function(req, res)
     return
   }
   
-  //At this point, we know that the order is valid.
-  
+  //At this point, we know that the order is valid.  
   //Add it to the database
   
+    
   //Return swipe response to get payment
+  DebugLog("Order completed successfully!")
   res.send(true)
 })
 

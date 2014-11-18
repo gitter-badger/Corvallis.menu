@@ -10,6 +10,7 @@
     "passport": "x.x",
     "passport-http-bearer": "x.x",
     "stripe": "x.x",
+    "twilio": "x.x",
     "underscore": "x.x"
   }
 }
