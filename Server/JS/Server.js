@@ -67,8 +67,8 @@ function _makeAccessableToClient(folder)
 
 
 //make client side files accessible via GET
-_makeAccessableToClient(root + "/Client")
-_makeAccessableToClient(root + "/Shared")
+_makeAccessableToClient(root + "./Client")
+_makeAccessableToClient(root + "./Shared")
 
 app.get('/', function(req, res)
 {
