@@ -38,7 +38,7 @@ function _makeAccessableToClient(folder)
   fs.readdirSync(folder).forEach(function(file)
   {
     //compute absolute file path
-    var filePath = folder + "\\" +file;
+    var filePath = folder + "/" +file;
     
     //If file is a subfolder
     var stat = fs.statSync(filePath);
@@ -67,8 +67,8 @@ function _makeAccessableToClient(folder)
 
 
 //make client side files accessible via GET
-_makeAccessableToClient(root + "\\Client")
-_makeAccessableToClient(root + "\\Shared")
+_makeAccessableToClient(root + "/Client")
+_makeAccessableToClient(root + "/Shared")
 
 app.get('/', function(req, res)
 {
