@@ -303,9 +303,9 @@ function Database()
   
   //generate local variables
   var twilioClient = "TODO:FIX"//new twilio.ResetClient("AC952dab6ac06e4d2e0c7f13280deae972", "9073ee8c4f4cab08c3bf76a423da2dbb")
-  var root = __dirname + "\\..\\..\\"
+  var root = __dirname + "/../../"
   var versionPath = root + "DatabaseVersion.txt"
-  var menusFolder =  root + "server\\Menus\\"
+  var menusFolder =  root + "server/Menus/"
   var dbPath =  root + "Database.db"
   var version = -1
   var venderData = []
