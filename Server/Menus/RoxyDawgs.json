@@ -67,20 +67,20 @@
 						"Name": "Condiments",
 						"Options":
 							[
-								{ "Name": "Mayo",              "Price": 0.50 },
-								{ "Name": "Chipotle Mayo",     "Price": 0.50 },
-								{ "Name": "Dawg Sauce",        "Price": 0.50 },
-								{ "Name": "BBQ Sauce",         "Price": 0.50 },
-								{ "Name": "Ketchup",           "Price": 0.50 },
-								{ "Name": "Ranch",             "Price": 0.50 },
-								{ "Name": "Honey Mustard",     "Price": 0.50 },
-								{ "Name": "Deli Mustard",      "Price": 0.50 },
-								{ "Name": "Dijon Mustard",     "Price": 0.50 },
-								{ "Name": "Sweet Hot Mustard", "Price": 0.50 },
-								{ "Name": "Yellow Mustard",    "Price": 0.50 },
-								{ "Name": "Jalapeno Mustard",  "Price": 0.50 },
-								{ "Name": "Teriyaki Sauce",    "Price": 0.50 },
-								{ "Name": "Sirachi",           "Price": 0.50 }
+								{ "Name": "Mayo",              "Price": 0.25 },
+								{ "Name": "Chipotle Mayo",     "Price": 0.25 },
+								{ "Name": "Dawg Sauce",        "Price": 0.25 },
+								{ "Name": "BBQ Sauce",         "Price": 0.25 },
+								{ "Name": "Ketchup",           "Price": 0.25 },
+								{ "Name": "Ranch",             "Price": 0.25 },
+								{ "Name": "Honey Mustard",     "Price": 0.25 },
+								{ "Name": "Deli Mustard",      "Price": 0.25 },
+								{ "Name": "Dijon Mustard",     "Price": 0.25 },
+								{ "Name": "Sweet Hot Mustard", "Price": 0.25 },
+								{ "Name": "Yellow Mustard",    "Price": 0.25 },
+								{ "Name": "Jalapeno Mustard",  "Price": 0.25 },
+								{ "Name": "Teriyaki Sauce",    "Price": 0.25 },
+								{ "Name": "Sirachi",           "Price": 0.25 }
 							]
 					},
 					{
@@ -88,18 +88,18 @@
 						"Name": "Toppings",
 						"Options":
 							[
-								{ "Name": "Jalapenos",           "Price": 0.50 },
-								{ "Name": "Pineapple Coleslaw",  "Price": 0.50 },
-								{ "Name": "Pepperoncini",        "Price": 0.50 },
-								{ "Name": "Lettuce",             "Price": 0.50 },
-								{ "Name": "Tomatoes",            "Price": 0.50 },
-								{ "Name": "Onions",              "Price": 0.50 },
-								{ "Name": "Sauerkraut",          "Price": 0.50 },
-								{ "Name": "Mango Salsa",         "Price": 0.50 },
-								{ "Name": "Sweet Relish",        "Price": 0.50 },
-								{ "Name": "Dill Relish",         "Price": 0.50 },
-								{ "Name": "Dill Spears",         "Price": 0.50 },
-								{ "Name": "Hamburger Relish",    "Price": 0.50 }
+								{ "Name": "Jalapenos",           "Price": 0.25 },
+								{ "Name": "Pineapple Coleslaw",  "Price": 0.25 },
+								{ "Name": "Pepperoncini",        "Price": 0.25 },
+								{ "Name": "Lettuce",             "Price": 0.25 },
+								{ "Name": "Tomatoes",            "Price": 0.25 },
+								{ "Name": "Onions",              "Price": 0.25 },
+								{ "Name": "Sauerkraut",          "Price": 0.25 },
+								{ "Name": "Mango Salsa",         "Price": 0.25 },
+								{ "Name": "Sweet Relish",        "Price": 0.25 },
+								{ "Name": "Dill Relish",         "Price": 0.25 },
+								{ "Name": "Dill Spears",         "Price": 0.25 },
+								{ "Name": "Hamburger Relish",    "Price": 0.25 }
 							]
 					}
 				]
@@ -115,20 +115,20 @@
 						"Name": "Condiments",
 						"Options":
 							[
-								{ "Name": "Mayo",              "Price": 0.50 },
-								{ "Name": "Chipotle Mayo",     "Price": 0.50 },
-								{ "Name": "Dawg Sauce",        "Price": 0.50 },
-								{ "Name": "BBQ Sauce",         "Price": 0.50 },
-								{ "Name": "Ketchup",           "Price": 0.50 },
-								{ "Name": "Ranch",             "Price": 0.50 },
-								{ "Name": "Honey Mustard",     "Price": 0.50 },
-								{ "Name": "Deli Mustard",      "Price": 0.50 },
-								{ "Name": "Dijon Mustard",     "Price": 0.50 },
-								{ "Name": "Sweet Hot Mustard", "Price": 0.50 },
-								{ "Name": "Yellow Mustard",    "Price": 0.50 },
-								{ "Name": "Jalapeno Mustard",  "Price": 0.50 },
-								{ "Name": "Teriyaki Sauce",    "Price": 0.50 },
-								{ "Name": "Sirachi",           "Price": 0.50 }
+								{ "Name": "Mayo",              "Price": 0.25 },
+								{ "Name": "Chipotle Mayo",     "Price": 0.25 },
+								{ "Name": "Dawg Sauce",        "Price": 0.25 },
+								{ "Name": "BBQ Sauce",         "Price": 0.25 },
+								{ "Name": "Ketchup",           "Price": 0.25 },
+								{ "Name": "Ranch",             "Price": 0.25 },
+								{ "Name": "Honey Mustard",     "Price": 0.25 },
+								{ "Name": "Deli Mustard",      "Price": 0.25 },
+								{ "Name": "Dijon Mustard",     "Price": 0.25 },
+								{ "Name": "Sweet Hot Mustard", "Price": 0.25 },
+								{ "Name": "Yellow Mustard",    "Price": 0.25 },
+								{ "Name": "Jalapeno Mustard",  "Price": 0.25 },
+								{ "Name": "Teriyaki Sauce",    "Price": 0.25 },
+								{ "Name": "Sirachi",           "Price": 0.25 }
 							]
 					},
 					{
@@ -136,18 +136,18 @@
 						"Name": "Toppings",
 						"Options":
 							[
-								{ "Name": "Jalapenos",           "Price": 0.50 },
-								{ "Name": "Pineapple Coleslaw",  "Price": 0.50 },
-								{ "Name": "Pepperoncini",        "Price": 0.50 },
-								{ "Name": "Lettuce",             "Price": 0.50 },
-								{ "Name": "Tomatoes",            "Price": 0.50 },
-								{ "Name": "Onions",              "Price": 0.50 },
-								{ "Name": "Sauerkraut",          "Price": 0.50 },
-								{ "Name": "Mango Salsa",         "Price": 0.50 },
-								{ "Name": "Sweet Relish",        "Price": 0.50 },
-								{ "Name": "Dill Relish",         "Price": 0.50 },
-								{ "Name": "Dill Spears",         "Price": 0.50 },
-								{ "Name": "Hamburger Relish",    "Price": 0.50 }
+								{ "Name": "Jalapenos",           "Price": 0.25 },
+								{ "Name": "Pineapple Coleslaw",  "Price": 0.25 },
+								{ "Name": "Pepperoncini",        "Price": 0.25 },
+								{ "Name": "Lettuce",             "Price": 0.25 },
+								{ "Name": "Tomatoes",            "Price": 0.25 },
+								{ "Name": "Onions",              "Price": 0.25 },
+								{ "Name": "Sauerkraut",          "Price": 0.25 },
+								{ "Name": "Mango Salsa",         "Price": 0.25 },
+								{ "Name": "Sweet Relish",        "Price": 0.25 },
+								{ "Name": "Dill Relish",         "Price": 0.25 },
+								{ "Name": "Dill Spears",         "Price": 0.25 },
+								{ "Name": "Hamburger Relish",    "Price": 0.25 }
 							]
 					}
 				]
@@ -163,20 +163,20 @@
 						"Name": "Condiments",
 						"Options":
 							[
-								{ "Name": "Mayo",              "Price": 0.50 },
-								{ "Name": "Chipotle Mayo",     "Price": 0.50 },
-								{ "Name": "Dawg Sauce",        "Price": 0.50 },
-								{ "Name": "BBQ Sauce",         "Price": 0.50 },
-								{ "Name": "Ketchup",           "Price": 0.50 },
-								{ "Name": "Ranch",             "Price": 0.50 },
-								{ "Name": "Honey Mustard",     "Price": 0.50 },
-								{ "Name": "Deli Mustard",      "Price": 0.50 },
-								{ "Name": "Dijon Mustard",     "Price": 0.50 },
-								{ "Name": "Sweet Hot Mustard", "Price": 0.50 },
-								{ "Name": "Yellow Mustard",    "Price": 0.50 },
-								{ "Name": "Jalapeno Mustard",  "Price": 0.50 },
-								{ "Name": "Teriyaki Sauce",    "Price": 0.50 },
-								{ "Name": "Sirachi",           "Price": 0.50 }
+								{ "Name": "Mayo",              "Price": 0.25 },
+								{ "Name": "Chipotle Mayo",     "Price": 0.25 },
+								{ "Name": "Dawg Sauce",        "Price": 0.25 },
+								{ "Name": "BBQ Sauce",         "Price": 0.25 },
+								{ "Name": "Ketchup",           "Price": 0.25 },
+								{ "Name": "Ranch",             "Price": 0.25 },
+								{ "Name": "Honey Mustard",     "Price": 0.25 },
+								{ "Name": "Deli Mustard",      "Price": 0.25 },
+								{ "Name": "Dijon Mustard",     "Price": 0.25 },
+								{ "Name": "Sweet Hot Mustard", "Price": 0.25 },
+								{ "Name": "Yellow Mustard",    "Price": 0.25 },
+								{ "Name": "Jalapeno Mustard",  "Price": 0.25 },
+								{ "Name": "Teriyaki Sauce",    "Price": 0.25 },
+								{ "Name": "Sirachi",           "Price": 0.25 }
 							]
 					},
 					{
@@ -184,18 +184,18 @@
 						"Name": "Toppings",
 						"Options":
 							[
-								{ "Name": "Jalapenos",           "Price": 0.50 },
-								{ "Name": "Pineapple Coleslaw",  "Price": 0.50 },
-								{ "Name": "Pepperoncini",        "Price": 0.50 },
-								{ "Name": "Lettuce",             "Price": 0.50 },
-								{ "Name": "Tomatoes",            "Price": 0.50 },
-								{ "Name": "Onions",              "Price": 0.50 },
-								{ "Name": "Sauerkraut",          "Price": 0.50 },
-								{ "Name": "Mango Salsa",         "Price": 0.50 },
-								{ "Name": "Sweet Relish",        "Price": 0.50 },
-								{ "Name": "Dill Relish",         "Price": 0.50 },
-								{ "Name": "Dill Spears",         "Price": 0.50 },
-								{ "Name": "Hamburger Relish",    "Price": 0.50 }
+								{ "Name": "Jalapenos",           "Price": 0.25 },
+								{ "Name": "Pineapple Coleslaw",  "Price": 0.25 },
+								{ "Name": "Pepperoncini",        "Price": 0.25 },
+								{ "Name": "Lettuce",             "Price": 0.25 },
+								{ "Name": "Tomatoes",            "Price": 0.25 },
+								{ "Name": "Onions",              "Price": 0.25 },
+								{ "Name": "Sauerkraut",          "Price": 0.25 },
+								{ "Name": "Mango Salsa",         "Price": 0.25 },
+								{ "Name": "Sweet Relish",        "Price": 0.25 },
+								{ "Name": "Dill Relish",         "Price": 0.25 },
+								{ "Name": "Dill Spears",         "Price": 0.25 },
+								{ "Name": "Hamburger Relish",    "Price": 0.25 }
 							]
 					}
 				]
@@ -211,20 +211,20 @@
 						"Name": "Condiments",
 						"Options":
 							[
-								{ "Name": "Mayo",              "Price": 0.50 },
-								{ "Name": "Chipotle Mayo",     "Price": 0.50 },
-								{ "Name": "Dawg Sauce",        "Price": 0.50 },
-								{ "Name": "BBQ Sauce",         "Price": 0.50 },
-								{ "Name": "Ketchup",           "Price": 0.50 },
-								{ "Name": "Ranch",             "Price": 0.50 },
-								{ "Name": "Honey Mustard",     "Price": 0.50 },
-								{ "Name": "Deli Mustard",      "Price": 0.50 },
-								{ "Name": "Dijon Mustard",     "Price": 0.50 },
-								{ "Name": "Sweet Hot Mustard", "Price": 0.50 },
-								{ "Name": "Yellow Mustard",    "Price": 0.50 },
-								{ "Name": "Jalapeno Mustard",  "Price": 0.50 },
-								{ "Name": "Teriyaki Sauce",    "Price": 0.50 },
-								{ "Name": "Sirachi",           "Price": 0.50 }
+								{ "Name": "Mayo",              "Price": 0.25 },
+								{ "Name": "Chipotle Mayo",     "Price": 0.25 },
+								{ "Name": "Dawg Sauce",        "Price": 0.25 },
+								{ "Name": "BBQ Sauce",         "Price": 0.25 },
+								{ "Name": "Ketchup",           "Price": 0.25 },
+								{ "Name": "Ranch",             "Price": 0.25 },
+								{ "Name": "Honey Mustard",     "Price": 0.25 },
+								{ "Name": "Deli Mustard",      "Price": 0.25 },
+								{ "Name": "Dijon Mustard",     "Price": 0.25 },
+								{ "Name": "Sweet Hot Mustard", "Price": 0.25 },
+								{ "Name": "Yellow Mustard",    "Price": 0.25 },
+								{ "Name": "Jalapeno Mustard",  "Price": 0.25 },
+								{ "Name": "Teriyaki Sauce",    "Price": 0.25 },
+								{ "Name": "Sirachi",           "Price": 0.25 }
 							]
 					},
 					{
@@ -232,18 +232,18 @@
 						"Name": "Toppings",
 						"Options":
 							[
-								{ "Name": "Jalapenos",           "Price": 0.50 },
-								{ "Name": "Pineapple Coleslaw",  "Price": 0.50 },
-								{ "Name": "Pepperoncini",        "Price": 0.50 },
-								{ "Name": "Lettuce",             "Price": 0.50 },
-								{ "Name": "Tomatoes",            "Price": 0.50 },
-								{ "Name": "Onions",              "Price": 0.50 },
-								{ "Name": "Sauerkraut",          "Price": 0.50 },
-								{ "Name": "Mango Salsa",         "Price": 0.50 },
-								{ "Name": "Sweet Relish",        "Price": 0.50 },
-								{ "Name": "Dill Relish",         "Price": 0.50 },
-								{ "Name": "Dill Spears",         "Price": 0.50 },
-								{ "Name": "Hamburger Relish",    "Price": 0.50 }
+								{ "Name": "Jalapenos",           "Price": 0.25 },
+								{ "Name": "Pineapple Coleslaw",  "Price": 0.25 },
+								{ "Name": "Pepperoncini",        "Price": 0.25 },
+								{ "Name": "Lettuce",             "Price": 0.25 },
+								{ "Name": "Tomatoes",            "Price": 0.25 },
+								{ "Name": "Onions",              "Price": 0.25 },
+								{ "Name": "Sauerkraut",          "Price": 0.25 },
+								{ "Name": "Mango Salsa",         "Price": 0.25 },
+								{ "Name": "Sweet Relish",        "Price": 0.25 },
+								{ "Name": "Dill Relish",         "Price": 0.25 },
+								{ "Name": "Dill Spears",         "Price": 0.25 },
+								{ "Name": "Hamburger Relish",    "Price": 0.25 }
 							]
 					}
 				]
@@ -259,20 +259,20 @@
 						"Name": "Condiments",
 						"Options":
 							[
-								{ "Name": "Mayo",              "Price": 0.50 },
-								{ "Name": "Chipotle Mayo",     "Price": 0.50 },
-								{ "Name": "Dawg Sauce",        "Price": 0.50 },
-								{ "Name": "BBQ Sauce",         "Price": 0.50 },
-								{ "Name": "Ketchup",           "Price": 0.50 },
-								{ "Name": "Ranch",             "Price": 0.50 },
-								{ "Name": "Honey Mustard",     "Price": 0.50 },
-								{ "Name": "Deli Mustard",      "Price": 0.50 },
-								{ "Name": "Dijon Mustard",     "Price": 0.50 },
-								{ "Name": "Sweet Hot Mustard", "Price": 0.50 },
-								{ "Name": "Yellow Mustard",    "Price": 0.50 },
-								{ "Name": "Jalapeno Mustard",  "Price": 0.50 },
-								{ "Name": "Teriyaki Sauce",    "Price": 0.50 },
-								{ "Name": "Sirachi",           "Price": 0.50 }
+								{ "Name": "Mayo",              "Price": 0.25 },
+								{ "Name": "Chipotle Mayo",     "Price": 0.25 },
+								{ "Name": "Dawg Sauce",        "Price": 0.25 },
+								{ "Name": "BBQ Sauce",         "Price": 0.25 },
+								{ "Name": "Ketchup",           "Price": 0.25 },
+								{ "Name": "Ranch",             "Price": 0.25 },
+								{ "Name": "Honey Mustard",     "Price": 0.25 },
+								{ "Name": "Deli Mustard",      "Price": 0.25 },
+								{ "Name": "Dijon Mustard",     "Price": 0.25 },
+								{ "Name": "Sweet Hot Mustard", "Price": 0.25 },
+								{ "Name": "Yellow Mustard",    "Price": 0.25 },
+								{ "Name": "Jalapeno Mustard",  "Price": 0.25 },
+								{ "Name": "Teriyaki Sauce",    "Price": 0.25 },
+								{ "Name": "Sirachi",           "Price": 0.25 }
 							]
 					},
 					{
@@ -280,18 +280,18 @@
 						"Name": "Toppings",
 						"Options":
 							[
-								{ "Name": "Jalapenos",           "Price": 0.50 },
-								{ "Name": "Pineapple Coleslaw",  "Price": 0.50 },
-								{ "Name": "Pepperoncini",        "Price": 0.50 },
-								{ "Name": "Lettuce",             "Price": 0.50 },
-								{ "Name": "Tomatoes",            "Price": 0.50 },
-								{ "Name": "Onions",              "Price": 0.50 },
-								{ "Name": "Sauerkraut",          "Price": 0.50 },
-								{ "Name": "Mango Salsa",         "Price": 0.50 },
-								{ "Name": "Sweet Relish",        "Price": 0.50 },
-								{ "Name": "Dill Relish",         "Price": 0.50 },
-								{ "Name": "Dill Spears",         "Price": 0.50 },
-								{ "Name": "Hamburger Relish",    "Price": 0.50 }
+								{ "Name": "Jalapenos",           "Price": 0.25 },
+								{ "Name": "Pineapple Coleslaw",  "Price": 0.25 },
+								{ "Name": "Pepperoncini",        "Price": 0.25 },
+								{ "Name": "Lettuce",             "Price": 0.25 },
+								{ "Name": "Tomatoes",            "Price": 0.25 },
+								{ "Name": "Onions",              "Price": 0.25 },
+								{ "Name": "Sauerkraut",          "Price": 0.25 },
+								{ "Name": "Mango Salsa",         "Price": 0.25 },
+								{ "Name": "Sweet Relish",        "Price": 0.25 },
+								{ "Name": "Dill Relish",         "Price": 0.25 },
+								{ "Name": "Dill Spears",         "Price": 0.25 },
+								{ "Name": "Hamburger Relish",    "Price": 0.25 }
 							]
 					}
 				]
@@ -307,20 +307,20 @@
 						"Name": "Condiments",
 						"Options":
 							[
-								{ "Name": "Mayo",              "Price": 0.50 },
-								{ "Name": "Chipotle Mayo",     "Price": 0.50 },
-								{ "Name": "Dawg Sauce",        "Price": 0.50 },
-								{ "Name": "BBQ Sauce",         "Price": 0.50 },
-								{ "Name": "Ketchup",           "Price": 0.50 },
-								{ "Name": "Ranch",             "Price": 0.50 },
-								{ "Name": "Honey Mustard",     "Price": 0.50 },
-								{ "Name": "Deli Mustard",      "Price": 0.50 },
-								{ "Name": "Dijon Mustard",     "Price": 0.50 },
-								{ "Name": "Sweet Hot Mustard", "Price": 0.50 },
-								{ "Name": "Yellow Mustard",    "Price": 0.50 },
-								{ "Name": "Jalapeno Mustard",  "Price": 0.50 },
-								{ "Name": "Teriyaki Sauce",    "Price": 0.50 },
-								{ "Name": "Sirachi",           "Price": 0.50 }
+								{ "Name": "Mayo",              "Price": 0.25 },
+								{ "Name": "Chipotle Mayo",     "Price": 0.25 },
+								{ "Name": "Dawg Sauce",        "Price": 0.25 },
+								{ "Name": "BBQ Sauce",         "Price": 0.25 },
+								{ "Name": "Ketchup",           "Price": 0.25 },
+								{ "Name": "Ranch",             "Price": 0.25 },
+								{ "Name": "Honey Mustard",     "Price": 0.25 },
+								{ "Name": "Deli Mustard",      "Price": 0.25 },
+								{ "Name": "Dijon Mustard",     "Price": 0.25 },
+								{ "Name": "Sweet Hot Mustard", "Price": 0.25 },
+								{ "Name": "Yellow Mustard",    "Price": 0.25 },
+								{ "Name": "Jalapeno Mustard",  "Price": 0.25 },
+								{ "Name": "Teriyaki Sauce",    "Price": 0.25 },
+								{ "Name": "Sirachi",           "Price": 0.25 }
 							]
 					},
 					{
@@ -328,18 +328,18 @@
 						"Name": "Toppings",
 						"Options":
 							[
-								{ "Name": "Jalapenos",           "Price": 0.50 },
-								{ "Name": "Pineapple Coleslaw",  "Price": 0.50 },
-								{ "Name": "Pepperoncini",        "Price": 0.50 },
-								{ "Name": "Lettuce",             "Price": 0.50 },
-								{ "Name": "Tomatoes",            "Price": 0.50 },
-								{ "Name": "Onions",              "Price": 0.50 },
-								{ "Name": "Sauerkraut",          "Price": 0.50 },
-								{ "Name": "Mango Salsa",         "Price": 0.50 },
-								{ "Name": "Sweet Relish",        "Price": 0.50 },
-								{ "Name": "Dill Relish",         "Price": 0.50 },
-								{ "Name": "Dill Spears",         "Price": 0.50 },
-								{ "Name": "Hamburger Relish",    "Price": 0.50 }
+								{ "Name": "Jalapenos",           "Price": 0.25 },
+								{ "Name": "Pineapple Coleslaw",  "Price": 0.25 },
+								{ "Name": "Pepperoncini",        "Price": 0.25 },
+								{ "Name": "Lettuce",             "Price": 0.25 },
+								{ "Name": "Tomatoes",            "Price": 0.25 },
+								{ "Name": "Onions",              "Price": 0.25 },
+								{ "Name": "Sauerkraut",          "Price": 0.25 },
+								{ "Name": "Mango Salsa",         "Price": 0.25 },
+								{ "Name": "Sweet Relish",        "Price": 0.25 },
+								{ "Name": "Dill Relish",         "Price": 0.25 },
+								{ "Name": "Dill Spears",         "Price": 0.25 },
+								{ "Name": "Hamburger Relish",    "Price": 0.25 }
 							]
 					}
 				]
@@ -355,20 +355,20 @@
 						"Name": "Condiments",
 						"Options":
 							[
-								{ "Name": "Mayo",              "Price": 0.50 },
-								{ "Name": "Chipotle Mayo",     "Price": 0.50 },
-								{ "Name": "Dawg Sauce",        "Price": 0.50 },
-								{ "Name": "BBQ Sauce",         "Price": 0.50 },
-								{ "Name": "Ketchup",           "Price": 0.50 },
-								{ "Name": "Ranch",             "Price": 0.50 },
-								{ "Name": "Honey Mustard",     "Price": 0.50 },
-								{ "Name": "Deli Mustard",      "Price": 0.50 },
-								{ "Name": "Dijon Mustard",     "Price": 0.50 },
-								{ "Name": "Sweet Hot Mustard", "Price": 0.50 },
-								{ "Name": "Yellow Mustard",    "Price": 0.50 },
-								{ "Name": "Jalapeno Mustard",  "Price": 0.50 },
-								{ "Name": "Teriyaki Sauce",    "Price": 0.50 },
-								{ "Name": "Sirachi",           "Price": 0.50 }
+								{ "Name": "Mayo",              "Price": 0.25 },
+								{ "Name": "Chipotle Mayo",     "Price": 0.25 },
+								{ "Name": "Dawg Sauce",        "Price": 0.25 },
+								{ "Name": "BBQ Sauce",         "Price": 0.25 },
+								{ "Name": "Ketchup",           "Price": 0.25 },
+								{ "Name": "Ranch",             "Price": 0.25 },
+								{ "Name": "Honey Mustard",     "Price": 0.25 },
+								{ "Name": "Deli Mustard",      "Price": 0.25 },
+								{ "Name": "Dijon Mustard",     "Price": 0.25 },
+								{ "Name": "Sweet Hot Mustard", "Price": 0.25 },
+								{ "Name": "Yellow Mustard",    "Price": 0.25 },
+								{ "Name": "Jalapeno Mustard",  "Price": 0.25 },
+								{ "Name": "Teriyaki Sauce",    "Price": 0.25 },
+								{ "Name": "Sirachi",           "Price": 0.25 }
 							]
 					},
 					{
@@ -376,18 +376,18 @@
 						"Name": "Toppings",
 						"Options":
 							[
-								{ "Name": "Jalapenos",           "Price": 0.50 },
-								{ "Name": "Pineapple Coleslaw",  "Price": 0.50 },
-								{ "Name": "Pepperoncini",        "Price": 0.50 },
-								{ "Name": "Lettuce",             "Price": 0.50 },
-								{ "Name": "Tomatoes",            "Price": 0.50 },
-								{ "Name": "Onions",              "Price": 0.50 },
-								{ "Name": "Sauerkraut",          "Price": 0.50 },
-								{ "Name": "Mango Salsa",         "Price": 0.50 },
-								{ "Name": "Sweet Relish",        "Price": 0.50 },
-								{ "Name": "Dill Relish",         "Price": 0.50 },
-								{ "Name": "Dill Spears",         "Price": 0.50 },
-								{ "Name": "Hamburger Relish",    "Price": 0.50 }
+								{ "Name": "Jalapenos",           "Price": 0.25 },
+								{ "Name": "Pineapple Coleslaw",  "Price": 0.25 },
+								{ "Name": "Pepperoncini",        "Price": 0.25 },
+								{ "Name": "Lettuce",             "Price": 0.25 },
+								{ "Name": "Tomatoes",            "Price": 0.25 },
+								{ "Name": "Onions",              "Price": 0.25 },
+								{ "Name": "Sauerkraut",          "Price": 0.25 },
+								{ "Name": "Mango Salsa",         "Price": 0.25 },
+								{ "Name": "Sweet Relish",        "Price": 0.25 },
+								{ "Name": "Dill Relish",         "Price": 0.25 },
+								{ "Name": "Dill Spears",         "Price": 0.25 },
+								{ "Name": "Hamburger Relish",    "Price": 0.25 }
 							]
 					}
 				]
@@ -403,20 +403,20 @@
 						"Name": "Condiments",
 						"Options":
 							[
-								{ "Name": "Mayo",              "Price": 0.50 },
-								{ "Name": "Chipotle Mayo",     "Price": 0.50 },
-								{ "Name": "Dawg Sauce",        "Price": 0.50 },
-								{ "Name": "BBQ Sauce",         "Price": 0.50 },
-								{ "Name": "Ketchup",           "Price": 0.50 },
-								{ "Name": "Ranch",             "Price": 0.50 },
-								{ "Name": "Honey Mustard",     "Price": 0.50 },
-								{ "Name": "Deli Mustard",      "Price": 0.50 },
-								{ "Name": "Dijon Mustard",     "Price": 0.50 },
-								{ "Name": "Sweet Hot Mustard", "Price": 0.50 },
-								{ "Name": "Yellow Mustard",    "Price": 0.50 },
-								{ "Name": "Jalapeno Mustard",  "Price": 0.50 },
-								{ "Name": "Teriyaki Sauce",    "Price": 0.50 },
-								{ "Name": "Sirachi",           "Price": 0.50 }
+								{ "Name": "Mayo",              "Price": 0.25 },
+								{ "Name": "Chipotle Mayo",     "Price": 0.25 },
+								{ "Name": "Dawg Sauce",        "Price": 0.25 },
+								{ "Name": "BBQ Sauce",         "Price": 0.25 },
+								{ "Name": "Ketchup",           "Price": 0.25 },
+								{ "Name": "Ranch",             "Price": 0.25 },
+								{ "Name": "Honey Mustard",     "Price": 0.25 },
+								{ "Name": "Deli Mustard",      "Price": 0.25 },
+								{ "Name": "Dijon Mustard",     "Price": 0.25 },
+								{ "Name": "Sweet Hot Mustard", "Price": 0.25 },
+								{ "Name": "Yellow Mustard",    "Price": 0.25 },
+								{ "Name": "Jalapeno Mustard",  "Price": 0.25 },
+								{ "Name": "Teriyaki Sauce",    "Price": 0.25 },
+								{ "Name": "Sirachi",           "Price": 0.25 }
 							]
 					},
 					{
@@ -424,18 +424,18 @@
 						"Name": "Toppings",
 						"Options":
 							[
-								{ "Name": "Jalapenos",           "Price": 0.50 },
-								{ "Name": "Pineapple Coleslaw",  "Price": 0.50 },
-								{ "Name": "Pepperoncini",        "Price": 0.50 },
-								{ "Name": "Lettuce",             "Price": 0.50 },
-								{ "Name": "Tomatoes",            "Price": 0.50 },
-								{ "Name": "Onions",              "Price": 0.50 },
-								{ "Name": "Sauerkraut",          "Price": 0.50 },
-								{ "Name": "Mango Salsa",         "Price": 0.50 },
-								{ "Name": "Sweet Relish",        "Price": 0.50 },
-								{ "Name": "Dill Relish",         "Price": 0.50 },
-								{ "Name": "Dill Spears",         "Price": 0.50 },
-								{ "Name": "Hamburger Relish",    "Price": 0.50 }
+								{ "Name": "Jalapenos",           "Price": 0.25 },
+								{ "Name": "Pineapple Coleslaw",  "Price": 0.25 },
+								{ "Name": "Pepperoncini",        "Price": 0.25 },
+								{ "Name": "Lettuce",             "Price": 0.25 },
+								{ "Name": "Tomatoes",            "Price": 0.25 },
+								{ "Name": "Onions",              "Price": 0.25 },
+								{ "Name": "Sauerkraut",          "Price": 0.25 },
+								{ "Name": "Mango Salsa",         "Price": 0.25 },
+								{ "Name": "Sweet Relish",        "Price": 0.25 },
+								{ "Name": "Dill Relish",         "Price": 0.25 },
+								{ "Name": "Dill Spears",         "Price": 0.25 },
+								{ "Name": "Hamburger Relish",    "Price": 0.25 }
 							]
 					}
 				]
@@ -451,20 +451,20 @@
 						"Name": "Condiments",
 						"Options":
 							[
-								{ "Name": "Mayo",              "Price": 0.50 },
-								{ "Name": "Chipotle Mayo",     "Price": 0.50 },
-								{ "Name": "Dawg Sauce",        "Price": 0.50 },
-								{ "Name": "BBQ Sauce",         "Price": 0.50 },
-								{ "Name": "Ketchup",           "Price": 0.50 },
-								{ "Name": "Ranch",             "Price": 0.50 },
-								{ "Name": "Honey Mustard",     "Price": 0.50 },
-								{ "Name": "Deli Mustard",      "Price": 0.50 },
-								{ "Name": "Dijon Mustard",     "Price": 0.50 },
-								{ "Name": "Sweet Hot Mustard", "Price": 0.50 },
-								{ "Name": "Yellow Mustard",    "Price": 0.50 },
-								{ "Name": "Jalapeno Mustard",  "Price": 0.50 },
-								{ "Name": "Teriyaki Sauce",    "Price": 0.50 },
-								{ "Name": "Sirachi",           "Price": 0.50 }
+								{ "Name": "Mayo",              "Price": 0.25 },
+								{ "Name": "Chipotle Mayo",     "Price": 0.25 },
+								{ "Name": "Dawg Sauce",        "Price": 0.25 },
+								{ "Name": "BBQ Sauce",         "Price": 0.25 },
+								{ "Name": "Ketchup",           "Price": 0.25 },
+								{ "Name": "Ranch",             "Price": 0.25 },
+								{ "Name": "Honey Mustard",     "Price": 0.25 },
+								{ "Name": "Deli Mustard",      "Price": 0.25 },
+								{ "Name": "Dijon Mustard",     "Price": 0.25 },
+								{ "Name": "Sweet Hot Mustard", "Price": 0.25 },
+								{ "Name": "Yellow Mustard",    "Price": 0.25 },
+								{ "Name": "Jalapeno Mustard",  "Price": 0.25 },
+								{ "Name": "Teriyaki Sauce",    "Price": 0.25 },
+								{ "Name": "Sirachi",           "Price": 0.25 }
 							]
 					},
 					{
@@ -472,18 +472,18 @@
 						"Name": "Toppings",
 						"Options":
 							[
-								{ "Name": "Jalapenos",           "Price": 0.50 },
-								{ "Name": "Pineapple Coleslaw",  "Price": 0.50 },
-								{ "Name": "Pepperoncini",        "Price": 0.50 },
-								{ "Name": "Lettuce",             "Price": 0.50 },
-								{ "Name": "Tomatoes",            "Price": 0.50 },
-								{ "Name": "Onions",              "Price": 0.50 },
-								{ "Name": "Sauerkraut",          "Price": 0.50 },
-								{ "Name": "Mango Salsa",         "Price": 0.50 },
-								{ "Name": "Sweet Relish",        "Price": 0.50 },
-								{ "Name": "Dill Relish",         "Price": 0.50 },
-								{ "Name": "Dill Spears",         "Price": 0.50 },
-								{ "Name": "Hamburger Relish",    "Price": 0.50 }
+								{ "Name": "Jalapenos",           "Price": 0.25 },
+								{ "Name": "Pineapple Coleslaw",  "Price": 0.25 },
+								{ "Name": "Pepperoncini",        "Price": 0.25 },
+								{ "Name": "Lettuce",             "Price": 0.25 },
+								{ "Name": "Tomatoes",            "Price": 0.25 },
+								{ "Name": "Onions",              "Price": 0.25 },
+								{ "Name": "Sauerkraut",          "Price": 0.25 },
+								{ "Name": "Mango Salsa",         "Price": 0.25 },
+								{ "Name": "Sweet Relish",        "Price": 0.25 },
+								{ "Name": "Dill Relish",         "Price": 0.25 },
+								{ "Name": "Dill Spears",         "Price": 0.25 },
+								{ "Name": "Hamburger Relish",    "Price": 0.25 }
 							]
 					}
 				]
