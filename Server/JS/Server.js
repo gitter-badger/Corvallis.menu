@@ -17,7 +17,7 @@ search = search(database)
 var app = express()
 
 //find root of server; should be just below the "server" folder
-var root = __dirname.substring(0, __dirname.search("server"))
+var root = __dirname.substring(0, __dirname.toLowerCase().search("server"))
 
 
 
@@ -133,4 +133,4 @@ app.get('/MakeOrder', function(req, res)
 
 var server = app.listen(3000)
 
-DebugLog("Server started at: " + __dirname)
+DebugLog("Server started at: " + root)
