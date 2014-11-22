@@ -25,7 +25,7 @@
     <div {{#if ShowOptions}}class="showOptions" {{/if}}>
       <div on-tap="ToggleOptions: {{item}}, {{vender}}">
         <a href="#" {{#if Description}} title="{{Description}}" {{/if}}>{{Name}}</a>
-        ${{Price.toFixed(2)}}
+        <div class="price">${{Price.toFixed(2)}}</div>
       </div>
       {{#if ShowOptions}}
         {{Description}}
