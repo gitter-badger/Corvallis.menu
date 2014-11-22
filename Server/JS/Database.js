@@ -62,6 +62,12 @@ function Database()
       console.log("Received order missing 'Vender' property.")
       return false
     }
+    
+    //ensure token sent
+    if(!order.Token)
+    {
+      console.log("Recieved order missing 'Token' property.")
+    }
 
   
     //trim items options to only the selected ones

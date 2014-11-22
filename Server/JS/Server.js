@@ -7,6 +7,7 @@ var express = require("express")
 var passport = require("passport")
 var fs = require("fs")
 require("./../../Shared/3rdParty/polyfill.js")
+var stripe = require("stripe")("sk_test_xPKZSx74LUGSJUmmrwpRGwki")
 
 var database = require("./Database.js")
 var search = require("./Search.js")
@@ -96,9 +97,9 @@ app.get('/SearchHeartbeat', function(req, res)
 //Called when a client wants to make an order.
 //validates the order, and returns the stripe
 //payment form
-app.get('/MakeOrder', function(req, res)
+app.get('/SubmitOrder', function(req, res)
 {
-  DebugLog("MakeOrder requested...")
+  DebugLog("Submit order requested...")
   
   //validate request
   if(!req)
@@ -121,8 +122,15 @@ app.get('/MakeOrder', function(req, res)
   }
   
   //At this point, we know that the order is valid.  
-  //Add it to the database
-  
+  //Send a response telling swipe how to set up.
+  stripe.charges.create(
+  {
+    amount: 400,
+    currency: "usd",
+    description: "Charge for order at Corvallis.Menu"
+  }, function(err, charge)
+  {
+  })
     
   //Return swipe response to get payment
   DebugLog("Order completed successfully!")
