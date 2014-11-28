@@ -45,7 +45,7 @@ function Cart()
       return
       
     //calculate price of order
-    var totalPrice = 100
+    var totalPrice = 100*CalcOrderPrice(items)
     
     //create handler for payment
     var stripeHandler = StripeCheckout.configure(
