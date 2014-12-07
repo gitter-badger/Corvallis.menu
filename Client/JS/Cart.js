@@ -44,19 +44,40 @@ function Cart()
     if(items.length <= 0)
       return
       
-    //send purchase to server
-    //send ajax request to server
-    $.get("MakeOrder", { Order: JSON.stringify({Items: items, Vender: chosenVender}) }, function(response)
+    //calculate price of order
+    var totalPrice = 100*CalcOrderPrice(items)
+    
+    //create handler for payment
+    var stripeHandler = StripeCheckout.configure(
     {
-      //if a response was given, parse it for its value
-      if(response)
-        response = JSON.parse(response)
-      //if the parsed response has content
-      if(response)
+      key: 'pk_test_Wa5xdqFiCM9E6ZnUq0Vg0zSW',
+      image: '/square-image.png',
+      token: function(token) 
       {
-        //HANDLE SUCCESSFUL ORDER HERE
+        //This method is triggered when the user has paid.
+        //send purchase to server
+        //send ajax request to server
+        $.get("SubmitOrder", { Order: JSON.stringify({Items: items, Vender: chosenVender, Token: token.id}) }, function(response)
+        {
+          //if a response was given, parse it for its value
+          if(response)
+            response = JSON.parse(response)
+          //if the parsed response has content
+          if(response)
+          {
+            //HANDLE SUCCESSFUL ORDER HERE
+          }
+        });
       }
-    });
+    })
+    
+    //prompt user to pay
+    stripeHandler.open(
+    {
+      name: "Corvallis Menu",
+      description: "Food Delivery",
+      amount: totalPrice
+    })
   }
    
   /* PRIVATE METHODS */
@@ -104,7 +125,6 @@ function Cart()
   //local variables
   var ractive
   var chosenVender
-  
   
   return{
     __proto__: Page("Client/HTML/Cart.html", _attachRactive, _heartbeat),

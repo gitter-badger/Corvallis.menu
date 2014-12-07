@@ -6,9 +6,75 @@ function Database()
   function GetVenderData(){ return venderData }
   function GetVersion(){ return version }
 
+  //Processes the given order, validating
+  function ProcessOrder(order)
+  {
+    //trim unselected properties from the order
+    _trimUnselected(order)
+    //attempt to validate the order
+    if(!_validateOrder(order))
+      return false
+      
+    //calculate order price
+    order.Price = calcOrderPrice(order.Items)
+    
+    //return that the order was successfully processed
+    return true
+  }
+  
+  /* PRIVATE METHODS */
+  function _execute(sql, callback)
+  { 
+    db.serialize(function()
+      {
+        var result = []
+        db.each(sql, 
+          //what to do with each row
+          function(err, row){result.push(row);},
+          //what to do upon completion
+          function()
+          {
+            callback(result);
+          });
+      });
+  }
+  
+  function _trimUnselected(order)
+  {
+    //trim items options to only the selected ones
+    order.Items.forEach(function(item)
+    {
+      item.Addons = item.Addons.find(function(addon)
+      {
+        //for each order.Item.Option.Option
+        addon.Options = addon.Options.find(function(option)
+        {
+          return option.Selected
+        })
+        
+        //if no options selected, delete this item option
+        return item.Addons.Options
+      })
+    })
+  }
+  
+  function _acceptOrder(order, user)
+  {
+    //Once the order has been accepted, charge the user
+    stripe.charges.create(
+    {
+      amount: price,
+      currency: "usd",
+      card: order.Token,
+      description: "Charge for order at Corvallis.Menu"
+    }, function(err, charge)
+    {
+    })
+  }
+  
   //Takes an order and validates it against the local database.
   //Removes all nonselected items/options. Ensures 
-  function ValidateOrder(order)
+  function _validateOrder(order)
   {
     //generate helper method used repeatedly in this function.
     //Compares the local and order objects, ensuring they are not too different.
@@ -21,6 +87,10 @@ function Database()
         if(Object.prototype.toString.call(local[prop]) === '[object Array]')
           continue
          
+        //skip "selected" prop which may be defaulted to false
+        if(prop.toLowerCase() === "selected")
+          continue
+          
         if(!order.hasOwnProperty(prop))
         {
           console.log("Order object missing property from local database: " + prop)
@@ -62,23 +132,12 @@ function Database()
       console.log("Received order missing 'Vender' property.")
       return false
     }
-
-  
-    //trim items options to only the selected ones
-    order.Items.forEach(function(item)
+    
+    //ensure token sent
+    if(!order.Token)
     {
-      item.Addons = item.Addons.find(function(addon)
-      {
-        //for each order.Item.Option.Option
-        addon.Options = addon.Options.find(function(option)
-        {
-          return option.Selected
-        })
-        
-        //if no options selected, delete this item option
-        return item.Addons.Options
-      })
-    })
+      console.log("Recieved order missing 'Token' property.")
+    }
     
     //Get corresponding order vender from local database
     var localVender = GetVenderData().find(function(vender)
@@ -94,7 +153,7 @@ function Database()
     }
     
     //before we start validating, check to see that the vender is open
-    if(!_venderIsOpen(localVender))
+    if(!venderIsOpen(localVender))
     {
       console.log("Received order for closed vender.")
       return false
@@ -172,24 +231,6 @@ function Database()
   }
   
   
-  /* PRIVATE METHODS */
-  var _execute = function(sql, callback)
-  { 
-    db.serialize(function()
-      {
-        var result = []
-        db.each(sql, 
-          //what to do with each row
-          function(err, row){result.push(row);},
-          //what to do upon completion
-          function()
-          {
-            callback(result);
-          });
-      });
-  }
-  
-  
   //Goes through every file in the menus folder and loads
   //it into menusData
   function _loadVenders()
@@ -236,36 +277,7 @@ function Database()
     fs.writeFile(versionPath, version, function(err){});
   }
       
-  //determines whether or not a vender is open
-  function _venderIsOpen(vender)
-  {
-    var date = new Date()
-    var currentDay = date.getDay()
-    var now = date.getHours() + date.getMinutes()/60
-    now = 12 //set now to noon for testing purposes
-    
-    //walk the open periods attempting to find the current one
-    var currentOpenPeriod = vender.Hours[currentDay].find(function(openPeriod)
-    {
-      //get the start and end of the open period
-      //default open to 0 if unprovided
-      var open = openPeriod.Open ? openPeriod.Open : 0
-      //default close to 24 if unprovided
-      var close = openPeriod.Close ? openPeriod.Close : 24
-      
-      //if it is currently between open and close, return true
-      //NOTE: Subtracted a half hour from close to give deliverers
-      //time to get to the vender.
-      if(now >= open && now <= close - .5)
-        return true
         
-      return false
-    })
-    
-    //if a current open period was found, we are open
-    return currentOpenPeriod != null
-  }  
-      
   function _heartbeat()
   {
     
@@ -300,6 +312,10 @@ function Database()
   var sqlite = require("sqlite3").verbose()
   var _ = require("underscore")
   var twilio = require("twilio")
+  var sharedJsDir = "./../../Shared/JS/"
+  var venderIsOpen = require(sharedJsDir + "VenderIsOpen.js")
+  var calcOrderPrice = require(sharedJsDir + "CalcOrderPrice.js")
+  var stripe = require("stripe")("sk_test_xPKZSx74LUGSJUmmrwpRGwki")
   
   //generate local variables
   var twilioClient = "TODO:FIX"//new twilio.ResetClient("AC952dab6ac06e4d2e0c7f13280deae972", "9073ee8c4f4cab08c3bf76a423da2dbb")
@@ -352,6 +368,6 @@ function Database()
   return{
     GetVenderData: GetVenderData,
     GetVersion: GetVersion,
-    ValidateOrder: ValidateOrder
+    ProcessOrder: ProcessOrder
   }
 }

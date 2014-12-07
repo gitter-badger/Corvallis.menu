@@ -94,11 +94,10 @@ app.get('/SearchHeartbeat', function(req, res)
 })
 
 //Called when a client wants to make an order.
-//validates the order, and returns the stripe
-//payment form
-app.get('/MakeOrder', function(req, res)
+//validates the order, and stores it in the database
+app.get('/SubmitOrder', function(req, res)
 {
-  DebugLog("MakeOrder requested...")
+  DebugLog("Submit order requested...")
   
   //validate request
   if(!req)
@@ -111,22 +110,19 @@ app.get('/MakeOrder', function(req, res)
   //parse request
   var order = JSON.parse(req.query.Order)  
   
-  //attempt to validate the order
-  order = database.ValidateOrder(order)
-  //if the order is invalid
-  if(!order)
+  //attempt to process the order
+  if(database.ProcessOrder(order))
   {
-    res.send(false)
-    return
+    //if order is valid
+    DebugLog("Order completed successfully!")
+    res.send(true)
   }
-  
-  //At this point, we know that the order is valid.  
-  //Add it to the database
-  
-    
-  //Return swipe response to get payment
-  DebugLog("Order completed successfully!")
-  res.send(true)
+  else
+  {
+    //if order invalid
+    DebugLog("Order failed processing.")
+    res.send(false)
+  }  
 })
 
 
