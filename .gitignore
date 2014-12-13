@@ -43,3 +43,4 @@ Temporary Items
 .apdisk
 
 node_modules/stripe/___test___.js
+node_modules
