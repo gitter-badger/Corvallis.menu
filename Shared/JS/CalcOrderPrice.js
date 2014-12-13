@@ -1,11 +1,7 @@
-if(typeof exports !== "undefined")
-  exports = CalcOrderPrice
-if(typeof module !== "undefined")
-  module.exports = CalcOrderPrice
+//Calculates the price of an order given its list of items
 
-//the function CalcOrderPrice(items).
-//Written this way to encapsulate the helper methods
-var CalcOrderPrice = (function()
+//define module for requirejs
+define(function()
 {
   function _calcFirstXFree(addon)
   {
@@ -42,19 +38,22 @@ var CalcOrderPrice = (function()
         price += item.Price
        
       //loop through each addon and add its price to the total
-      item.Addons.forEach(function(addon)
-      {
-        //make sure an InputType was given
-        if(!addon.InputType) 
-          return
-          
-        if(addon.InputType.toLowerCase() === "checkboxes")
-          price += _calcCheckboxes(addon)
-      })
+      if(item.Addons)
+      {      
+        item.Addons.forEach(function(addon)
+        {
+          //make sure an InputType was given
+          if(!addon.InputType) 
+            return
+            
+          if(addon.InputType.toLowerCase() === "checkboxes")
+            price += _calcCheckboxes(addon)
+        })
+      }
     })
     
     return price
   }
   
   return CalcOrderPrice
-})()
+})

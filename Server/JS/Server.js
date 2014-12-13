@@ -2,12 +2,28 @@
 This file handles the initialization of the node server.
 */
 
+//find root of server; should be just below the "server" folder
+var root = __dirname.substring(0, __dirname.toLowerCase().search("server"))
+
 // Load required packages
 var express = require("express")
 var passport = require("passport")
+var bodyParser = require('body-parser')
+var LocalStrategy = require("passport-local").Strategy
 var fs = require("fs")
-require("./../../Shared/3rdParty/polyfill.js")
+var requirejs = require("requirejs")
 
+//configure requirejs for the server
+//NOTE: This needs to be done now, since the require
+//  statements below require require.js to be configured
+requirejs.config(
+{
+  baseUrl: root,
+  nodeRequire: require
+})
+
+//load required javascript
+require("./../../Shared/3rdParty/polyfill.js")
 var database = require("./Database.js")
 var search = require("./Search.js")
 
@@ -16,8 +32,33 @@ database = database()
 search = search(database)
 var app = express()
 
-//find root of server; should be just below the "server" folder
-var root = __dirname.substring(0, __dirname.toLowerCase().search("server"))
+//prepare app to handle json post request data
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+
+
+//configure passport to handle user login
+passport.use(new LocalStrategy(
+  function(email, password, done)
+  {
+    //attempt to log the user in
+    database.LoginUser(email, password).then(
+      //if login successful
+      function(user)
+      {
+        done(null, user)
+      },
+      //if user login failed
+      function(err)
+      {
+        done(err)
+      })
+  })
+)
+
+
 
 
 
@@ -76,6 +117,8 @@ app.get('/', function(req, res)
 });
 
 
+
+
 //Checks to see that a client has current database information.
 //If database is out of sync, sends current information to client,
 //else sends nothing.
@@ -85,17 +128,13 @@ app.get('/SearchHeartbeat', function(req, res)
   search.Heartbeat(req, function(response)
   {
     DebugLog("SearchHeartbeat returning:  "+response)
-    
-    if(response == false)
-      res.send(response)
-    else
-      res.send(JSON.stringify(response))
+    res.send(JSON.stringify(response))
   })
 })
 
 //Called when a client wants to make an order.
 //validates the order, and stores it in the database
-app.get('/SubmitOrder', function(req, res)
+app.post('/SubmitOrder', function(req, res)
 {
   DebugLog("Submit order requested...")
   
@@ -108,23 +147,35 @@ app.get('/SubmitOrder', function(req, res)
   }
   
   //parse request
-  var order = JSON.parse(req.query.Order)  
+  var order = JSON.parse(req.body.Order)
   
   //attempt to process the order
-  if(database.ProcessOrder(order))
-  {
-    //if order is valid
-    DebugLog("Order completed successfully!")
-    res.send(true)
-  }
-  else
-  {
-    //if order invalid
-    DebugLog("Order failed processing.")
-    res.send(false)
-  }  
+  database.ProcessOrder(order).then(
+    //if processed successfully
+    function()
+    {
+      DebugLog("Order completed successfully!")
+      res.send(true)
+    },
+    //if processing failed
+    function(err)
+    {
+      DebugLog("Order could not be created: " + err)
+      res.send(false)
+    }
+  )  
 })
 
+//Function handling registration of users
+app.post('/RegisterUser', function(req, res)
+{
+  if(!req)
+  {
+    console.log("Empty request sent to register user.")
+    res.send(false)
+    return
+  }
+})
 
 
 var server = app.listen(3000)

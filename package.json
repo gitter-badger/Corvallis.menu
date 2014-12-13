@@ -8,9 +8,13 @@
     "sqlite3": "x.x",
     "jQuery": "x.x",
     "passport": "x.x",
-    "passport-http-bearer": "x.x",
+    "passport-local": "x.x",
     "stripe": "x.x",
     "twilio": "x.x",
-    "underscore": "x.x"
+    "underscore": "x.x",
+    "requirejs": "x.x",
+    "promise": "x.x",
+    "MD5": "x.x",
+    "body-parser": "x.x"
   }
 }
