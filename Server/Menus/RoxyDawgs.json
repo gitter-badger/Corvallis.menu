@@ -61,6 +61,7 @@
 			"Name": "Super Dawg",
 			"Description": "Straight from Chicago. All-Beef Hot Dawg.",
 			"Price": 8,
+			"Image": "RoxyDawgs/dawgs/superdawg.jpg",
 			"Addons":
 				[
 					{
