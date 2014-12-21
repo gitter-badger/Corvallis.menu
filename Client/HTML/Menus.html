@@ -10,7 +10,7 @@
 
 
 <!-- {{>Vender}} -->
-  <h3><img src="Client/Images/{{Image}}/logo.svg"></h3>
+  <h3>{{#if this.Image}}<img src="{{this.Image}}">{{else}}{{Name}}{{/if}}</h3>
   <div>
     {{#Items:item}}
       {{>Item}}
@@ -24,7 +24,7 @@
   {{else}}
     <div {{#if ShowOptions}}class="showOptions" {{/if}}>
       <div on-tap="ToggleOptions: {{item}}, {{vender}}">
-	  	{{#Image}}<img src="Client/Images/{{Image}}">{{/Image}}
+	  	{{#if this.Image}}<img src="{{this.Image}}">{{/if}}
         <a href="#" {{#if Description}} title="{{Description}}" {{/if}}>{{Name}}</a>
         <div class="price">${{Price.toFixed(2)}}</div>
       </div>

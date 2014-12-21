@@ -2,7 +2,7 @@
 	"Name": "Roxy Dawgs",
 	"Address": "1425 NW Monroe Ave, Corvallis, OR 97330",
 	"Phone": "5412073351",
-	"Image": "RoxyDawgs",
+	"Image": "Client/Images/RoxyDawgs/logo.svg",
   "Hours":
   [
     [
@@ -61,7 +61,7 @@
 			"Name": "Super Dawg",
 			"Description": "Straight from Chicago. All-Beef Hot Dawg.",
 			"Price": 8,
-			"Image": "RoxyDawgs/dawgs/superdawg.jpg",
+			"Image": "Client/Images/RoxyDawgs/dawgs/superdawg.jpg",
 			"Addons":
 				[
 					{
