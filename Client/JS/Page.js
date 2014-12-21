@@ -1,5 +1,3 @@
-exports = Page;
-
 //This is the base class for all pages.
 //PARAMETERS:
 //  *REQUIRED*
@@ -14,67 +12,74 @@ exports = Page;
 //      Turned on and off when the page is selected.
 //    period:
 //      Period in milliseconds of the heartbeat.
-function Page(templatePath, attachRactive, heartbeat, period)
+
+//define module for requirejs
+define(function()
 {
-  /* PUBLIC METHODS */
-  function Select()
+  function Page(templatePath, attachRactive, heartbeat, period)
   {
-    _startHeartbeat()
-  }
-  
-  function Unselect()
-  {
-    _stopHeartbeat()
-  }
-  
-  /* PRIVATE METHODS */
-  //Starts the hearbeat between the client and the server
-  function _startHeartbeat()
-  {
-    //if no heartbeat has been specified, do nothing.
-    if(!heartbeat){ return }
-    
-    //beat immediately forcing the database to update
-    heartbeat()
-    
-    //start heartbeat
-    heartbeatTimer = setInterval(heartbeat, period)
-  }
-  
-  //Stops the heartbeat between the server and the client
-  function _stopHeartbeat()
-  {
-    if(heartbeatTimer)
-      clearInterval(heartbeatTimer);
-  } 
-  
-  
-  
-  /* CONSTRUCTOR */ 
-  
-  //default period to a minute if value unspecified
-  period = period ? period : 60000
-  var heartbeatTimer
-  
-  //validate parameters
-  if(!attachRactive)
-    throw "Page missing parameter: AttachRactive"
-  if(!templatePath)
-    throw "Page missing parameter: TemplatePath"
-  
-  //load search page HTML template
-  $.get(templatePath, function(response)
-  {
-    //if the template was retrieved
-    if(response)
+    /* PUBLIC METHODS */
+    function Select()
     {
-      //attach ractive with the given template
-      attachRactive(response)
+      _startHeartbeat()
     }
-  })
-  
-  return{
-    Select: Select,
-    Unselect: Unselect 
+    
+    function Unselect()
+    {
+      _stopHeartbeat()
+    }
+    
+    /* PRIVATE METHODS */
+    //Starts the hearbeat between the client and the server
+    function _startHeartbeat()
+    {
+      //if no heartbeat has been specified, do nothing.
+      if(!heartbeat){ return }
+      
+      //beat immediately forcing the database to update
+      heartbeat()
+      
+      //start heartbeat
+      heartbeatTimer = setInterval(heartbeat, period)
+    }
+    
+    //Stops the heartbeat between the server and the client
+    function _stopHeartbeat()
+    {
+      if(heartbeatTimer)
+        clearInterval(heartbeatTimer);
+    } 
+    
+    
+    
+    /* CONSTRUCTOR */ 
+    
+    //default period to a minute if value unspecified
+    period = period ? period : 60000
+    var heartbeatTimer
+    
+    //validate parameters
+    if(!attachRactive)
+      throw "Page missing parameter: AttachRactive"
+    if(!templatePath)
+      throw "Page missing parameter: TemplatePath"
+    
+    //load search page HTML template
+    $.get(templatePath, function(response)
+    {
+      //if the template was retrieved
+      if(response)
+      {
+        //attach ractive with the given template
+        attachRactive(response)
+      }
+    })
+    
+    return{
+      Select: Select,
+      Unselect: Unselect 
+    }
   }
-}
+  
+  return Page
+})

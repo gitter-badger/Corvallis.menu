@@ -2,233 +2,65 @@ exports = module.exports = Database;
 
 function Database()
 {
-  //Public methods
+  /* PUBLIC METHODS */
   function GetVenderData(){ return venderData }
   function GetVersion(){ return version }
 
-  //Processes the given order, validating
+  //Processes the given order, validating it,
+  //and adding it to the local database
   function ProcessOrder(order)
   {
-    //trim unselected properties from the order
-    _trimUnselected(order)
-    //attempt to validate the order
-    if(!_validateOrder(order))
-      return false
-      
-    //calculate order price
-    order.Price = calcOrderPrice(order.Items)
-    
-    //return that the order was successfully processed
-    return true
+    return orderManager.ProcessOrder(order) 
   }
+  
+  
+  //Attempts to login the user with the given email and password.
+  function LoginUser(email, password)
+  {
+    return new Promise(function(reject, fulfill)
+    {
+      //get user from database
+      var sql = "select userId from Users where email = $email and password = $password"
+      var qry = db.prepare(sql)
+      var vars = 
+      {
+        $email: email,
+        $password: md5(password)
+      }
+      qry.run(vars, function(err)
+      {
+        if(err)
+          reject(err)
+        else
+          fulfill()
+      })
+    })
+  }
+  
+  function CreateUser(email, passsword, name)
+  {
+    return new Promise(function(reject, fulfill)
+    {
+      var sql = "INSERT INTO Users(email, password, name) Values($email, $password, $name)"
+      var qry = db.prepare(sql)
+      var vars = 
+      { 
+        $email: email, 
+        $password: md5(password), 
+        $name: name 
+      }
+      qry.run(vars, function(err)
+      {
+        if(err)
+          reject(err)
+        else
+          fulfill()
+      })
+    })
+  }
+  
   
   /* PRIVATE METHODS */
-  function _execute(sql, callback)
-  { 
-    db.serialize(function()
-      {
-        var result = []
-        db.each(sql, 
-          //what to do with each row
-          function(err, row){result.push(row);},
-          //what to do upon completion
-          function()
-          {
-            callback(result);
-          });
-      });
-  }
-  
-  function _trimUnselected(order)
-  {
-    //trim items options to only the selected ones
-    order.Items.forEach(function(item)
-    {
-      item.Addons = item.Addons.find(function(addon)
-      {
-        //for each order.Item.Option.Option
-        addon.Options = addon.Options.find(function(option)
-        {
-          return option.Selected
-        })
-        
-        //if no options selected, delete this item option
-        return item.Addons.Options
-      })
-    })
-  }
-  
-  function _acceptOrder(order, user)
-  {
-    //Once the order has been accepted, charge the user
-    stripe.charges.create(
-    {
-      amount: price,
-      currency: "usd",
-      card: order.Token,
-      description: "Charge for order at Corvallis.Menu"
-    }, function(err, charge)
-    {
-    })
-  }
-  
-  //Takes an order and validates it against the local database.
-  //Removes all nonselected items/options. Ensures 
-  function _validateOrder(order)
-  {
-    //generate helper method used repeatedly in this function.
-    //Compares the local and order objects, ensuring they are not too different.
-    //Returns boolean value reflecting whether or not the order object seems valid.
-    function compareObjects(local, order)
-    {
-      for(var prop in local)
-      {
-        //skip arrays
-        if(Object.prototype.toString.call(local[prop]) === '[object Array]')
-          continue
-         
-        //skip "selected" prop which may be defaulted to false
-        if(prop.toLowerCase() === "selected")
-          continue
-          
-        if(!order.hasOwnProperty(prop))
-        {
-          console.log("Order object missing property from local database: " + prop)
-          return false
-        }
-          
-        //if the properties differ, 
-        if(order[prop] != local[prop])
-        {
-          console.log("Order object property did not match local database: " + prop)
-          return false
-        }
-      }  
-
-      //Since we base all pricing off the Price value,
-      //we want to make sure the Order doesn't have a Price that
-      //doesn't exist in the local database. Prevents overcharging.
-      if(order.Price && order.Price != local.Price)
-      {
-        console.log("Order contained Price property that did not exist in the local database.")
-        return false
-      }
-        
-      return true
-    }
-    
-    
-    
-    //ensure Items sent
-    if(!order.Items)
-    {
-      console.log("Received order missing 'Items' property.")
-      return false
-    }
-     
-    //ensure Vender sent
-    if(!order.Vender)
-    {
-      console.log("Received order missing 'Vender' property.")
-      return false
-    }
-    
-    //ensure token sent
-    if(!order.Token)
-    {
-      console.log("Recieved order missing 'Token' property.")
-    }
-    
-    //Get corresponding order vender from local database
-    var localVender = GetVenderData().find(function(vender)
-    {
-      return vender.Name && vender.Address == order.Vender.Address && vender.Name == order.Vender.Name
-    })
-    
-    //if no corresponding venders found
-    if(!localVender || localVender.length > 1)
-    {
-      console.log("Failed to isolate corresponding vender for given Order.")
-      return false
-    }
-    
-    //before we start validating, check to see that the vender is open
-    if(!venderIsOpen(localVender))
-    {
-      console.log("Received order for closed vender.")
-      return false
-    }
-    
-    //ensure properties of order.Vender and local vender do not differ
-    if( !compareObjects(localVender, order.Vender))
-      return false
-    
-    //ensure each item in the order matches with Server item data
-    _.each(order.Items, function(orderItem)
-    {      
-      //get corresponding item in local storage
-      var localItem = localVender.Items.find(function(item)
-      {
-        return item.Name == orderItem.Name && item.Price == orderItem.Price
-      })
-      
-      //ensure item found
-      if(!localItem || localItem.length > 1)
-      {
-        console.log("Could not locate ordered item in local database: " + orderItem.Name)
-        return false
-      }
-      
-      //ensure local item properties and order item properties do not differ
-      if(!compareObjects(localItem, orderItem))
-        return false
-        
-      //loop through item.Addons ensuring they exist in local database
-      _.each(orderItem.Addons, function(orderAddon)
-      {
-        //find corresponding local addon
-        var localAddon = localItem.Addons.find(function(addon)
-        {
-          return addon.Name == orderOption.Name && addon.InputType == orderOption.InputType
-        })
-        
-        //ensure addon found
-        if(!localAddon || localAddon.length > 1)
-        {
-          console.log("Could not locate item addon in local database: " + orderAddon.Name)
-          return false
-        }
-        
-        //compare addons
-        if(!compareObjects(localAddon, orderAddon))
-          return false
-          
-        //loop through options
-        _.each(orderAddon.Options, function(orderOption)
-        {
-          //find corresponding local option
-          var localOption = localAddon.find(function(option)
-          {
-            return option.Name == orderOption.Name && option.Price == orderOption.Price
-          })
-          
-          //ensure correct option found
-          if(!localOption || localOption.length > 1)
-          {
-            console.log("Could not locate addon option in local database: " + orderOption.Name)
-            return false
-          }
-          
-          //compare options
-          if(!compareObjects(localOption, orderOption))
-            return false
-        })
-      })    
-    })
-    
-    //Validation successful.
-    return order
-  }
   
   
   //Goes through every file in the menus folder and loads
@@ -269,6 +101,65 @@ function Database()
     })
   }
   
+  //loads the existing users from the database
+  //adding new Users objects to Users[]
+  function _loadUsers()
+  {
+    return new Promise(function(fulfill, reject)
+    {
+      var users = []
+      var sql = "select * from Users where 1"
+      db.each(sql, {}, function(err, row)
+      {
+        if(err)
+          reject(err)
+        users[row.userId] = new User(row)
+      },
+      function()
+      {
+        fulfill(users)
+      })
+    })
+  }
+  
+  //loads the existing orders from the database
+  //adding new Order objects to Orders[]
+  function _loadOrders()
+  {
+  }
+  
+  //Helper function handles all the code around preparing
+  //the databaseversion file, and watching the Menus folder
+  //to update the version when said folder is modified
+  function _prepDatabaseVersion()
+  {
+    //ensure database version file exists
+    fs.exists(versionPath, function(exists)
+    {
+      //if the file does not exist, create it with the Itterate function
+      if(!exists){ _itterateVersion(); }
+    })
+    
+    //load current database version
+    fs.readFile(versionPath, 'utf8', function(err, data)
+    {
+      if(err)
+      {
+        console.log("Failed to load database version!");
+      }
+      version = parseInt(data);
+    })
+    
+    
+    //watch the menus folder. If it changes,
+    //reload the menus, and update the version
+    fs.watch(menusFolder, function()
+    {
+      //load menus then itterate version
+      _loadVenders()
+      _itterateVersion()
+    })
+  }
   
   //itterates the version and saves the new value to the version file.
   var _itterateVersion = function()
@@ -277,31 +168,8 @@ function Database()
     fs.writeFile(versionPath, version, function(err){});
   }
       
-        
-  function _heartbeat()
-  {
-    
-  }
       
-  function _findDeliverer()
-  {
-    //find available employee
-    twilioClient.sms.messages.create(
-    {
-      to: "15039410828", //"(541) 255-4410"
-      from: "5412554410",
-      body: "Message goes here pls"
-    },
-    function(error, message)
-    {
-      if(error)
-      {
-        console.log("Twilio failed to deliver message: " + error)
-        return
-      }
       
-    })
-  }  
       
       
       
@@ -311,63 +179,68 @@ function Database()
   var fs = require('fs');  
   var sqlite = require("sqlite3").verbose()
   var _ = require("underscore")
-  var twilio = require("twilio")
-  var sharedJsDir = "./../../Shared/JS/"
-  var venderIsOpen = require(sharedJsDir + "VenderIsOpen.js")
-  var calcOrderPrice = require(sharedJsDir + "CalcOrderPrice.js")
-  var stripe = require("stripe")("sk_test_xPKZSx74LUGSJUmmrwpRGwki")
+  var requirejs = require("requirejs")
+  var Promise = require("promise")
+  var User = require("./User.js")
+  var md5 = require("MD5")
+  
+  var OrderManager = requirejs("Server/JS/OrderManager")
+  
   
   //generate local variables
-  var twilioClient = "TODO:FIX"//new twilio.ResetClient("AC952dab6ac06e4d2e0c7f13280deae972", "9073ee8c4f4cab08c3bf76a423da2dbb")
   var root = __dirname + "/../../"
   var versionPath = root + "DatabaseVersion.txt"
   var menusFolder =  root + "server/Menus/"
   var dbPath =  root + "Database.db"
   var version = -1
   var venderData = []
+  var Users = []
+  var Orders = []
+  
   
   //boot up database
   var db = new sqlite.Database(dbPath)
+  //feed DB to order manager to boot it up
+  var orderManager = OrderManager(db, GetVenderData)
   
-  //ensure database version file exists
-  fs.exists(versionPath, function(exists)
+  //teach database to query
+  db.query = function(sql)
   {
-    //if the file does not exist, create it with the Itterate function
-    if(!exists){ _itterateVersion(); }
-  })
-  
-  //load current database version
-  fs.readFile(versionPath, 'utf8', function(err, data)
-  {
-    if(err)
+    return new Promise(fulfill, reject)
     {
-      console.log("Failed to load database version!");
+      var result = []
+      db.each(sql, 
+        //what to do with each row
+        function(err, row)
+        {
+          if(err)
+            reject(err)
+          result.push(row);
+        },
+        //what to do upon completion
+        function()
+        {
+          fulfill(result);
+        });
     }
-    version = parseInt(data);
-  })
-
-  _loadVenders()
+  }
   
-  //watch the menus folder. If it changes,
-  //reload the menus, and update the version
-  fs.watch(menusFolder, function()
-  {
-    //load menus then itterate version
-    _loadVenders()
-    _itterateVersion()
-  })
+  _prepDatabaseVersion()
+  _loadVenders()
+  _loadUsers().then(Users.push)
+  _loadOrders()
   
   //Instantiate tables if they do not yet exist
-  db.serialize(function()
-  {
-    db.run("CREATE TABLE IF NOT EXISTS Users(userId INTEGER PRIMARY KEY ASC, name TEXT, address TEXT, email TEXT, phone TEXT)")
-    db.run("CREATE TABLE IF NOT EXISTS Orders(orderId INTEGER PRIMARY KEY ASC, deliverer INTEGER DEFAULT -1, value BLOB, timeOrdered TEXT, timePickedUp TEXT, timeDelivered TEXT)")
-  })
+  db.run("CREATE TABLE IF NOT EXISTS Users(userId INTEGER PRIMARY KEY ASC, name TEXT, addressId INTEGER, email TEXT, phone TEXT, admin INTEGER DEFAULT 0, employee INTEGER DEFAULT 0, acceptingOrders INTEGER DEFAULT 0)")
+  db.run("CREATE TABLE IF NOT EXISTS Orders(orderId INTEGER PRIMARY KEY ASC, deliverer INTEGER DEFAULT -1, orderValue TEXT, stripeCharge TEXT, timeOrdered DATETIME DEFAULT CURRENT_TIMESTAMP, timePickedUp DATETIME, timeDelivered DATETIME, status TEXT DEFAULT \"new\")")
+  db.run("CREATE TABLE IF NOT EXISTS Addresses(addressId INTEGER PRIMARY KEY ASC, userId INTEGER, address TEXT, instructions TEXT)")
   
   //specify which variables/functions are public
   return{
     GetVenderData: GetVenderData,
     GetVersion: GetVersion,
-    ProcessOrder: ProcessOrder
+    ProcessOrder: ProcessOrder,
+    LoginUser: LoginUser,
+    CreateUser: CreateUser
   }
 }

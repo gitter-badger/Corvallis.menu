@@ -18,8 +18,6 @@
     <script type="text/javascript" src="Shared/3rdParty/underscore-min.js"></script>
     <script type="text/javascript" src="Shared/3rdParty/json2.js"></script>
     <script type="text/javascript" src="Shared/3rdParty/polyfill.js"></script>
-    <script type="text/javascript" src="Shared/JS/VenderIsOpen.js"></script>
-    <script type="text/javascript" src="Shared/JS/CalcOrderPrice.js"></script>
     
     <script type="text/javascript" src="Client/JS/Application.js"></script>
     <script type="text/javascript" src="Client/JS/Page.js"></script>
@@ -48,6 +46,8 @@
 	<meta name="msapplication-square150x150logo" content="Images/Favicon/hat150.png" /> 
 	<meta name="msapplication-wide310x150logo" content="Images/Favicon/hat310w.png" /> 
 	<meta name="msapplication-square310x310logo" content="Images/Favicon/hat310.png" />
+    
+    <script data-main="Client/JS/Application.js" src= "Shared/3rdParty/require.js" ></script>    
   </head>
   
   <body>
@@ -60,13 +60,5 @@
       <div id="cartPage"></div>
       <div id="itemOverlay"></div>
     </div>
-    
-    <script>
-      window.onload = function()
-      {
-        //boot up app
-        Application()
-      }
-    </script>
   </body>
 </html>
