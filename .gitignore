@@ -44,3 +44,7 @@ Temporary Items
 
 node_modules/stripe/___test___.js
 node_modules
+
+sqlite3.exe
+Database.db
+Keys/TwillioKey.txt
