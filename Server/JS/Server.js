@@ -166,6 +166,24 @@ app.post('/SubmitOrder', function(req, res)
   )  
 })
 
+app.post("/CreateUser", function(req, res)
+{
+  req = JSON.parse(req.body)
+  database.CreateUser(req.email, req.password, req.name)
+  .then(
+    //User created successfully.
+    function(user)
+    { 
+      res.send(JSON.stringify(user))
+    },
+    //user creation failed
+    function(err)
+    {
+      res.send(err)
+    }
+  )
+})
+
 //Function handling registration of users
 app.post('/RegisterUser', function(req, res)
 {

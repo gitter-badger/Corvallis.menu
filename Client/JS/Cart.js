@@ -96,8 +96,8 @@ define(function(require)
     //binding data and logic to the front end HTML
     function _attachRactive(template)
     {      
-      //bind page to container
-      ractive = new Ractive({
+        //bind page to container
+        ractive = new Ractive({
         el: "#cartPage",
         template: template,
         data:

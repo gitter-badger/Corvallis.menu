@@ -3,8 +3,12 @@
 //definition of their functionality
 
 //define module for requirejs
-define(["Client/JS/Page", "Shared/JS/VenderIsOpen"], function(Page, VenderIsOpen)
+define(function(require)
 {  
+  //gather required variables
+  var VenderIsOpen = require("Shared/JS/VenderIsOpen")
+  var Page = require("Client/JS/Page")
+  
   function Menus(cart)
   {
     /* PRIVATE METHODS */

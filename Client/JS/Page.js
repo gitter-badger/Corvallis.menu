@@ -14,8 +14,9 @@
 //      Period in milliseconds of the heartbeat.
 
 //define module for requirejs
-define(function()
+define(function(require)
 {
+
   function Page(templatePath, attachRactive, heartbeat, period)
   {
     /* PUBLIC METHODS */

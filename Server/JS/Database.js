@@ -17,7 +17,7 @@ function Database()
   //Attempts to login the user with the given email and password.
   function LoginUser(email, password)
   {
-    return new Promise(function(reject, fulfill)
+    return new Promise(function(fulfill, reject)
     {
       //get user from database
       var sql = "select userId from Users where email = $email and password = $password"
@@ -37,25 +37,64 @@ function Database()
     })
   }
   
+  //Creates a user with the given properties
   function CreateUser(email, passsword, name)
   {
-    return new Promise(function(reject, fulfill)
+    //validate parameters
+    if(!email)
+      throw "CreateUser not given parameter: email"
+    if(!passsword)
+      throw "CreateUser not given parameter: password"
+    if(!name)
+      throw "CreateUser not given parameter: name"
+     
+    //prepare the query checking if the given email address is available
+    var emailNotTaken = new Promise(function(reject, fulfill)
     {
-      var sql = "INSERT INTO Users(email, password, name) Values($email, $password, $name)"
+      //check to see if the user already exists
+      var sql = "SELECT * from Users where email = ?email"
       var qry = db.prepare(sql)
-      var vars = 
-      { 
-        $email: email, 
-        $password: md5(password), 
-        $name: name 
-      }
-      qry.run(vars, function(err)
+      qry.all(sql, {$email: email}, function(err, rows)
       {
         if(err)
           reject(err)
+        //if the email was already registered
+        else if(rows.length > 0)
+          reject("Email already registered.")
         else
           fulfill()
       })
+    })
+    
+    //result will be returned as a promise
+    return new Promise(function(fulfill, reject)
+    {
+      emailNotTaken().then(
+        //if email not taken
+        function()
+        {
+          var sql = "INSERT INTO Users(email, password, name) Values($email, $password, $name)"
+          var qry = db.prepare(sql)
+          var vars = 
+          { 
+            $email: email, 
+            $password: md5(password), 
+            $name: name 
+          }
+          qry.run(vars, function(err)
+          {
+            if(err)
+              reject(err)
+            else
+              fulfill()
+          })
+        },
+        //if the email was already taken
+        function(err)
+        {
+          reject(err)
+        }
+      )
     })
   }
   
@@ -202,28 +241,6 @@ function Database()
   var db = new sqlite.Database(dbPath)
   //feed DB to order manager to boot it up
   var orderManager = OrderManager(db, GetVenderData)
-  
-  //teach database to query
-  db.query = function(sql)
-  {
-    return new Promise(fulfill, reject)
-    {
-      var result = []
-      db.each(sql, 
-        //what to do with each row
-        function(err, row)
-        {
-          if(err)
-            reject(err)
-          result.push(row);
-        },
-        //what to do upon completion
-        function()
-        {
-          fulfill(result);
-        });
-    }
-  }
   
   _prepDatabaseVersion()
   _loadVenders()
