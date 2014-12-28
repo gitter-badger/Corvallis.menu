@@ -35,7 +35,8 @@ define(function(require)
         {
           version = response.Version
           venders = response.VenderData
-          ractive.set("Venders", venders)
+          if(ractive)
+            ractive.set("Venders", venders)
         }
       });
     }
@@ -44,12 +45,27 @@ define(function(require)
     //Required to inherit from class Page
     //This method initiates ractive
     //binding data and logic to the front end HTML
-    function _attachRactive(template)
+    function _attachRactive()
     {      
       //bind page to container
-      ractive = new Ractive({
-        el: "#menusPage",
-        template: template,
+      component = Ractive.extend({
+        template: Templates["Menus.html"],
+        init: function()
+        {
+          ractive = this
+          
+          //bind button clicks for item additions
+          this.on("*.AddToCart", function(event, item, vender)
+          {
+            cart.AddToCart(item, vender)
+          })
+          
+          this.on("*.ToggleShowOptions", function(event, item, vender)
+          {
+            var key = "Venders["+vender+"].Items["+item+"].ShowOptions"
+            ractive.set(key, !ractive.get(key))
+          })
+        },
         data: 
         {
           Venders: venders,
@@ -57,33 +73,7 @@ define(function(require)
         }
       })
       
-      //bind button clicks for item additions
-      ractive.on("AddToCart", function(event, item, vender)
-      {
-        cart.AddToCart(item, vender)
-      })
-      
-      //bind toggle options button click
-      ractive.on("ToggleOptions", function(event, item, vender)
-      {
-        //determine ractive's path to item.ShowOptions
-        var showOptionsPath = "Venders["+vender+"].Items["+item+"].ShowOptions"
-        //invert the current value of ShowOptions
-        ractive.set(showOptionsPath, !ractive.get(showOptionsPath))
-      })
-      
-      //bind a change in venders to an update in the jquery accordion
-      //required to redraw ractive's newly created html
-      ractive.observe("Venders", function(newValue, oldValue)
-      {
-        //recreate the accordion
-        $("#accordion").accordion(
-          {
-            heightStyle: "content",
-            collapsible: true
-          })
-      },
-      { defer: true })    
+      Ractive.components.Menus = component
     }
           
     
@@ -96,20 +86,21 @@ define(function(require)
     //client's data version
     var version = -1 //instantiated as -1 to force an update
     var venders = []
+    var component
     var ractive
     var beatPending
+    
+    _attachRactive()
     
     //Every minute, recalculate whether venders are open
     setInterval(function()
     {
-      //set VenderIsOpen to itself, causing the UI to refresh
       if(ractive)
-        ractive.set("VenderIsOpen", VenderIsOpen)
+        ractive.update("VenderIsOpen")
     }, 60000)
-    
-    
+        
     return{
-      __proto__: Page("Client/HTML/Menus.html", _attachRactive, _heartbeat)
+      __proto__: Page(_heartbeat)
     }
   }
   

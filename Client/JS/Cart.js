@@ -3,11 +3,9 @@
 //and creation of the cart page
 
 //define module for requirejs
-define(function(require)
+define(["Client/JS/Page", "Shared/JS/VenderIsOpen", "Shared/JS/CalcOrderPrice", "underscore"], 
+function(Page, VenderIsOpen, CalcOrderPrice, _)
 {
-  var Page = require("Client/JS/Page")
-  var VenderIsOpen = require("Shared/JS/VenderIsOpen")
-  var CalcOrderPrice = require("Shared/JS/CalcOrderPrice")
   
   function Cart()
     {
@@ -94,24 +92,30 @@ define(function(require)
     //Required to inherit from class Page
     //This method initiates ractive
     //binding data and logic to the front end HTML
-    function _attachRactive(template)
+    function _attachRactive()
     {      
         //bind page to container
-        ractive = new Ractive({
-        el: "#cartPage",
-        template: template,
+        var component = Ractive.extend({
+        template: Templates["Cart.html"],
         data:
         { 
           Items: [],
           Purchase: Purchase
+        },
+        init: function()
+        {
+          ractive = this
+          
+          //bind button clicks
+          this.on("Purchase", function(event)
+          {
+            Purchase()
+          })
         }
       })
       
-      //bind button clicks
-      ractive.on("Purchase", function(event)
-      {
-        Purchase()
-      })
+      
+      Ractive.components.Cart = component
     }
     
     
@@ -124,9 +128,10 @@ define(function(require)
     //local variables
     var ractive
     var chosenVender
+    _attachRactive()
     
     return{
-      __proto__: Page("Client/HTML/Cart.html", _attachRactive),
+      __proto__: Page(),
       AddToCart: AddToCart,
       Purchase: Purchase
     }

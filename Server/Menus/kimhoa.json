@@ -3,8 +3,88 @@
 	"Address": "1875 NW Circle Blvd, Corvallis, OR 97330",
 	"Description": "Vietnamese food for you.",
 	"Phone": "5417549751",
+  "OpenPeriods": 
+  [ 
+    {
+      "Open": 
+      {
+        "Day" : "Monday",
+        "Time" : 11
+      },
+      "Close": 
+      {
+        "Day" : "Monday",
+        "Time" : 21
+      }
+    },
+    
+    {
+      "Open": 
+      {
+        "Day" : "Tuesday",
+        "Time" : 11
+      },
+      "Close": 
+      {
+        "Day" : "Tuesday",
+        "Time" : 21
+      }
+    },
+    
+    {
+      "Open": 
+      {
+        "Day" : "Wednesday",
+        "Time" : 11
+      },
+      "Close": 
+      {
+        "Day" : "Wednesday",
+        "Time" : 21
+      }
+    },
+    
+    {
+      "Open": 
+      {
+        "Day" : "Thursday",
+        "Time" : 11
+      },
+      "Close": 
+      {
+        "Day" : "Thursday",
+        "Time" : 21
+      }
+    },
+    
+    {
+      "Open": 
+      {
+        "Day" : "Friday",
+        "Time" : 11
+      },
+      "Close": 
+      {
+        "Day" : "Friday",
+        "Time" : 21
+      }
+    },
+    
+    {
+      "Open": 
+      {
+        "Day" : "Saturday",
+        "Time" : 11
+      },
+      "Close": 
+      {
+        "Day" : "Saturday",
+        "Time" : 20
+      }
+    }
+  ],
 	"Items":
-		[
+  [
     {
       "Header": "Appetizers"
     },

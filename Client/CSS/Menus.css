@@ -2,3 +2,20 @@ div.showOptions
 {
   border: 1px solid;
 }
+
+.venderTabContainer
+{
+  display: flex;
+  flex-flow: row wrap;
+  flex: 1 100%;
+}
+
+.selectedVender
+{
+  border: 1px solid;
+}
+
+.unselectedVender
+{
+  margin: 1px;
+}

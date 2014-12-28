@@ -21,6 +21,10 @@ if (!Array.prototype.find) {
   };
 }
 
+String.prototype.endsWith = function(suffix) {
+    return this.indexOf(suffix, this.length - suffix.length) !== -1;
+};
+
 
 // Array.prototype.contains()
 // Reference : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/contains#Polyfill

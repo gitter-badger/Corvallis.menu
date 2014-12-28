@@ -17,7 +17,7 @@
 define(function(require)
 {
 
-  function Page(templatePath, attachRactive, heartbeat, period)
+  function Page(heartbeat, period)
   {
     /* PUBLIC METHODS */
     function Select()
@@ -58,23 +58,7 @@ define(function(require)
     //default period to a minute if value unspecified
     period = period ? period : 60000
     var heartbeatTimer
-    
-    //validate parameters
-    if(!attachRactive)
-      throw "Page missing parameter: AttachRactive"
-    if(!templatePath)
-      throw "Page missing parameter: TemplatePath"
-    
-    //load search page HTML template
-    $.get(templatePath, function(response)
-    {
-      //if the template was retrieved
-      if(response)
-      {
-        //attach ractive with the given template
-        attachRactive(response)
-      }
-    })
+    Select()
     
     return{
       Select: Select,

@@ -3,54 +3,98 @@
 	"Address": "1425 NW Monroe Ave, Corvallis, OR 97330",
 	"Phone": "5412073351",
 	"Image": "Client/Images/RoxyDawgs/logo.svg",
-  "Hours":
+  "OpenPeriods":
   [
-    [
+    {
+      "Open": 
       {
-        "Close": 3
+        "Day" : "Sunday",
+        "Time" : 11
       },
+      "Close": 
       {
-        "Open": 11,
-        "Close": 19
+        "Day" : "Sunday",
+        "Time" : 19
       }
-    ],
-    [
+    },
+    
+    {
+      "Open": 
       {
-        "Open": 10.5,
-        "Close": 22
-      }
-    ],
-    [  
-      {
-        "Open": 10.5,
-        "Close": 22
-      }
-    ],
-    [
-      {
-        "Open": 10.5,
-        "Close": 22
-      }
-    ],
-    [
-      {
-        "Open": 10.5,
-        "Close": 22
-      }
-    ],
-    [
-      {
-        "Open": 10.5
-      }
-    ],
-    [
-      {
-        "Close": 3
+        "Day" : "Monday",
+        "Time" : 10.5
       },
+      "Close": 
       {
-        "Open": 11
+        "Day" : "Monday",
+        "Time" : 22
       }
-    ]
+    },
+    
+    {
+      "Open": 
+      {
+        "Day" : "Tuesday",
+        "Time" : 10.5
+      },
+      "Close": 
+      {
+        "Day" : "Tuesday",
+        "Time" : 22
+      }
+    },
+    
+    {
+      "Open": 
+      {
+        "Day" : "Wednesday",
+        "Time" : 10.5
+      },
+      "Close": 
+      {
+        "Day" : "Wednesday",
+        "Time" : 22
+      }
+    },
+    
+    {
+      "Open": 
+      {
+        "Day" : "Thursday",
+        "Time" : 10.5
+      },
+      "Close": 
+      {
+        "Day" : "Thursday",
+        "Time" : 22
+      }
+    },
+    
+    {
+      "Open": 
+      {
+        "Day" : "Friday",
+        "Time" : 10.5
+      },
+      "Close": 
+      {
+        "Day" : "Saturday",
+        "Time" : 3 
+      }
+    },
+    
+    {
+      "Open": 
+      {
+        "Day" : "Saturday",
+        "Time" : 11
+      },
+      "Close": 
+      {
+        "Day" : "Sunday",
+        "Time" : 3
+      }
+    }
   ],
 	"Items":
 	[

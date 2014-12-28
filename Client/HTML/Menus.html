@@ -1,31 +1,53 @@
-{{#if Venders}}
-  <div id="accordion">
-    {{#Venders:vender}}
-      {{#VenderIsOpen(this)}}
-        {{>Vender}}
-      {{/VenderIsOpen}}
-    {{/venders}}
-  </div>
-{{/if}}
+<div id="menusPage">
+  {{#if Venders}}
+    <TabsComponent ToggleShowOptions="{{ToggleShowOptions}}">
+      <div class="venderTabContainer">
+        {{#Venders:vender}}
+          {{#VenderIsOpen(this)}}
+            {{>VenderLink}}
+          {{/VenderIsOpen}}
+        {{/venders}}
+      </div>
+      {{#Venders:vender}}
+        {{#VenderIsOpen(this)}}
+          {{>VenderPane}}
+        {{/VenderIsOpen}}
+      {{/venders}}
+    </TabsComponent>
+  {{/if}}
+</div>
 
 
-<!-- {{>Vender}} -->
-  <h3>{{#if this.Image}}<img src="{{this.Image}}">{{else}}{{Name}}{{/if}}</h3>
-  <div>
-    {{#Items:item}}
+<!-- {{>VenderLink}} -->
+  <TabsLink PaneId="{{Name}}">
+    <div {{#Selected}} class="selectedVender"   {{else}} class="unselectedVender" {{/Selected}} >
+      {{#Venders[vender]}}
+        {{#if Image}}
+          <img src="{{Image}}"/>
+        {{else}}
+          {{Name}}
+        {{/if}}
+      {{/Vender}}
+    </div>
+  </TabsLink>
+<!-- {{/VenderLink}} -->
+  
+<!-- {{>VenderPane}} -->
+  <TabsPane PaneId="{{Name}}">
+    {{#Venders[vender].Items:item}}
       {{>Item}}
-    {{/Items}}
-  </div>
-<!-- {{/Vender}} -->
+    {{/Venders[vender].Items}}
+  </TabsPane>
+<!-- {{/VenderPane}} -->
 
 <!-- {{>Item}} -->
   {{#if Header}}
     <div class="itemHeader">{{Header}}</div>
   {{else}}
-    <div {{#if ShowOptions}}class="showOptions" {{/if}}>
-      <div on-tap="ToggleOptions: {{item}}, {{vender}}">
+    <div {{#ShowOptions}}class="showOptions" {{/ShowOptions}}>
+      <div on-tap="ToggleShowOptions: {{item}}, {{vender}}">
 	  	{{#if this.Image}}<img src="{{this.Image}}">{{/if}}
-        <a href="#" {{#if Description}} title="{{Description}}" {{/if}}>{{Name}}</a>
+        <a {{#Description}} title="{{Description}}" {{/Description}}>{{Name}}</a>
         <div class="price">${{Price.toFixed(2)}}</div>
       </div>
       {{#if ShowOptions}}

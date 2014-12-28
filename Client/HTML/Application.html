@@ -1,8 +1,28 @@
-<div id="tabs">
-  <ul>
-    <li id="menusPageLink"><a href="#menusPage"><img src="Client/Images/corvallis_menu.svg"></a></li>
-    <li id="cartPageLink"><a href="#cartPage"><img src="Client/Images/cart.svg"></a></li>
-  </ul>
-  <div id="menusPage"></div>
-  <div id="cartPage"></div>
+<div class="application">
+  <div class="logo">
+    <img src="Client/Images/corvallis_menu.svg"/>
+  </div>
+
+  <TabsComponent>
+    <div class="mainTabsContainer">
+      <TabsLink PaneId="menusPane" Selected="true">
+        <div {{#this.Selected}}class="selectedTab"{{else}}class="unselectedTab"{{/this.Selected}}>
+          Menus
+        </div>
+      </TabsLink>
+      <TabsLink PaneId="cartPane">
+        <div {{#this.Selected}} class="selectedTab" {{else}} class="unselectedTab" {{/this.Selected}}>
+          <img src='Client/Images/cart.svg'/>   
+        </div>        
+      </tabsLink>
+    </div>
+    
+    
+    <TabsPane PaneId="menusPane" Selected="True">
+      <Menus/>
+    </TabsPane>
+    <TabsPane PaneId="cartPane">
+      <Cart/>
+    </TabsPane>
+  </TabsComponent>
 </div>

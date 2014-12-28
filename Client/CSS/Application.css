@@ -1,0 +1,29 @@
+div.application
+{
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.logo,
+{
+  flex: 1 100%;
+}
+
+.mainTabsContainer
+{
+  display: flex;
+  flex-flow: row wrap;
+  flex: 1 100%;
+  background-color: #AAAAAA;
+}
+
+.selectedTab
+{
+  background-color: #FFFFFF;
+  height: 100%;
+}
+
+.unselectedTab
+{
+  margin: 1px;
+}

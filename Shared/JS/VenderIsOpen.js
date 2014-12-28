@@ -3,37 +3,51 @@
 //define module for requirejs
 define(function()
 {
+  //Helper method. Takes the given day as a string,
+  //and returns what int value it has when returned 
+  //by date.getDay()
+  function _dayToInt(day)
+  {
+    if     (day.toLowerCase() === "sunday") return 0
+    else if(day.toLowerCase() === "monday") return 1
+    else if(day.toLowerCase() === "tuesday") return 2
+    else if(day.toLowerCase() === "wednesday") return 3
+    else if(day.toLowerCase() === "thursday") return 4
+    else if(day.toLowerCase() === "friday") return 5
+    else if(day.toLowerCase() === "saturday") return 6
+    else throw "Could not parse day: " + day    
+  }
+  
+  //calculates the integer time value of a moment
+  function _calcTime(moment)
+  {
+    return _dayToInt(moment.Day) + moment.Time / 24
+  }
 
   function VenderIsOpen(vender)
   {
     var date = new Date()
-    var currentDay = date.getDay()
-    var now = date.getHours() + date.getMinutes()/60
-    now = 12 //set now to noon for testing purposes
+    var now = date.getDay() + (date.getHours() + date.getMinutes()/60)/24
+    now = 1.5 //set now to noon on a monday for testing purposes
     
-    /* TODO: FIX THIS. Stores that are open past midnight
-             will currently cut users off from purchasing at 11:30
-             then reopen at midnight.*/
-    //walk the open periods attempting to find the current one
-    var currentOpenPeriod = vender.Hours[currentDay].find(function(openPeriod)
+    for(i = 0; i < vender.OpenPeriods.length; i++)
     {
-      //get the start and end of the open period
-      //default open to 0 if unprovided
-      var open = openPeriod.Open ? openPeriod.Open : 0
-      //default close to 24 if unprovided
-      var close = openPeriod.Close ? openPeriod.Close : 24
+      //gather period's relevant data
+      var period = vender.OpenPeriods[i]
+      var open  = _calcTime(period.Open)
+      var close = _calcTime(period.Close)
       
-      //if it is currently between open and close, return true
-      //NOTE: Subtracted a half hour from close to give deliverers
-      //time to get to the vender.
-      if(now >= open && now <= close - .5)
-        return true
-        
-      return false
-    })
+      //subtract a half hour from the closing time to ensure adequate delivery time
+      close -= .5/24
+      if( close < 0 ) close += 7
+      
+      //if now is inside of this open period
+      if(now >= open && now <= close)
+        return true      
+    }
     
-    //if a current open period was found, we are open
-    return currentOpenPeriod != null
+    //if none of the open periods contain 'now'
+    return false
   }
   
   return VenderIsOpen

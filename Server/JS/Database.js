@@ -172,41 +172,18 @@ function Database()
   //to update the version when said folder is modified
   function _prepDatabaseVersion()
   {
-    //ensure database version file exists
-    fs.exists(versionPath, function(exists)
-    {
-      //if the file does not exist, create it with the Itterate function
-      if(!exists){ _itterateVersion(); }
-    })
-    
-    //load current database version
-    fs.readFile(versionPath, 'utf8', function(err, data)
-    {
-      if(err)
-      {
-        console.log("Failed to load database version!");
-      }
-      version = parseInt(data);
-    })
-    
+    //set a new version of the database. A random number will
+    //do fine here 9,999,999 times out of 10,000,000
+    version = Math.random()*10000000 % 1
     
     //watch the menus folder. If it changes,
     //reload the menus, and update the version
     fs.watch(menusFolder, function()
     {
-      //load menus then itterate version
       _loadVenders()
-      _itterateVersion()
+      version++
     })
   }
-  
-  //itterates the version and saves the new value to the version file.
-  var _itterateVersion = function()
-  {
-    version += 1;
-    fs.writeFile(versionPath, version, function(err){});
-  }
-      
       
       
       

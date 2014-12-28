@@ -4,6 +4,8 @@ This file handles the initialization of the node server.
 
 //find root of server; should be just below the "server" folder
 var root = __dirname.substring(0, __dirname.toLowerCase().search("server"))
+var templatesFolder = root + "/Client/HTML/"
+var templates
 
 // Load required packages
 var express = require("express")
@@ -12,6 +14,7 @@ var bodyParser = require('body-parser')
 var LocalStrategy = require("passport-local").Strategy
 var fs = require("fs")
 var requirejs = require("requirejs")
+var _ = require("underscore")
 
 //configure requirejs for the server
 //NOTE: This needs to be done now, since the require
@@ -62,6 +65,7 @@ passport.use(new LocalStrategy(
 
 
 
+
 /* METHODS */
 function DebugLog(msg)
 {
@@ -104,6 +108,33 @@ function _makeAccessableToClient(folder)
 }
 
 
+//loads all of the templates from the Client/HTML folder.
+//Templates are stored as objects keyed by their file name
+function _loadTemplates()
+{
+  templates = {}
+  fs.readdir(templatesFolder, function(err, files)
+  {
+    _.each(files, function(file)
+    {
+      //compute absolute file path
+      var filePath = templatesFolder + "/" +file
+      if(filePath.endsWith(".html"))
+      {
+        fs.readFile(filePath, "utf8", function(err, data)
+        {
+          if(err) throw err
+          templates[file] = data
+        })
+      }
+    })    
+  })
+}
+
+//starts the watching of the HTML folder,
+//ensuring that templates are reloaded if the
+//folder changes, and any templates may have changed.
+fs.watch(templatesFolder, _loadTemplates)
 
 
 
@@ -111,12 +142,25 @@ function _makeAccessableToClient(folder)
 _makeAccessableToClient(root + "Client")
 _makeAccessableToClient(root + "Shared")
 
+_loadTemplates()
+
 app.get('/', function(req, res)
 {
   res.sendFile(root+ "/Client/HTML/index.html")
-});
+})
 
 
+
+app.get('/Templates',function(req, res)
+{
+  //if the templates have already been loaded
+  if(templates)
+  {
+    //return templates to client
+    res.send("Templates = " + JSON.stringify(templates))
+    return
+  }
+})
 
 
 //Checks to see that a client has current database information.
