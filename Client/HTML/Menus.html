@@ -18,9 +18,16 @@
 </div>
 
 
+         
+<!-- {{>VenderClass}} -->
+  {{#if this.Selected}} selectedVender    {{else}} 
+                        unselectedVender  {{/if}}
+<!-- {{/VenderClass}} -->
+  
 <!-- {{>VenderLink}} -->
   <TabsLink PaneId="{{Name}}">
-    <div {{#Selected}} class="selectedVender"   {{else}} class="unselectedVender" {{/Selected}} >
+    <div class={{>VenderClass}}>
+         
       {{#Venders[vender]}}
         {{#if Image}}
           <img src="{{Image}}"/>

@@ -22,11 +22,15 @@ define(function(require)
           }),
         TabsPane: Ractive.extend(
           {
-            template: '<div tabsId={{tabsId}} {{#if this.Selected}} style="display: block" {{/if}}{{#unless this.Selected}} style="display: none" {{/unless}} >{{>content}}</div>',
+            template: '<div tabsId={{tabsId}} style={{>PaneStyle}}>{{>content}}</div>',
             data: 
             { 
               Selected : false,
               tabsId : -1
+            },
+            partials:
+            {
+              PaneStyle : '{{#if this.Selected}}display: block{{else}}display: none{{/if}}'
             }
           })
       },

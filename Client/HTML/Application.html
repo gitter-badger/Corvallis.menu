@@ -6,12 +6,12 @@
   <TabsComponent>
     <div class="mainTabsContainer">
       <TabsLink PaneId="menusPane" Selected="true">
-        <div {{#this.Selected}}class="selectedTab"{{else}}class="unselectedTab"{{/this.Selected}}>
+        <div class={{>TabClass}}>
           Menus
         </div>
       </TabsLink>
       <TabsLink PaneId="cartPane">
-        <div {{#this.Selected}} class="selectedTab" {{else}} class="unselectedTab" {{/this.Selected}}>
+        <div class={{>TabClass}}>
           <img src='Client/Images/cart.svg'/>   
         </div>        
       </tabsLink>
@@ -26,3 +26,8 @@
     </TabsPane>
   </TabsComponent>
 </div>
+
+<!-- {{>TabClass}} -->
+{{#if this.Selected}} selectedTab   {{else}} 
+                      unselectedTab  {{/if}}
+<!-- {{/TabClass}} -->
