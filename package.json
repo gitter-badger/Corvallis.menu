@@ -15,6 +15,11 @@
     "requirejs": "x.x",
     "promise": "x.x",
     "MD5": "x.x",
-    "body-parser": "x.x"
+    "body-parser": "x.x",
+    "passport-remember-me": "x.x",
+    "validator": "x.x",
+    "express-session":"x.x",
+    "cookie-parser":"x.x",
+    "connect-flash":"x.x"
   }
 }

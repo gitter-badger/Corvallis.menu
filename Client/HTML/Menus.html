@@ -20,8 +20,7 @@
 
          
 <!-- {{>VenderClass}} -->
-  {{#if this.Selected}} selectedVender    {{else}} 
-                        unselectedVender  {{/if}}
+  {{#if this.Selected}}selectedVender{{else}}unselectedVender{{/if}}
 <!-- {{/VenderClass}} -->
   
 <!-- {{>VenderLink}} -->
@@ -62,7 +61,7 @@
         {{#Addons}}
           {{>Addon}}
         {{/Addons}}
-        <button on-tap="AddToCart:{{this}},{{Venders[vender]}}">Add to Cart</button>
+        <button on-tap="AddToCart: {{this}}, {{Venders[vender]}}">Add to Cart</button>
       {{/if}}
     </div>
   {{/if}}

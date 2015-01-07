@@ -34,9 +34,6 @@ define(function(require)
             }
           })
       },
-      data: 
-      {
-      },
       init: function()
       {
         //calculate id for new tabs component

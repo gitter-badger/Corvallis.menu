@@ -9,7 +9,7 @@ define(function(require)
   var VenderIsOpen = require("Shared/JS/VenderIsOpen")
   var Page = require("Client/JS/Page")
   
-  function Menus(cart)
+  function Menus()
   {
     /* PRIVATE METHODS */
     
@@ -43,7 +43,7 @@ define(function(require)
     
     
     //Required to inherit from class Page
-    //This method initiates ractive
+    //This method initiate+s ractive
     //binding data and logic to the front end HTML
     function _attachRactive()
     {      
@@ -57,7 +57,7 @@ define(function(require)
           //bind button clicks for item additions
           this.on("*.AddToCart", function(event, item, vender)
           {
-            cart.AddToCart(item, vender)
+            this.get("Cart").AddToCart(item, vender)
           })
           
           this.on("*.ToggleShowOptions", function(event, item, vender)
