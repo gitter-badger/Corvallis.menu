@@ -27,8 +27,7 @@ function _startApp()
   });
 
   //boot up requirejs
-
-  requirejs(["Shared/3rdParty/phonegapApp", "Client/JS/Application"], function(phonegapApp, Application)
+  requirejs(["Client/JS/Application", "cordova"], function(Application)
   {
     //boot up webapp
     var app = Application()
