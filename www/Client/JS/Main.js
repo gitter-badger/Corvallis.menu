@@ -9,11 +9,16 @@ else
 
 function _startApp()
 {
+  //determine base url
+  var baseUrl = "./../../"
+  if(isPhonegapApp)
+    baseUrl = "./"
+    
   //configure requirejs
   requirejs.config(
   {
     //set base folder to root of server
-    baseUrl: "./../../",
+    baseUrl: baseUrl,
     paths: 
     {
       underscore: "Shared/3rdParty/underscore-min",
