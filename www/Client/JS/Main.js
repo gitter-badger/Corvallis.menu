@@ -2,13 +2,13 @@
 var isPhonegapApp = document.URL.indexOf("http://") === -1 && document.URL.indexOf( 'https://' ) === -1
 
 if(isPhonegapApp)
-  document.addEventListener("deviceready", _startApp, true)
+  document.addEventListener("deviceready", _startApp)
 
 else
   _startApp()
 
 function _startApp()
-  {
+{
   //configure requirejs
   requirejs.config(
   {
@@ -25,13 +25,7 @@ function _startApp()
 
   requirejs(["Shared/3rdParty/phonegapApp", "Client/JS/Application"], function(phonegapApp, Application)
   {
-  try{
     //boot up webapp
     var app = Application()
-    }  
-  catch(err)
-  {
-    document.body.innerHTML = err
-  }
   })
 }
