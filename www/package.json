@@ -1,0 +1,25 @@
+{
+  "name": "Corvallis.Menu",
+  "description": "The Corvallis.Menu website",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "express": "4.x",
+    "sqlite3": "x.x",
+    "jQuery": "x.x",
+    "passport": "x.x",
+    "passport-local": "x.x",
+    "stripe": "x.x",
+    "twilio": "x.x",
+    "underscore": "x.x",
+    "requirejs": "x.x",
+    "promise": "x.x",
+    "MD5": "x.x",
+    "body-parser": "x.x",
+    "passport-remember-me": "x.x",
+    "validator": "x.x",
+    "express-session":"x.x",
+    "cookie-parser":"x.x",
+    "connect-flash":"x.x"
+  }
+}
