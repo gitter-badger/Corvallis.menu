@@ -3,8 +3,8 @@
 //and creation of the cart page
 
 //define module for requirejs
-define(["Client/JS/Page"], 
-function(Page)
+define(["Client/JS/Page", "jquery"], 
+function(Page, $)
 {
   
   function Register()

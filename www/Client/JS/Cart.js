@@ -3,8 +3,8 @@
 //and creation of the cart page
 
 //define module for requirejs
-define(["Client/JS/Page", "Shared/JS/VenderIsOpen", "Shared/JS/CalcOrderPrice", "underscore"], 
-function(Page, VenderIsOpen, CalcOrderPrice, _)
+define(["Client/JS/Page", "Shared/JS/VenderIsOpen", "Shared/JS/CalcOrderPrice", "underscore", "jquery"], 
+function(Page, VenderIsOpen, CalcOrderPrice, _, $)
 {
   
   function Cart()

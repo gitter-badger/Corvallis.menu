@@ -3,7 +3,8 @@
 //definition of their functionality
 
 //define module for requirejs
-define(function(require)
+define(["Shared/JS/VenderIsOpen", "Client/JS/Page", "jquery"], 
+function(VenderIsOpen, Page, $)
 {  
   //gather required variables
   var VenderIsOpen = require("Shared/JS/VenderIsOpen")

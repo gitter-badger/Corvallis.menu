@@ -1,8 +1,8 @@
 //Client side login section
 
 //define module for requirejs
-define(["Client/JS/Page"], 
-function(Page)
+define(["Client/JS/Page", "jquery"], 
+function(Page, $)
 {
   
   function LoginPage()
