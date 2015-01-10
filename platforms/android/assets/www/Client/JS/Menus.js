@@ -3,13 +3,9 @@
 //definition of their functionality
 
 //define module for requirejs
-define(["Shared/JS/VenderIsOpen", "Client/JS/Page", "jquery"], 
-function(VenderIsOpen, Page, $)
-{  
-  //gather required variables
-  var VenderIsOpen = require("Shared/JS/VenderIsOpen")
-  var Page = require("Client/JS/Page")
-  
+define(["Shared/JS/VenderIsOpen", "Client/JS/Page", "jquery", "Ajax"], 
+function(VenderIsOpen, Page, $, Ajax)
+{    
   function Menus()
   {
     /* PRIVATE METHODS */
@@ -25,7 +21,7 @@ function(VenderIsOpen, Page, $)
       
       beatPending = true      
       //send ajax request to server
-      $.get("SearchHeartbeat", {clientVersion: version}, function(response)
+      Ajax.Get("SearchHeartbeat", {clientVersion: version}, function(response)
       {
         beatPending = false
         //if a response was given, parse it for its value

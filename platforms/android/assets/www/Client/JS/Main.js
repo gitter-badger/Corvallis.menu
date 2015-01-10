@@ -22,15 +22,23 @@ function _startApp()
     paths: 
     {
       underscore: "Shared/3rdParty/underscore-min",
-      jquery: "Shared/3rdParty/jquery"
+      jquery: "Shared/3rdParty/jquery",
+      Ajax: "Client/JS/Ajax"
     }
   });
 
   //boot up requirejs
-  requirejs(["Client/JS/Application", "cordova"], function(Application)
+  requirejs(["Client/JS/Application"], function(Application)
   {
-    //boot up webapp
-    var app = Application()
+    try
+    {
+      //boot up webapp
+      var app = Application()
+    }
+    catch(error)
+    {
+      document.body.innerHTML = "Uh oh... Something went wrong! /n/n" + err
+    }
   })
 }
 
