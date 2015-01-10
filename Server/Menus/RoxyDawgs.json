@@ -154,6 +154,7 @@
 			"Name": "Regular Roxy Dawg",
 			"Description": "All-Beef Hot Dawg.",
 			"Price": 5,
+			"Image": "Client/Images/RoxyDawgs/dawgs/regular.jpg",
 			"Addons":
 				[
 					{
@@ -202,6 +203,7 @@
 			"Name": "Beaver Dawg",
 			"Description": "Smoked sausage stuffed with bacon and cheese.",
 			"Price": 5.5,
+			"Image": "Client/Images/RoxyDawgs/dawgs/beaver.jpg",
 			"Addons":
 				[
 					{
@@ -250,6 +252,7 @@
 			"Name": "Roxy Brat",
 			"Description": "Traditional German sausage.",
 			"Price": 5.25,
+			"Image": "Client/Images/RoxyDawgs/dawgs/brat.jpg",
 			"Addons":
 				[
 					{
@@ -298,6 +301,7 @@
 			"Name": "Polish Dawg",
 			"Description": "Traditional Polish sausage.",
 			"Price": 5,
+			"Image": "Client/Images/RoxyDawgs/dawgs/polish.jpg",
 			"Addons":
 				[
 					{
@@ -346,6 +350,7 @@
 			"Name": "Firehouse Dawg",
 			"Description": "Spicy Louisiana red hot 4 pepper blend.",
 			"Price": 5,
+			"Image": "Client/Images/RoxyDawgs/dawgs/firehouse.jpg",
 			"Addons":
 				[
 					{
@@ -394,6 +399,7 @@
 			"Name": "Bird Dawg",
 			"Description": "Mild chicken sausage with juicy bits of apple.",
 			"Price": 5.5,
+			"Image": "Client/Images/RoxyDawgs/dawgs/bird.jpg",
 			"Addons":
 				[
 					{
@@ -442,6 +448,7 @@
 			"Name": "Roxy Rabbit Food",
 			"Description": "Meatless soy and wheat protein with a smoky flavor.",
 			"Price": 5,
+			"Image": "Client/Images/RoxyDawgs/dawgs/rabbit.jpg",
 			"Addons":
 				[
 					{
@@ -490,6 +497,7 @@
 			"Name": "Roxy Burger Dawg",
 			"Description": "Seasoned burger patty made to fit the Dawg bun.",
 			"Price": 5,
+			"Image": "Client/Images/RoxyDawgs/dawgs/burger2.jpg",
 			"Addons":
 				[
 					{
