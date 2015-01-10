@@ -2,7 +2,8 @@
 //Used to process/validate new orders, adding them to the DB;
 //and to automatically assign orders to employees in the database,
 //and via text message.
-define(function(require)
+define(["www/Shared/JS/VenderIsOpen", "www/Shared/JS/CalcOrderPrice"],
+function(venderIsOpen, calcOrderPrice)
 {
   function OrderManager(db, GetVenderData)
   {
@@ -357,9 +358,6 @@ define(function(require)
     var twilioClient = "TODO:FIX"//new twilio.ResetClient("asdf","asdf")
     var twilio = require("twilio")
     var _ = require("underscore")
-    
-    var venderIsOpen = requirejs("Shared/JS/VenderIsOpen")
-    var calcOrderPrice = requirejs("Shared/JS/CalcOrderPrice")
     
     return{
       ProcessOrder: ProcessOrder

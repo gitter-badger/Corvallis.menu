@@ -4,14 +4,21 @@ This file handles the initialization of the node server.
 
 //find root of server; should be just below the "server" folder
 var root = __dirname.substring(0, __dirname.toLowerCase().search("server"))
-var templatesFolder = root + "/Client/HTML/"
+var wwwFolder = root + "www/"
+var templatesFolder = wwwFolder + "HTML/"
+var thirdPartyFolder = wwwFolder + "Shared/3rdParty/"
 var templates
 
 // Load required packages
 var express = require("express")
 var passport = require("passport")
 var bodyParser = require('body-parser')
+var cookieParser = require('cookie-parser')
+var session = require('express-session')
+var flash = require('connect-flash')
 var LocalStrategy = require("passport-local").Strategy
+var RememberMeStrategy = require("passport-remember-me").Strategy
+//var RememberMeStrategy = require("./PassportStrategy.js")
 var fs = require("fs")
 var requirejs = require("requirejs")
 var _ = require("underscore")
@@ -25,41 +32,34 @@ requirejs.config(
   nodeRequire: require
 })
 
+DebugLog("RequireJS rooted at " + root)
+
 //load required javascript
-require("./../../Shared/3rdParty/polyfill.js")
+require(thirdPartyFolder + "polyfill.js")
 var database = require("./Database.js")
 var search = require("./Search.js")
 
 //generate local variables
 database = database()
 search = search(database)
+
+//Configure express
 var app = express()
 
-//prepare app to handle json post request data
+app.use(cookieParser())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
   extended: true
-}));
-
-
-//configure passport to handle user login
-passport.use(new LocalStrategy(
-  function(email, password, done)
+}))
+app.use(session(
   {
-    //attempt to log the user in
-    database.LoginUser(email, password).then(
-      //if login successful
-      function(user)
-      {
-        done(null, user)
-      },
-      //if user login failed
-      function(err)
-      {
-        done(err)
-      })
-  })
-)
+    secret:"kittykittymeowmeow", 
+    saveUninitialized: true,
+    resave: false
+  }
+))  
+
+
 
 
 
@@ -67,6 +67,27 @@ passport.use(new LocalStrategy(
 
 
 /* METHODS */
+function _userLoggedIn(req, res, next)
+{
+  if(req.session.user)
+    next()
+  else
+    res.send("Not logged in.")
+}
+
+function _userIsAdmin(req, res, next)
+{
+  //if the user is not logged in
+  if(!req.session.user)
+    res.send("Not logged in.")
+  //if the user is not an admin
+  else if(!req.session.user.admin)
+    res.send("Lacking administrative privileges.")
+  //success!
+  else
+    next()
+}
+
 function DebugLog(msg)
 {
   if(true)
@@ -94,8 +115,8 @@ function _makeAccessableToClient(folder)
     else 
     {
       //compute 'GET' path, which is the absolute path
-      //minus the prefixing location of the server
-      var getPath = "/"+filePath.substring(root.length, filePath.length)
+      //minus the prefixing location of the wwwFolder
+      var getPath = ""+filePath.substring(wwwFolder.length, filePath.length)
       getPath = getPath.replace(/\\/g,"/")
       
       //prepare server to handle GET requests for this file
@@ -108,7 +129,7 @@ function _makeAccessableToClient(folder)
 }
 
 
-//loads all of the templates from the Client/HTML folder.
+//loads all of the templates from the www/HTML folder.
 //Templates are stored as objects keyed by their file name
 function _loadTemplates()
 {
@@ -139,17 +160,21 @@ fs.watch(templatesFolder, _loadTemplates)
 
 
 //make client side files accessible via GET
-_makeAccessableToClient(root + "Client")
-_makeAccessableToClient(root + "Shared")
+_makeAccessableToClient(wwwFolder)
 
 _loadTemplates()
 
 app.get('/', function(req, res)
 {
-  res.sendFile(root+ "/Client/HTML/index.html")
+  res.sendFile(root+ "www/index.html")
 })
 
-
+//Required for browsers and phonegap apps 
+//to be built off the same index page
+app.get("/cordova.js", function(req, res)
+{
+  res.send("")
+})
 
 app.get('/Templates',function(req, res)
 {
@@ -168,10 +193,8 @@ app.get('/Templates',function(req, res)
 //else sends nothing.
 app.get('/SearchHeartbeat', function(req, res)
 {
-  DebugLog("SearchHeartbeat requested...")
   search.Heartbeat(req, function(response)
   {
-    DebugLog("SearchHeartbeat returning:  "+response)
     res.send(JSON.stringify(response))
   })
 })
@@ -194,7 +217,8 @@ app.post('/SubmitOrder', function(req, res)
   var order = JSON.parse(req.body.Order)
   
   //attempt to process the order
-  database.ProcessOrder(order).then(
+  database.ProcessOrder(order)
+  .then(
     //if processed successfully
     function()
     {
@@ -210,36 +234,81 @@ app.post('/SubmitOrder', function(req, res)
   )  
 })
 
-app.post("/CreateUser", function(req, res)
+app.post("/RegisterUser", function(req, res)
 {
-  req = JSON.parse(req.body)
-  database.CreateUser(req.email, req.password, req.name)
-  .then(
+  DebugLog("Register user requested...")
+  var pkg = JSON.parse(req.body.pkg)
+  database.CreateUser(pkg.email, pkg.password, pkg.name, pkg.phone)
+    .then(
     //User created successfully.
     function(user)
     { 
-      res.send(JSON.stringify(user))
+      console.log("New user registered:" + pkg.email)
+      req.session.user = user
+      res.send({pkg: JSON.stringify({success: true, err: false})})
     },
     //user creation failed
     function(err)
     {
-      res.send(err)
+      console.log("User registration failed: " + err)
+      res.send({pkg: JSON.stringify({err: err})})
     }
   )
 })
 
-//Function handling registration of users
-app.post('/RegisterUser', function(req, res)
+
+app.post("/Login", function(req, res)
 {
-  if(!req)
+  DebugLog("Login requested...")
+  //validate package
+  if(!req.body.pkg)
   {
-    console.log("Empty request sent to register user.")
-    res.send(false)
+    res.send("No information sent to login.")
     return
   }
+  
+  //parse package
+  var pkg = JSON.parse(req.body.pkg)
+  
+  //attempt to login user
+  database.LoginUser(pkg.email, pkg.password)
+  .then(
+    //if login successful
+    function(user)
+    {
+      req.session.user = user
+      
+      //send the user back to the client
+      res.send({pkg: JSON.stringify({user: user.ToJson()})})
+      
+      //ensure remember me checked
+      if(!pkg.rememberMe) 
+        return
+      
+      
+      //issue remember me token
+      req.session.user.CreateRememberMeToken()
+      .then(function(token)
+      {
+        //create a rememberMe cookie containing the token and surviving 7 days
+        res.cookie("remember_me", token, { path: '/', httpOnly: true, maxAge: 604800000})
+      })
+    },
+    //if login unsuccessful
+    function(err)
+    {
+      res.send(err)
+    }
+  )  
 })
 
+app.get("/Logout", function(req,res)
+{
+  DebugLog("Logout requested...")
+  res.clearCookie("remember_me")
+  req.session.user = false
+})
 
-var server = app.listen(3000)
+var server = app.listen(3030)
 
 DebugLog("Server started at: " + root)

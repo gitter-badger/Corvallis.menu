@@ -1,0 +1,17 @@
+.registerContainer
+{
+  display: flex;
+  flex-direction: column;
+}
+
+
+.inputError
+{
+  border-style: solid;
+  border-color: red;
+}
+
+.errorMessage
+{
+  color: red;
+}

@@ -48,3 +48,5 @@ node_modules
 sqlite3.exe
 Database.db
 Keys/TwillioKey.txt
+*.log
+PhoneGap.exe
