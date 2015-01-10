@@ -2,7 +2,8 @@
 //Handles all of search's calls to the server,
 //and creation of the Search page's <div>
 
-define(["Client/JS/Page"], function(Page)
+define(["Client/JS/Page", "Ajax"], 
+function(Page, Ajax)
 {
   function Search()
   { 
@@ -15,7 +16,7 @@ define(["Client/JS/Page"], function(Page)
     function _heartbeat()
     {
       //send ajax request to server
-      $.get("SearchHeartbeat", {clientVersion: version}, function(response)
+      Ajax.Get("SearchHeartbeat", {clientVersion: version}, function(response)
       {
         //if a response was given, parse it for its value
         if(response)

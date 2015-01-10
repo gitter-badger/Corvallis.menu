@@ -3,8 +3,8 @@
 //and creation of the cart page
 
 //define module for requirejs
-define(["Client/JS/Page", "Shared/JS/VenderIsOpen", "Shared/JS/CalcOrderPrice", "underscore", "jquery"], 
-function(Page, VenderIsOpen, CalcOrderPrice, _, $)
+define(["Client/JS/Page", "Shared/JS/VenderIsOpen", "Shared/JS/CalcOrderPrice", "underscore", "jquery", "Ajax"], 
+function(Page, VenderIsOpen, CalcOrderPrice, _, $, Ajax)
 {
   
   function Cart()
@@ -63,7 +63,7 @@ function(Page, VenderIsOpen, CalcOrderPrice, _, $)
           //This method is triggered when the user has paid.
           //send purchase to server
           //send ajax request to server
-          var posting = $.post("SubmitOrder", {Order: JSON.stringify({Items: items, Vender: chosenVender, Token: token.id})})
+          var posting = Ajax.Post("SubmitOrder", {Order: JSON.stringify({Items: items, Vender: chosenVender, Token: token.id})})
           posting.done(function(response)
           {
             //if a response was given, parse it for its value

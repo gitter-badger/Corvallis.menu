@@ -3,8 +3,8 @@
 //and creation of the cart page
 
 //define module for requirejs
-define(["Client/JS/Page", "jquery"], 
-function(Page, $)
+define(["Client/JS/Page", "jquery", "Ajax"], 
+function(Page, $, Ajax)
 {
   
   function Register()
@@ -30,7 +30,7 @@ function(Page, $)
       ractive.set("Processing", true)
       
       //send ajax request to server
-      var posting = $.post("RegisterUser", {pkg: JSON.stringify({email: email, password: password, name: name, phone: phone})})
+      var posting = Ajax.Post("RegisterUser", {pkg: JSON.stringify({email: email, password: password, name: name, phone: phone})})
       posting.done(function(response)
       {
         ractive.set("Processing", false)

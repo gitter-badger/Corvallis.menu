@@ -1,8 +1,8 @@
 //Client side login section
 
 //define module for requirejs
-define(["Client/JS/Page", "jquery"], 
-function(Page, $)
+define(["Client/JS/Page", "jquery", "Ajax"], 
+function(Page, $, Ajax)
 {
   
   function LoginPage()
@@ -33,7 +33,7 @@ function(Page, $)
       ractive.set("Processing", true)
       
       //send ajax request to server
-      var posting = $.post("Login", {pkg: JSON.stringify({email: email, password: password, rememberMe: rememberMe})})
+      var posting = Ajax.Post("Login", {pkg: JSON.stringify({email: email, password: password, rememberMe: rememberMe})})
       posting.done(function(response)
       {
         ractive.set("Processing", false)

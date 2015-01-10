@@ -1,7 +1,7 @@
 //Admin page of the client
 //define module for requirejs
-define(["Client/JS/Page", "jquery"], 
-function(Page, $)
+define(["Client/JS/Page", "jquery", "Ajax"], 
+function(Page, $, Ajax)
 {
   
   function Admin()
