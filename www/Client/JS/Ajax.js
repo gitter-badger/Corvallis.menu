@@ -10,7 +10,7 @@ function($)
   //if this is a phonegap app, we need to give
   //the explicit address of the web server.
   if(isPhonegapApp)
-    var siteAddress = "73.11.87.192:3030/"
+    var siteAddress = "http://73.11.87.192:3030/"
     
   function Post(filePath, data, response)
   {

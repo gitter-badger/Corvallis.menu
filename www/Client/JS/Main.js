@@ -25,7 +25,7 @@ function _startApp()
       jquery: "Shared/3rdParty/jquery",
       Ajax: "Client/JS/Ajax"
     }
-  });
+  })
   
   //boot up requirejs
   requirejs(["Client/JS/Application"], function(Application)

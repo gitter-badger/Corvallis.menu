@@ -25,8 +25,8 @@ function _startApp()
       jquery: "Shared/3rdParty/jquery",
       Ajax: "Client/JS/Ajax"
     }
-  });
-
+  })
+  
   //boot up requirejs
   requirejs(["Client/JS/Application"], function(Application)
   {
@@ -41,13 +41,3 @@ function _startApp()
     }
   })
 }
-
-/*
-function gotFS(fileSystem) {
-  fileSystem
-        fs = fileSystem
-        }
-        
-        
-window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, null);
-*/
