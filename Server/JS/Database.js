@@ -248,12 +248,13 @@ function Database()
     var sql = "select * from Users where 1"
     db.all(sql, function(err, rows)
     {
-      if(err)
-        reject(err)
-      rows.map(function(row)
-      {
-        Users[row.userId] = new User(db, row)
-      })
+	  if(rows)
+	  {
+		rows.map(function(row)
+		{
+		  Users[row.userId] = new User(db, row)
+		})
+	  } 
     })
   }
   
