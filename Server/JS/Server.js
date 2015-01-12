@@ -88,6 +88,20 @@ function _userIsAdmin(req, res, next)
     next()
 }
 
+function _userIsDeliverer(req, res, next)
+{
+  console.log(req.session.user.deliverer)
+  //if the user is not logged in
+  if(!req.session.user)
+    res.send("Not logged in.")
+  //if the user is not a deliverer
+  else if(!req.session.user.deliverer)
+    res.send("User not a deliverer.")
+  //success!
+  else
+    next()
+}
+
 function DebugLog(msg)
 {
   if(true)
@@ -110,7 +124,7 @@ function _makeAccessableToClient(folder)
     var stat = fs.statSync(filePath);
     if (stat && stat.isDirectory()) 
     {
-        _makeAccessableToClient(filePath)
+      _makeAccessableToClient(filePath)
     } 
     else 
     {
@@ -307,6 +321,12 @@ app.get("/Logout", function(req,res)
   DebugLog("Logout requested...")
   res.clearCookie("remember_me")
   req.session.user = false
+})
+
+app.get("/Test", _userIsDeliverer,
+function(req, res)
+{
+  res.send("Success")
 })
 
 var server = app.listen(3030)

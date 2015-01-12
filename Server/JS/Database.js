@@ -248,12 +248,13 @@ function Database()
     var sql = "select * from Users where 1"
     db.all(sql, function(err, rows)
     {
-      if(err)
-        reject(err)
-      rows.map(function(row)
+      if(rows)
       {
-        Users[row.userId] = new User(db, row)
-      })
+        rows.map(function(row)
+        {
+          Users[row.userId] = new User(db, row)
+        })
+      }
     })
   }
   
@@ -318,16 +319,17 @@ function Database()
   //feed DB to order manager to boot it up
   var orderManager = OrderManager(db, GetVenderData)
   
+  
+  //Instantiate tables if they do not yet exist
+  db.run("CREATE TABLE IF NOT EXISTS Users(userId INTEGER PRIMARY KEY ASC, name TEXT, password TEXT, addressId INTEGER, email TEXT, phone TEXT, admin INTEGER DEFAULT 0, deliverer INTEGER DEFAULT 0, acceptingOrders INTEGER DEFAULT 0)")
+  db.run("CREATE TABLE IF NOT EXISTS Orders(orderId INTEGER PRIMARY KEY ASC, deliverer INTEGER DEFAULT -1, orderValue TEXT, stripeCharge TEXT, timeOrdered DATETIME DEFAULT CURRENT_TIMESTAMP, timePickedUp DATETIME, timeDelivered DATETIME, status TEXT DEFAULT \"new\")")
+  db.run("CREATE TABLE IF NOT EXISTS Addresses(addressId INTEGER PRIMARY KEY ASC, userId INTEGER, address TEXT, instructions TEXT)")
+  db.run("CREATE TABLE IF NOT EXISTS RememberMeTokens(tokenId TEXT, userId INTEGER, timeOrdered DATETIME DEFAULT CURRENT_TIMESTAMP)")
+  
   _prepDatabaseVersion()
   _loadVenders()
   _loadUsers()
   _loadOrders()
-  
-  //Instantiate tables if they do not yet exist
-  db.run("CREATE TABLE IF NOT EXISTS Users(userId INTEGER PRIMARY KEY ASC, name TEXT, password TEXT, addressId INTEGER, email TEXT, phone TEXT, admin INTEGER DEFAULT 0, employee INTEGER DEFAULT 0, acceptingOrders INTEGER DEFAULT 0)")
-  db.run("CREATE TABLE IF NOT EXISTS Orders(orderId INTEGER PRIMARY KEY ASC, deliverer INTEGER DEFAULT -1, orderValue TEXT, stripeCharge TEXT, timeOrdered DATETIME DEFAULT CURRENT_TIMESTAMP, timePickedUp DATETIME, timeDelivered DATETIME, status TEXT DEFAULT \"new\")")
-  db.run("CREATE TABLE IF NOT EXISTS Addresses(addressId INTEGER PRIMARY KEY ASC, userId INTEGER, address TEXT, instructions TEXT)")
-  db.run("CREATE TABLE IF NOT EXISTS RememberMeTokens(tokenId TEXT, userId INTEGER, timeOrdered DATETIME DEFAULT CURRENT_TIMESTAMP)")
   
   //specify which variables/functions are public
   return{

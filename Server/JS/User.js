@@ -18,7 +18,7 @@ function User(db, user)
       Name: user.name,
       Phone: user.phone,
       Admin: user.admin,
-      Employee: user.employee,
+      Deliverer: user.deliverer,
       AcceptingOrders: user.acceptingOrders
     }
   }
@@ -119,6 +119,8 @@ function User(db, user)
     query.execute()
   }
   
+  
+  
   /* PRIVATE METHODS */
   
   //creates a random string of the given length
@@ -138,13 +140,19 @@ function User(db, user)
     return Math.floor(Math.random() * (max - min + 1)) + min
   }
   
+  
+  
   /* CONSTRUCTOR */
   
+  var _ = require("underscore")
   //validate parameters
   if(!db)
     throw "Error: No sql database fed to new User"
   if(!user)
     throw "No user row sent to new User"
+  
+  //clone user data
+  user = _.clone(user)
     
   var md5 = require("MD5")
   
@@ -153,6 +161,6 @@ function User(db, user)
     __proto__: user,
     Update: Update,
     CreateRememberMeToken: CreateRememberMeToken,
-    ToJson: ToJson,
+    ToJson: ToJson
   }
 }

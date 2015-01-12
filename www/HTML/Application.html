@@ -27,6 +27,12 @@
     </div>
   </TabsLink>
   
+  <TabsLink PaneId="deliveriesPane">
+    <div class={{>TabClass}} {{#if !User.Deliverer}} style="display: none" {{/if}}>
+      Deliveries
+    </div>
+  </TabsLink>
+  
   <TabsLink PaneId="adminPane">
     <div class={{>TabClass}} {{#if !User.Admin}} style="display: none" {{/if}}>
       Admin
@@ -65,5 +71,8 @@
 </TabsPane>
 <TabsPane PaneId="adminPane">
   <Admin/>
+</TabsPane>
+<TabsPane PaneId="deliveriesPane">
+  <Deliveries/>
 </TabsPane>
 <!-- {{/Tabs}} -->
