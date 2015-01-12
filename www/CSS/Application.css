@@ -1,64 +1,64 @@
+*
+{
+	margin: 0;
+	padding: 0;
+}
+body
+{
+	background: darkgray;
+}
 div.application
 {
-  display: flex;
-  flex-flow: row wrap;
 }
 
 .logo,
 {
-  flex: 1 100%;
 }
 
 .navBar
 {
-  display: flex;
-  justify-content: space-between;
-  flex-flow: row wrap;
-  align-items: stretch;
-  flex-direction: row;
-  flex: 1 100%;
-  background-color: #AAAAAA;
+	width: 96%;
+	max-width:875px;
+  background-color: white;
+	margin: 0 auto;
 }
 
 .loginTab
 {
-  display: flex;
-  align-items: stretch;
-  justify-content: center;
-  flex: 1 100%;
-  flex-direction: column;
+  display: none;
 }
 
 .navBarLeft
 {
-  display: flex;
-  justify-content: center;
-  flex-flow: row wrap;
+  display: inline-block;
+	max-width: 80%;
+	padding: 0.5em 1em;
+	box-sizing: border-box;
+	text-align: center;
 }
 
 .navBarRight
 {
-  display: flex;
-  align-items: stretch;
-  flex-flow: row wrap;
-  flex-direction: row-reverse;
-}
-
-
-
-.selectedTab
-{
-  background-color: #FFFFFF;
-  height: 100%;
-}
-
-.unselectedTab
-{
-  margin: 1px;
+  display: inline-block;
+	text-align: center;
 }
 
 .registerTab
 {
-  align-self: flex-end;
-  margin: 1px;
+}
+
+.selectedTab
+{
+  background-color: #FFFFFF;
+}
+
+.unselectedTab
+{
+  border-color: red;
+}
+
+.venderLogo
+{
+	width: 220px;
+	margin: 0 5px;
 }

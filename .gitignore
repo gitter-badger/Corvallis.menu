@@ -50,3 +50,4 @@ Database.db
 Keys/TwillioKey.txt
 *.log
 PhoneGap.exe
+node.exe
