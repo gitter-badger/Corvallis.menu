@@ -30,14 +30,7 @@ function _startApp()
   //boot up requirejs
   requirejs(["JS/Application"], function(Application)
   {
-    try
-    {
-      //boot up webapp
-      var app = Application()
-    }
-    catch(error)
-    {
-      document.body.innerHTML = "Uh oh... Something went wrong! /n/n" + err
-    }
+	  //boot up web app
+    var app = Application()
   })
 }
