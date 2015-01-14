@@ -11,6 +11,7 @@ div.application
 {
 	width: 96%;
 	max-width: 875px;
+	margin: 0 auto;
 }
 
 .logo,
@@ -57,7 +58,6 @@ div.application
 
 .selectedTab
 {
-  background-color: #FFFFFF;
 }
 
 .unselectedTab
