@@ -9,6 +9,8 @@ body
 }
 div.application
 {
+	width: 96%;
+	max-width: 875px;
 }
 
 .logo,
@@ -17,14 +19,21 @@ div.application
 
 .navBar
 {
-	width: 96%;
-	max-width:875px;
-  background-color: white;
-	margin: 0 auto;
 }
 
 .loginTab
 {
+	background: whitesmoke;
+	padding: 1em;
+	position: absolute;
+	right: 50%;
+	top: 50%;
+	width: 250px;
+	height: 80px;
+	margin-right: -125px;
+	margin-top: -40px;
+	border-radius: 0.5em;
+	box-shadow: 1px 1px 1px black;
 }
 
 .navBarLeft
