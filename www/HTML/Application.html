@@ -3,7 +3,7 @@
   </div>
 
   <TabsComponent>
-    <div class="navBar">
+    <div class="navBar cols2">
       {{>NavBarLeft}}
       {{>NavBarRight}}
     </div>
@@ -19,7 +19,7 @@
 <!-- {{/TabClass}} -->
 
 <!-- {{>NavBarLeft}} -->
-<div class="navBarLeft">
+<div class="navBarLeft ⅘">
   <TabsLink PaneId="menusPane" Selected="true">
     <div class={{>TabClass}}>
 			<img src="Images/corvallis_menu.svg"/>
@@ -42,7 +42,7 @@
 <!-- {{/NavBarLeft}} -->
 
 <!-- {{>NavBarRight}} -->
-<div class="navBarRight">
+<div class="navBarRight ⅕">
   {{#if !User}}
     <Login/>
   {{else}}

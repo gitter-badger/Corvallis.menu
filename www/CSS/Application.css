@@ -22,6 +22,11 @@ div.application
 {
 }
 
+.navBar img
+{
+  width: 100%;
+}
+
 .loginTab
 {
 	background: whitesmoke;
@@ -48,8 +53,9 @@ div.application
 
 .navBarRight
 {
-  display: inline-block;
+ 	display: inline-block;
 	text-align: center;
+	width: 20%;
 }
 
 .registerTab
@@ -70,3 +76,39 @@ div.application
 	width: 220px;
 	margin: 0 5px;
 }
+
+
+
+
+/* The Omega Maneuver */
+[class*=cols] 
+{
+   text-align: justify; 
+   padding-left: 10px; 
+   font-size: 0;
+   -ms-text-justify: distribute-all-lines;
+}
+
+[class*=cols]>* 
+{ 
+  display: inline-block; 
+  text-align: left; 
+  font-size: 13px;
+  word-spacing: normal; 
+  vertical-align: top;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.cols2 { word-spacing: 20px; padding-right: 20px; }
+.cols3 { word-spacing: 30px; padding-right: 30px; }
+.cols4 { word-spacing: 40px; padding-right: 40px; }
+.cols5 { word-spacing: 50px; padding-right: 50px; }
+.cols6 { word-spacing: 60px; padding-right: 60px; }
+
+.cols2 > * { margin-right: -10px; }
+.cols3 > * { margin-right: -20px; }
+.cols4 > * { margin-right: -30px; }
+.cols5 > * { margin-right: -40px; }
+.cols6 > * { margin-right: -50px; }
