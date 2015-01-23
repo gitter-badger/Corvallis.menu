@@ -2,10 +2,20 @@
   <div>
     Email:
     <input type="text" value="{{Credentials.Email}}" placeholder="example@email.com">
+    {{#if Err.Email}}
+      <div class="errorMessage">
+        {{Err.Email}}
+      </div>
+    {{/if}}
   </div>
   <div>
     Password:
     <input type="password" value="{{Credentials.Password}}">
+    {{#if Err.Password}}
+      <div class="errorMessage">
+        {{Err.Password}}
+      </div>
+    {{/if}}
   </div>
   <div>
     remember me 

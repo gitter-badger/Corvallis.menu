@@ -47,21 +47,78 @@ search = search(database)
 var app = express()
 
 app.use(cookieParser())
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({
-  extended: true
+app.use(bodyParser()) 
+app.use(session({secret:"kittykittymeowmeow"}))  
+app.use(passport.initialize())
+app.use(passport.session())
+app.use(flash())
+
+//teach passport to serialize users
+passport.serializeUser(function(user, done)
+{
+    //stored/retrieved by id
+    done(null, user.id);
+})
+
+//teach passport to deserialize users
+passport.deserializeUser(function(id, done)
+{
+  var user = database.GetUserById(id)
+  if(user)
+    done(null, user)
+  else  
+    done("User could not be found.", null)
+})
+
+//teach passport to register users
+passport.use("local-register", new LocalStrategy(
+{
+  usernameField: "email",
+  passwordField: "password",
+  passReqToCallback: true
+},
+function(req, email, password, done)
+{
+  database.CreateUser(req.body.email, req.body.password, req.body.name, req.body.phone)
+    .then(
+    //User created successfully.
+    function(user)
+    { 
+      console.log("New user registered:" + user.email)
+      done(null, user)
+    },
+    //user creation failed
+    function(err)
+    {
+      console.log("User registration failed: " + err)
+      done(err, false)
+    }
+  )
 }))
-app.use(session(
-  {
-    secret:"kittykittymeowmeow", 
-    saveUninitialized: true,
-    resave: false
-  }
-))  
 
-
-
-
+//teach passport to login users
+passport.use("local-login", new LocalStrategy(
+{
+  usernameField: "email",
+  passwordField: "password",
+  passReqToCallback: true
+},
+function(req, email, password, done)
+{
+  database.LoginUser(email, password)
+  .then(
+    //if login successful
+    function(user)
+    {
+      done(false, user)
+    },
+    //if login unsuccessful
+    function(err)
+    {
+      done(err, false)
+    }
+  )  
+}))
 
 
 
@@ -69,8 +126,8 @@ app.use(session(
 /* METHODS */
 function _userLoggedIn(req, res, next)
 {
-  if(req.session.user)
-    next()
+  if(req.isAuthenticated())
+    return next()
   else
     res.send("Not logged in.")
 }
@@ -248,79 +305,51 @@ app.post('/SubmitOrder', function(req, res)
   )  
 })
 
-app.post("/RegisterUser", function(req, res)
+app.post("/RegisterUser", function(req, res, next)
 {
   DebugLog("Register user requested...")
-  var pkg = JSON.parse(req.body.pkg)
-  database.CreateUser(pkg.email, pkg.password, pkg.name, pkg.phone)
-    .then(
-    //User created successfully.
-    function(user)
-    { 
-      console.log("New user registered:" + pkg.email)
-      req.session.user = user
-      res.send({pkg: JSON.stringify({success: true, err: false})})
-    },
-    //user creation failed
-    function(err)
+  //attempt to register the account using passport
+  passport.authenticate('local-register', function(err, user, info)
+  {
+    if(err)
     {
-      console.log("User registration failed: " + err)
+      DebugLog("registration failed: " + err)
       res.send({pkg: JSON.stringify({err: err})})
     }
-  )
+    else
+    {
+      DebugLog("Email registered: " + user.email)
+      res.send({pkg: JSON.stringify({user: user.ToJson()})})    
+    }      
+  })(req, res, next)
 })
 
 
-app.post("/Login", function(req, res)
+app.post("/Login", function(req, res, next)
 {
   DebugLog("Login requested...")
-  //validate package
-  if(!req.body.pkg)
+  
+  //attempt to log into the account using passport
+  passport.authenticate('local-login', function(err, user, info)
   {
-    res.send("No information sent to login.")
-    return
-  }
-  
-  //parse package
-  var pkg = JSON.parse(req.body.pkg)
-  
-  //attempt to login user
-  database.LoginUser(pkg.email, pkg.password)
-  .then(
-    //if login successful
-    function(user)
+    if(err)
     {
-      req.session.user = user
-      
-      //send the user back to the client
-      res.send({pkg: JSON.stringify({user: user.ToJson()})})
-      
-      //ensure remember me checked
-      if(!pkg.rememberMe) 
-        return
-      
-      
-      //issue remember me token
-      req.session.user.CreateRememberMeToken()
-      .then(function(token)
-      {
-        //create a rememberMe cookie containing the token and surviving 7 days
-        res.cookie("remember_me", token, { path: '/', httpOnly: true, maxAge: 604800000})
-      })
-    },
-    //if login unsuccessful
-    function(err)
-    {
-      res.send(err)
+      DebugLog("Returning error: " + JSON.stringify(err))
+      res.send({pkg: JSON.stringify({err: err})})
     }
-  )  
+    else
+    {
+      DebugLog("Returning user: " + user.ToJson().Email)
+      res.send({pkg: JSON.stringify({user: user.ToJson()})})
+    }
+  })(req, res, next)
+  
 })
 
 app.get("/Logout", function(req,res)
 {
   DebugLog("Logout requested...")
-  res.clearCookie("remember_me")
-  req.session.user = false
+  req.logout()
 })
 
 app.get("/Test", _userIsDeliverer,

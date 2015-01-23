@@ -2,7 +2,7 @@
 
   <div {{#if Err.Name}}class="inputError"{{/if}}>
     Name:
-    <input type="text" value="{{User.Name}}" placeholder="John Doe">
+    <input type="text" value="{{Credentials.Name}}" placeholder="John Doe">
     {{#if Err.Name}}
       <div class="errorMessage">
         {{Err.Name}}
@@ -12,7 +12,7 @@
   
   <div {{#if Err.Email}}class="inputError"{{/if}}>
     Email:
-    <input type="text" value="{{User.Email}}" placeholder="example@email.com">
+    <input type="text" value="{{Credentials.Email}}" placeholder="example@email.com">
     {{#if Err.Email}}
       <div class="errorMessage">
         {{Err.Email}}
@@ -22,7 +22,7 @@
   
   <div {{#if Err.Password}}class="inputError"{{/if}}>
     Password:
-    <input type="password" value="{{User.Password}}">
+    <input type="password" value="{{Credentials.Password}}">
     {{#if Err.Password}}
       <div class="errorMessage">
         {{Err.Password}}
@@ -32,7 +32,7 @@
   
   <div {{#if Err.Phone}}class="inputError"{{/if}}>
     Phone:
-    <input type="text" value="{{User.Phone}}" placeholder="(541)111-1111"><br>
+    <input type="text" value="{{Credentials.Phone}}" placeholder="(541)111-1111"><br>
     {{#if Err.Phone}}
       <div class="errorMessage">
         {{Err.Phone}}

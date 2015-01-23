@@ -4,22 +4,22 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
+    "MD5": "x.x",
+    "body-parser": "x.x",
+    "connect-flash": "x.x",
+    "cookie-parser": "x.x",
     "express": "4.x",
-    "sqlite3": "x.x",
+    "express-session": "x.x",
     "jQuery": "x.x",
     "passport": "x.x",
     "passport-local": "x.x",
+    "passport-remember-me": "x.x",
+    "promise": "x.x",
+    "requirejs": "x.x",
+    "sqlite3": "x.x",
     "stripe": "x.x",
     "twilio": "x.x",
     "underscore": "x.x",
-    "requirejs": "x.x",
-    "promise": "x.x",
-    "MD5": "x.x",
-    "body-parser": "x.x",
-    "passport-remember-me": "x.x",
-    "validator": "x.x",
-    "express-session":"x.x",
-    "cookie-parser":"x.x",
-    "connect-flash":"x.x"
+    "validator": "x.x"
   }
 }

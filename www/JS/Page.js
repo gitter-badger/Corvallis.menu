@@ -58,7 +58,7 @@ define(function(require)
     //default period to a minute if value unspecified
     period = period ? period : 60000
     var heartbeatTimer
-    Select()
+    _startHeartbeat()
     
     return{
       Select: Select,

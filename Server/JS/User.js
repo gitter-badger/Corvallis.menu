@@ -59,7 +59,7 @@ function User(db, user)
       })
     })
   }
-  
+
   //Method used by users to change properties of User. Not meant to make any
   //changes to employment or administrative privileges
   //
@@ -141,24 +141,19 @@ function User(db, user)
   }
   
   
-  
   /* CONSTRUCTOR */
   
   var _ = require("underscore")
+  var md5 = require("MD5")
+  
   //validate parameters
   if(!db)
     throw "Error: No sql database fed to new User"
   if(!user)
     throw "No user row sent to new User"
   
-  //clone user data
-  user = _.clone(user)
-    
-  var md5 = require("MD5")
-  
-  
   return{
-    __proto__: user,
+    __proto__: _.clone(user),
     Update: Update,
     CreateRememberMeToken: CreateRememberMeToken,
     ToJson: ToJson

@@ -8,7 +8,7 @@ function Database()
   
   function GetUserById(userId)
   {
-    return users[userId]
+    return Users[userId]
   }
   
   //Consumes the given token, finding its corresponding user
@@ -71,21 +71,22 @@ function Database()
     return new Promise(function(fulfill, reject)
     {
       //get user from database
-      var sql = "select userId from Users where email = $email and password = $password"
+      var sql = "select userId, password from Users where email = $email"
       var qry = db.prepare(sql)
-      var vars = 
-      {
-        $email: email,
-        $password: md5(password)
-      }
-      qry.all(vars, function(err, rows)
+      qry.all({$email: email}, function(err, rows)
       {
         if(err)
-          reject(err)
-        else if(rows.length != 1)
-          reject("incorrect number of rows")
+          reject({err: err})
+        else if(rows.length <= 0)
+          reject({Email: "Email not registered."})
+        else if(rows.length > 1)
+          reject({Email: "Email registered more than once."})
+        else if(rows[0].password != md5(password))
+          reject({Password: "Password incorrect."})
         else
+        {
           fulfill(Users[rows[0].userId])
+        }
       })
     })
   }
@@ -252,7 +253,8 @@ function Database()
       {
         rows.map(function(row)
         {
-          Users[row.userId] = new User(db, row)
+          var user = new User(db, row)
+          Users[row.userId] = user
         })
       }
     })
@@ -303,13 +305,13 @@ function Database()
   var fs = require('fs');  
   var sqlite = require("sqlite3").verbose()
   var _ = require("underscore")
-  var requirejs = require("requirejs")
   var Promise = require("promise")
   var User = require("./User.js")
   var md5 = require("MD5")
   var isEmail = require("validator").isEmail
   var util = require('util')
   
+  var requirejs = require("requirejs")
   var isValidNumber = requirejs("www/Shared/3rdParty/PhoneFormat.js").isValidNumber  
   var OrderManager = requirejs("Server/JS/OrderManager")
   

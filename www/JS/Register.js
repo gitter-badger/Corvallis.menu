@@ -17,28 +17,41 @@ function(Page, $, Ajax)
     
     function _register(event)
     {
-      var ractive = this
+      var registerComp = this
       
       //collect required data for registration
-      var email = ractive.get("User.Email")
-      var name = ractive.get("User.Name")
-      var password = ractive.get("User.Password")
-      var phone = ractive.get("User.Phone")
+      var email = registerComp.get("Credentials.Email")
+      var name = registerComp.get("Credentials.Name")
+      var password = registerComp.get("Credentials.Password")
+      var phone = registerComp.get("Credentials.Phone")
       
       //Time to register the account.
       //disable any further attempts to register
-      ractive.set("Processing", true)
+      registerComp.set("Processing", true)
       
       //send ajax request to server
-      var posting = Ajax.Post("RegisterUser", {pkg: JSON.stringify({email: email, password: password, name: name, phone: phone})})
+      var posting = Ajax.Post("RegisterUser", {email: email, password: password, name: name, phone: phone})
       posting.done(function(response)
       {
-        ractive.set("Processing", false)
+        registerComp.set("Processing", false)
         //if a response was given, parse it for its value
         if(response)
           response = JSON.parse(response.pkg)
         //if the parsed response has content
-        ractive.set("Err", response.err)
+        registerComp.set("Err", response.err)
+	
+        //if the user was successfully created
+        if(response.user)
+        {
+          registerComp.get("User")
+          registerComp.set("User", response.user)
+          
+          //select menus page          
+          var ractive = registerComp.get("RactiveRoot")
+          ractive.findAllComponents("TabsLink")
+            .filter(function(link){ return link.get("PaneId") == "menusPane"})
+            .map(function(link){ link.fire("Select") })
+        }
       })
     }
     
@@ -52,14 +65,12 @@ function(Page, $, Ajax)
         template: Templates["Register.html"],
         data:
         { 
-          User: {},
+          Credentials: {},
           Processing: false,
           Err: false
         },
         init: function()
-        {
-          ractive = this
-          
+        {          
           this.on("RegisterClick", _register)
         }
       })
@@ -75,7 +86,7 @@ function(Page, $, Ajax)
    
     
     //local variables
-    var ractive
+    var application
     _attachRactive()
     
     return{

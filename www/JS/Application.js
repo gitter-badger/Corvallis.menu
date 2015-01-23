@@ -35,8 +35,13 @@ function(Cart, Menus, Account, Register, TabsComp, Login, Admin, Deliveries)
         Register: registerPage,
         Login: loginPage,
         Admin: adminPage,
-	Deliveries: deliveriesPage,
+        Deliveries: deliveriesPage,
         User: false
+      },
+      init: function()
+      {
+        //store the root of the application
+        this.set("RactiveRoot", this)
       }
     })
     

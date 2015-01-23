@@ -33,11 +33,10 @@ function(Page, $, Ajax)
       ractive.set("Processing", true)
       
       //send ajax request to server
-      var posting = Ajax.Post("Login", {pkg: JSON.stringify({email: email, password: password, rememberMe: rememberMe})})
+      var posting = Ajax.Post("Login", {email: email, password: password, rememberMe: rememberMe})
       posting.done(function(response)
       {
         ractive.set("Processing", false)
-        ractive.set("Err", response.err)
         
         //if login was unsuccessful
         if(!response.pkg)
@@ -45,6 +44,8 @@ function(Page, $, Ajax)
          
         var pkg = JSON.parse(response.pkg)
         
+        
+        ractive.set("Err", pkg.err)
         
         //This get call will make racitive find the
         //User data attached to the top of the application.
