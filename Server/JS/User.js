@@ -23,42 +23,6 @@ function User(db, user)
     }
   }
   
-  function CreateRememberMeToken()
-  {
-    return new promise(function(fulfill, reject)
-    {
-      //generate random token
-      var token = _randomString(64)
-      
-      //ensure token does not already exist in database
-      var sql = "SELECT * from RememberMeTokens where token = $token"
-      var qry = db.prepare(sql)
-      qry.all({$token: md5(token)}, function(err, rows)
-      {
-        //if this token is already registered
-        if(rows.length > 0)
-        {
-          //recursively attempt to generate another token
-          CreateRememberMeToken()
-          .then(function(token)
-          {
-            fulfill(token)
-          })
-        }
-        //if this token is not yet registered
-        else
-        {
-          //register the token
-          var sql = "INSERT into RememberMeTokens(token, userId) Values($token, $userId)"
-          var qry = db.prepare(sql)
-          qry.run({$token: md5(token), $userId: user.userId})
-          
-          //return the token
-          fulfill(token)
-        }
-      })
-    })
-  }
 
   //Method used by users to change properties of User. Not meant to make any
   //changes to employment or administrative privileges
@@ -123,24 +87,6 @@ function User(db, user)
   
   /* PRIVATE METHODS */
   
-  //creates a random string of the given length
-  function _randomString(length) 
-  {
-    var buf = []
-    var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-
-    for (var i = 0; i < length; ++i) 
-      buf.push(chars[_randomInt(0, chars.length - 1)])
-
-    return buf.join('')
-  }
-
-  function _randomInt(min, max) 
-  {
-    return Math.floor(Math.random() * (max - min + 1)) + min
-  }
-  
-  
   /* CONSTRUCTOR */
   
   var _ = require("underscore")
@@ -155,7 +101,6 @@ function User(db, user)
   return{
     __proto__: _.clone(user),
     Update: Update,
-    CreateRememberMeToken: CreateRememberMeToken,
     ToJson: ToJson
   }
 }

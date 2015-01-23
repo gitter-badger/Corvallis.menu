@@ -51,13 +51,14 @@ app.use(bodyParser())
 app.use(session({secret:"kittykittymeowmeow"}))  
 app.use(passport.initialize())
 app.use(passport.session())
+app.use(passport.authenticate('remember-me'))
 app.use(flash())
 
 //teach passport to serialize users
 passport.serializeUser(function(user, done)
 {
     //stored/retrieved by id
-    done(null, user.id);
+    done(null, user.userId);
 })
 
 //teach passport to deserialize users
@@ -69,6 +70,42 @@ passport.deserializeUser(function(id, done)
   else  
     done("User could not be found.", null)
 })
+
+passport.use(new RememberMeStrategy(
+  //define method for processing tokens and returning users
+  function(token, done)
+  {
+    DebugLog("RememberMe strategy called for token: " + token)
+    //attempt to consume the token
+    database.ConsumeRememberMeToken(token)
+    //if token consumed successfully
+    .then(function(user)
+    {
+      //HACK: tack on the token so
+      //that it is returned to the calling function
+      user.token = token
+      done(false, user)
+    },
+    //if the token could not be consumed
+    function(err)
+    {
+      done(err, false)
+    })
+  },
+  //define method for creating a token for a user
+  function(user, done)
+  {
+    database.CreateRememberMeToken(user)
+    .then(function(token)
+    {
+      done(false, token)
+    },
+    function(err)
+    {
+      done(err, false)
+    })
+  }
+))
 
 //teach passport to register users
 passport.use("local-register", new LocalStrategy(
@@ -328,22 +365,44 @@ app.post("/RegisterUser", function(req, res, next)
 app.post("/Login", function(req, res, next)
 {
   DebugLog("Login requested...")
-  
   //attempt to log into the account using passport
   passport.authenticate('local-login', function(err, user, info)
   {
+    //if the user failed to log in
     if(err)
     {
       DebugLog("Returning error: " + JSON.stringify(err))
       res.send({pkg: JSON.stringify({err: err})})
     }
+    //if the user logged in successfully
     else
     {
-      DebugLog("Returning user: " + user.ToJson().Email)
-      res.send({pkg: JSON.stringify({user: user.ToJson()})})
+      //if the user checked the remember me checkbox
+      if(req.body.rememberMe)
+      {
+        //generate token for user
+        database.CreateRememberMeToken(user)
+        .then(function(token)
+        {
+          //set cookie as token
+          DebugLog("Set 'remember-me' cookie for " + user.ToJson().Email)
+          res.cookie('remember_me', token, { path: '/', httpOnly: true, maxAge: 604800000 })
+          res.send({pkg: JSON.stringify({user: user.ToJson()})})
+        })
+      }
+      else
+      {
+        DebugLog("Returning user: " + user.ToJson().Email)
+        res.send({pkg: JSON.stringify({user: user.ToJson()})})
+      }
     }
   })(req, res, next)
-  
+})
+
+app.post("/GetUser", _userLoggedIn, 
+function(req, res, next)
+{
+  res.send({pkg: JSON.stringify({user: req.user.ToJson()})})
 })
 
 app.get("/Logout", function(req,res)

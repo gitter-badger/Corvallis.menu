@@ -15,12 +15,14 @@ function Database()
   //in the RememberMeTokens table, and returning said user.
   function ConsumeRememberMeToken(token)
   {
+    var tokenHash = md5(token)
     return new Promise(function(fulfill, reject)
     {
       //check to see if the user already exists
-      var sql = "SELECT userId from RememberMeTokens where token = $token"
+      var sql = "SELECT userId from RememberMeTokens where tokenHash = $tokenHash"
+      
       var qry = db.prepare(sql)
-      qry.all({$token: token}, function(err, rows)
+      qry.all({$tokenHash: tokenHash}, function(err, rows)
       {
         //if the token doesn't exist
         if(rows.length <= 0)
@@ -44,19 +46,63 @@ function Database()
         }
         
         //delete token
-        var sql = "DELETE FROM RememberMeTokens WHERE token = $token"
+        var sql = "DELETE FROM RememberMeTokens WHERE tokenHash = $tokenHash"
         var qry = db.prepare(sql)
-        qry.run({$token: token})
+        qry.run({$tokenHash: tokenHash})
         
         //return user
         fulfill(user)
       })
     })
-    //Delete token from database
-    //return user id
-    return fulfill(null, "USER ID HERE")
   }
 
+  function CreateRememberMeToken(user)
+  {
+    return new Promise(function(fulfill, reject)
+    {
+      //generate random token
+      var token = _randomString(64)
+      
+      //ensure token does not already exist in database
+      var sql = "SELECT * from RememberMeTokens where tokenHash = $token"
+      var qry = db.prepare(sql)
+      qry.all({$token: md5(token)}, function(err, rows)
+      {
+        if(err)
+        {
+          reject(err)
+          return
+        }
+        
+        //if this token is already registered
+        if(rows.length > 0)
+        {
+          //recursively attempt to generate another token
+          CreateRememberMeToken()
+          .then(function(token)
+          {
+            fulfill(token)
+          },
+          function(err)
+          {
+            reject(err)
+          })
+        }
+        //if this token is not yet registered
+        else
+        {
+          //register the token
+          var sql = "INSERT into RememberMeTokens(tokenHash, userId) Values($token, $userId)"
+          var qry = db.prepare(sql)
+          qry.run({$token: md5(token), $userId: user.userId})
+          
+          //return the token
+          fulfill(token)
+        }
+      })
+    })
+  }
+  
   //Processes the given order, validating it,
   //and adding it to the local database
   function ProcessOrder(order)
@@ -201,9 +247,11 @@ function Database()
   }
   
   
+  
+  
+  
   /* PRIVATE METHODS */
-  
-  
+    
   //Goes through every file in the menus folder and loads
   //it into menusData
   function _loadVenders()
@@ -285,7 +333,24 @@ function Database()
     })
   }
       
-      
+  
+  //creates a random string of the given length
+  function _randomString(length) 
+  {
+    var buf = []
+    var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+
+    for (var i = 0; i < length; ++i) 
+      buf.push(chars[_randomInt(0, chars.length - 1)])
+
+    return buf.join('')
+  }
+
+  function _randomInt(min, max) 
+  {
+    return Math.floor(Math.random() * (max - min + 1)) + min
+  }
+  
       
       
       
@@ -326,7 +391,7 @@ function Database()
   db.run("CREATE TABLE IF NOT EXISTS Users(userId INTEGER PRIMARY KEY ASC, name TEXT, password TEXT, addressId INTEGER, email TEXT, phone TEXT, admin INTEGER DEFAULT 0, deliverer INTEGER DEFAULT 0, acceptingOrders INTEGER DEFAULT 0)")
   db.run("CREATE TABLE IF NOT EXISTS Orders(orderId INTEGER PRIMARY KEY ASC, deliverer INTEGER DEFAULT -1, orderValue TEXT, stripeCharge TEXT, timeOrdered DATETIME DEFAULT CURRENT_TIMESTAMP, timePickedUp DATETIME, timeDelivered DATETIME, status TEXT DEFAULT \"new\")")
   db.run("CREATE TABLE IF NOT EXISTS Addresses(addressId INTEGER PRIMARY KEY ASC, userId INTEGER, address TEXT, instructions TEXT)")
-  db.run("CREATE TABLE IF NOT EXISTS RememberMeTokens(tokenId TEXT, userId INTEGER, timeOrdered DATETIME DEFAULT CURRENT_TIMESTAMP)")
+  db.run("CREATE TABLE IF NOT EXISTS RememberMeTokens(tokenHash TEXT, userId INTEGER, timeOrdered DATETIME DEFAULT CURRENT_TIMESTAMP)")
   
   _prepDatabaseVersion()
   _loadVenders()
@@ -341,6 +406,7 @@ function Database()
     LoginUser: LoginUser,
     CreateUser: CreateUser,
     ConsumeRememberMeToken: ConsumeRememberMeToken,
+    CreateRememberMeToken: CreateRememberMeToken,
     GetUserById: GetUserById
   }
 }
