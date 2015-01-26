@@ -27,6 +27,11 @@ div.application
   width: 100%;
 }
 
+.logoutButton
+{
+  text-color: blue
+}
+
 .loginTab
 {
 	background: whitesmoke;

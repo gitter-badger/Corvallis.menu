@@ -75,15 +75,11 @@ passport.use(new RememberMeStrategy(
   //define method for processing tokens and returning users
   function(token, done)
   {
-    DebugLog("RememberMe strategy called for token: " + token)
     //attempt to consume the token
     database.ConsumeRememberMeToken(token)
     //if token consumed successfully
     .then(function(user)
     {
-      //HACK: tack on the token so
-      //that it is returned to the calling function
-      user.token = token
       done(false, user)
     },
     //if the token could not be consumed
@@ -378,7 +374,7 @@ app.post("/Login", function(req, res, next)
     else
     {
       //if the user checked the remember me checkbox
-      if(req.body.rememberMe)
+      if(req.body.rememberMe == "true")
       {
         //generate token for user
         database.CreateRememberMeToken(user)
@@ -408,13 +404,9 @@ function(req, res, next)
 app.get("/Logout", function(req,res)
 {
   DebugLog("Logout requested...")
+  res.clearCookie("remember_me")
   req.logout()
-})
-
-app.get("/Test", _userIsDeliverer,
-function(req, res)
-{
-  res.send("Success")
+  res.send(true)
 })
 
 var server = app.listen(3030)

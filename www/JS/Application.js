@@ -3,9 +3,9 @@
 */
 
 //define for requirejs
-define(["Ajax", "JS/Cart", "JS/Menus", "JS/Account", "JS/Register", 
+define(["jquery", "Ajax", "JS/Cart", "JS/Menus", "JS/Account", "JS/Register", 
 "JS/TabsComponent", "JS/Login", "JS/Admin", "JS/Deliveries"], 
-function(Ajax, Cart, Menus, Account, Register, TabsComp, Login, Admin, Deliveries)
+function($, Ajax, Cart, Menus, Account, Register, TabsComp, Login, Admin, Deliveries)
 {
   
   function Application()
@@ -42,13 +42,13 @@ function(Ajax, Cart, Menus, Account, Register, TabsComp, Login, Admin, Deliverie
       init: function()
       {
         //store the root of the application
-        this.set("RactiveRoot", this)
+        var root = this
+        this.set("RactiveRoot", root)
         
         //if the user has the remember_me cookie set,
         //the initial interaction with the server will have
         //already resulted in a server-side login.
-        //
-        //probe server for user info of this logged in client
+        //probe server for User information
         Ajax.Post("/GetUser", false, function(response)
         {
           if(!response.pkg)
@@ -57,6 +57,13 @@ function(Ajax, Cart, Menus, Account, Register, TabsComp, Login, Admin, Deliverie
           var pkg = JSON.parse(response.pkg)
           
           ractive.set("User", pkg.user)
+        })
+        
+        //init event handlers
+        this.on("*.LogoutClick", function(event)
+        {
+          Ajax.Get("/Logout")
+          root.set("User", false)
         })
       }
     })

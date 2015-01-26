@@ -46,7 +46,8 @@
   {{#if !User}}
     <Login/>
   {{else}}
-    Logged in as {{User.Name}}
+    Logged in as {{User.Name}}<br>
+    <div class="logoutButton" on-tap="LogoutClick">Logout</div>
   {{/if}}
   
   
