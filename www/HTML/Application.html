@@ -47,6 +47,7 @@
     <Login/>
   {{else}}
     Logged in as {{User.Name}}<br>
+    <TabsLink PaneId="accountPane">Account</TabsLink>
     <div class="logoutButton" on-tap="LogoutClick">Logout</div>
   {{/if}}
   
@@ -66,13 +67,16 @@
 <TabsPane PaneId="cartPane">
   <Cart/>
 </TabsPane>
-<TabsPane PaneId="registerPane">
-  <Register/>
-</TabsPane>
 <TabsPane PaneId="adminPane">
   <Admin/>
 </TabsPane>
 <TabsPane PaneId="deliveriesPane">
   <Deliveries/>
+</TabsPane>
+<TabsPane PaneId="registerPane">
+  <Register/>
+</TabsPane>
+<TabsPane PaneId="accountPane">
+  <Account/>
 </TabsPane>
 <!-- {{/Tabs}} -->

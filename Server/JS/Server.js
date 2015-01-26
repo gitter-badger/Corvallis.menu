@@ -16,8 +16,6 @@ var bodyParser = require('body-parser')
 var cookieParser = require('cookie-parser')
 var session = require('express-session')
 var flash = require('connect-flash')
-var LocalStrategy = require("passport-local").Strategy
-var RememberMeStrategy = require("passport-remember-me").Strategy
 //var RememberMeStrategy = require("./PassportStrategy.js")
 var fs = require("fs")
 var requirejs = require("requirejs")
@@ -38,6 +36,7 @@ DebugLog("RequireJS rooted at " + root)
 require(thirdPartyFolder + "polyfill.js")
 var database = require("./Database.js")
 var search = require("./Search.js")
+var passportSetup = require("./PassportSetup.js")
 
 //generate local variables
 database = database()
@@ -54,106 +53,8 @@ app.use(passport.session())
 app.use(passport.authenticate('remember-me'))
 app.use(flash())
 
-//teach passport to serialize users
-passport.serializeUser(function(user, done)
-{
-    //stored/retrieved by id
-    done(null, user.userId);
-})
-
-//teach passport to deserialize users
-passport.deserializeUser(function(id, done)
-{
-  var user = database.GetUserById(id)
-  if(user)
-    done(null, user)
-  else  
-    done("User could not be found.", null)
-})
-
-passport.use(new RememberMeStrategy(
-  //define method for processing tokens and returning users
-  function(token, done)
-  {
-    //attempt to consume the token
-    database.ConsumeRememberMeToken(token)
-    //if token consumed successfully
-    .then(function(user)
-    {
-      done(false, user)
-    },
-    //if the token could not be consumed
-    function(err)
-    {
-      done(err, false)
-    })
-  },
-  //define method for creating a token for a user
-  function(user, done)
-  {
-    database.CreateRememberMeToken(user)
-    .then(function(token)
-    {
-      done(false, token)
-    },
-    function(err)
-    {
-      done(err, false)
-    })
-  }
-))
-
-//teach passport to register users
-passport.use("local-register", new LocalStrategy(
-{
-  usernameField: "email",
-  passwordField: "password",
-  passReqToCallback: true
-},
-function(req, email, password, done)
-{
-  database.CreateUser(req.body.email, req.body.password, req.body.name, req.body.phone)
-    .then(
-    //User created successfully.
-    function(user)
-    { 
-      console.log("New user registered:" + user.email)
-      done(null, user)
-    },
-    //user creation failed
-    function(err)
-    {
-      console.log("User registration failed: " + err)
-      done(err, false)
-    }
-  )
-}))
-
-//teach passport to login users
-passport.use("local-login", new LocalStrategy(
-{
-  usernameField: "email",
-  passwordField: "password",
-  passReqToCallback: true
-},
-function(req, email, password, done)
-{
-  database.LoginUser(email, password)
-  .then(
-    //if login successful
-    function(user)
-    {
-      done(false, user)
-    },
-    //if login unsuccessful
-    function(err)
-    {
-      done(err, false)
-    }
-  )  
-}))
-
-
+//call PassportSetup.js, configuring passport
+passportSetup(database, app, passport)
 
 
 /* METHODS */
@@ -164,6 +65,7 @@ function _userLoggedIn(req, res, next)
   else
     res.send("Not logged in.")
 }
+
 
 function _userIsAdmin(req, res, next)
 {
@@ -178,6 +80,7 @@ function _userIsAdmin(req, res, next)
     next()
 }
 
+
 function _userIsDeliverer(req, res, next)
 {
   console.log(req.session.user.deliverer)
@@ -191,6 +94,42 @@ function _userIsDeliverer(req, res, next)
   else
     next()
 }
+
+//This middleware function is used to prevent
+//a route from being flooded. This is useful to prevent
+//brute forcing of passwords.
+function _preventFlooding(req, res, next)
+{
+  //compute session variables for given request url
+  var attemptCounterKey = "attemptCounter"+req.url
+  var lastAttemptKey = "lastAttempt"+req.url
+  
+  //compute moment of login request
+  var date = new Date()
+  var now = date.getMinutes() + date.getSeconds()/60
+  
+  
+  //itterate counter
+  if(!req.session[attemptCounterKey])
+    req.session[attemptCounterKey] = 0
+  req.session[attemptCounterKey]++
+ 
+  
+  //if the user has prodded this URL more than 50 times...
+  if(req.session[attemptCounterKey] > 50)
+    //and if it has been less than 30 seconds since the last request was processed
+    if(Math.abs(req.session[lastAttemptKey] - now)< .5)
+    {
+      DebugLog("Denying request due to flooding.")
+      var err = {Message: "Too many requests, please wait 30 seconds."}
+      res.send({pkg: JSON.stringify({err: err})})
+      return false
+    }
+    
+  req.session[lastAttemptKey] = now
+  return next()
+}
+
 
 function DebugLog(msg)
 {
@@ -260,13 +199,13 @@ function _loadTemplates()
 //ensuring that templates are reloaded if the
 //folder changes, and any templates may have changed.
 fs.watch(templatesFolder, _loadTemplates)
+_loadTemplates()
 
 
 
 //make client side files accessible via GET
 _makeAccessableToClient(wwwFolder)
 
-_loadTemplates()
 
 app.get('/', function(req, res)
 {
@@ -338,7 +277,8 @@ app.post('/SubmitOrder', function(req, res)
   )  
 })
 
-app.post("/RegisterUser", function(req, res, next)
+app.post("/RegisterUser", _preventFlooding,
+function(req, res, next)
 {
   DebugLog("Register user requested...")
   //attempt to register the account using passport
@@ -358,9 +298,11 @@ app.post("/RegisterUser", function(req, res, next)
 })
 
 
-app.post("/Login", function(req, res, next)
+app.post("/Login", _preventFlooding, 
+function(req, res, next)
 {
-  DebugLog("Login requested...")
+  DebugLog("Processing Login request.")
+  
   //attempt to log into the account using passport
   passport.authenticate('local-login', function(err, user, info)
   {

@@ -22,6 +22,11 @@
     <input type="checkbox" checked="{{Credentials.RememberMe}}">
     <button on-tap="LoginClick">Log In</button>
   </div>
+  {{#if Err.Message}}
+    <div class="errorMessage">
+      {{Err.Message}}
+    </div>
+  {{/if}}
   <TabsLink PaneId="registerPane">
     <button>Register</button>
   </TabsLink>

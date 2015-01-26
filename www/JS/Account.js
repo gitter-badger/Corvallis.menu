@@ -15,28 +15,6 @@ function(Page, $, Ajax)
      
     /* PRIVATE METHODS */
     
-    //Required to inherit from class Page
-    //This method initiates ractive
-    //binding data and logic to the front end HTML
-    function _attachRactive()
-    {      
-        //bind page to container
-        var component = Ractive.extend({
-        template: Templates["Account.html"],
-        data:
-        { 
-        },
-        init: function()
-        {
-          ractive = this
-        }
-      })
-      
-      
-      Ractive.components.Account = component
-    }
-    
-    
     
     
     
@@ -45,7 +23,18 @@ function(Page, $, Ajax)
     
     //local variables
     var ractive
-    _attachRactive()
+    
+    //bind page to container
+    Ractive.components.Account = Ractive.extend({
+      template: Templates["Account.html"],
+      data:
+      { 
+      },
+      init: function()
+      {
+        ractive = this
+      }
+    })
     
     return{
       __proto__: Page()
