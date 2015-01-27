@@ -4,91 +4,76 @@ define(function(require)
 {  
   if(!Ractive.components.TabsComponent)
   {
+    //counter for the number of tabs components that have been created
     var numTabsComponents = 0
     
-    var component = Ractive.extend({
+    Ractive.components.TabsComponent = Ractive.extend({
       template:'{{>content}}',
       components:
       {
+        //The link subcomponent that will be used to select a page
         TabsLink: Ractive.extend(
           {
-            template: '<a tabsId={{tabsId}} on-tap="Select">{{>content}}</a>',
-            data: 
-            { 
-              Selected : false, 
-              tabsId : -1
-            },
+            template: '<a on-tap="Select">{{>content}}</a>',
+            data: { Selected: false },
             init: function()
             {
-              this.on("Select", function()
-              {
-                var tabsComponent = this.get("parentComponent")
-                var currentLink = this
-                //create helper functions
-                function _sameComponent(comp)
-                {
-                  return comp.data.tabsId == currentLink.get("tabsId")
-                }
-                function _setSelected(comp)
-                {
-                  comp.set("Selected", comp.data.PaneId === currentLink.get("PaneId"))
-                }
-                
-                tabsComponent.findAllComponents("TabsPane")
-                  .filter(_sameComponent)
-                  .map(_setSelected)
-                  
-                tabsComponent.findAllComponents("TabsLink")
-                  .filter(_sameComponent)
-                  .map(_setSelected)
-              })
+              //set the tabsId for this component to that of its parent TabComponent
+              this.set("tabsId", this.get("tabsId"))
             }
           }),
+        //The pane subcomponent that will display a page
         TabsPane: Ractive.extend(
           {
-            template: '<div tabsId={{tabsId}} style={{>PaneStyle}}>{{>content}}</div>',
-            data: 
-            { 
-              Selected : false,
-              tabsId : -1
-            },
-            partials:
+            template: '<div  {{^Selected}} style="display: none" {{/Selected}}>{{>content}}</div>',
+            data: { Selected: false },
+            init: function()
             {
-              PaneStyle : '{{#if this.Selected}}display: inline-block{{else}}display: none{{/if}}'
+              //set the tabsId for this component to that of its parent TabComponent
+              this.set("tabsId", this.get("tabsId"))
             }
           })
       },
+      
+      //Assigns a tabsId to the component,
+      //and assigns the select handlers for its subcomponents.
       init: function()
       {
-        var thisComponent = this
-        //calculate id for new tabs component
-        var newId = numTabsComponents++
-        
-        //create helper methods used by init
-        function _newComponent(comp)
+        //calculate id for this new tabs component
+        this.set("tabsId", numTabsComponents++)
+          
+        //generate function to handle selection of a link or pane
+        function onSelect(event)
         {
-          return comp.data.tabsId == -1
-        }
-        function _initComponent(comp)
-        {
-          //change ID from -1 to the new id
-          comp.set("tabsId", newId)
-          //tell the component who its parent is
-          comp.set("parentComponent", thisComponent)
+          //get the component 
+          var currentComp = event.component
+          
+          //create helper functions
+          function _sameComponent(comp)
+          {
+            return comp.get("tabsId") === currentComp.get("tabsId")
+          }
+          function _setSelected(comp)
+          {
+            comp.set("Selected", comp.get("PaneId") === currentComp.get("PaneId"))
+          }
+          
+          this.findAllComponents("TabsPane")
+            .filter(_sameComponent)
+            .map(_setSelected)
+            
+          this.findAllComponents("TabsLink")
+            .filter(_sameComponent)
+            .map(_setSelected)
+            
+          //return false to stop bubbling up the component chain.
+          return false
         }
         
-        
-        //set id on new tabs components
-        this.findAllComponents("TabsPane")
-          .filter(_newComponent)
-          .map(_initComponent)
-        this.findAllComponents("TabsLink")
-          .filter(_newComponent)
-          .map(_initComponent)
+        //apply Select functionality
+        this.on("TabsLink.Select", onSelect)
+        this.on("TabsPane.Select", onSelect)
       }
     })
-    
-    Ractive.components.TabsComponent = component
   }
-  return true
 })
