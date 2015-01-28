@@ -27,10 +27,14 @@ function _startApp()
     }
   })
   
-  //boot up requirejs
+  //boot up requirejs loading the application component
   requirejs(["JS/Application"], function(Application)
   {
-	  //boot up web app
-    var app = Application()
+    //instantiate the application as a component
+    //rooted at document.body
+    new Ractive({
+      el: document.body,
+      template: "<Application/>"
+    })
   })
 }

@@ -3,45 +3,64 @@
 //and creation of the cart page
 
 //define module for requirejs
-define(["JS/Page", "jquery", "Ajax"], 
-function(Page, $, Ajax)
+define(["jquery", "Ajax"], 
+function($, Ajax)
 {
+  var accountComp
   
-  function Account()
-  {
-    /* PUBLIC METHODS */
+  //Attempts to save the currently entered credentials
+  function Save(event)
+  {      
+    //collect newly input user data
+    var email = this.get("Credentials.Email")
+    var name = this.get("Credentials.Name")
+    var password = this.get("Credentials.Password")
+    var phone = this.get("Credentials.Phone")
     
-    
-     
-    /* PRIVATE METHODS */
-    
-    
-    
-    
-    /* CONSTRUCTOR */ 
-   
-    
-    //local variables
-    var ractive
-    
-    //bind page to container
-    Ractive.components.Account = Ractive.extend({
-      template: Templates["Account.html"],
-      data:
-      { 
-      },
-      init: function()
+    //filter out null values
+    var newValues = {email: email, name: name, password: password, phone: phone}
+      .filter(function(variable){ return variable })
+      
+    //disable ajax updates until the next request completes.
+    this.set("Processing", true)
+    //Time for the ajax request.
+    var posting = Ajax.Post("UpdateUser", newValues)
+    posting.done(function(response)
+    {
+      accountComp.set("Processing", false)
+      //if a response was given, parse it for its value
+      if(response)
+        response = JSON.parse(response.pkg)
+      //if the parsed response has content
+      accountComp.set("Err", response.err)
+
+      //if the user was successfully created
+      if(response.user)
       {
-        ractive = this
+        //update user info
+        accountComp.get("User")
+        accountComp.set("User", response.user)
+        //clear entered data
+        accountComp.set("Credentials", {})
       }
     })
-    
-    return{
-      __proto__: Page()
-    }
   }
   
-  return Account
+  //bind page to container
+  Ractive.components.Account = Ractive.extend({
+    template: Templates["Account.html"],
+    data:
+    { 
+      Credentials: {},
+      Processing: false,
+      Err: false
+    },
+    init: function()
+    {
+      accountComp = this
+      this.on("SaveClick", Save)
+    }
+  })
 })
 
 

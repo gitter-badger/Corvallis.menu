@@ -1,81 +1,45 @@
 /* 
-  The application
+  The application component
 */
 
-//define for requirejs
+//load required files and components
 define(["jquery", "Ajax", "JS/Cart", "JS/Menus", "JS/Account", "JS/Register", 
 "JS/TabsComponent", "JS/Login", "JS/Admin", "JS/Deliveries"], 
-function($, Ajax, Cart, Menus, Account, Register, TabsComp, Login, Admin, Deliveries)
+function($, Ajax)
 {
-  
-  function Application()
-  {  
-    
-    /* CONSTRUCTOR */
-    
-    //generate pages and their components  
-    var cartPage = Cart()
-    var menusPage = Menus()
-    var accountPage = Account()
-    var registerPage = Register()
-    var loginPage = Login()
-    var adminPage = Admin()
-    var deliveriesPage = Deliveries()
-    
-    //boot up ractive with the given template
-    var ractive = new Ractive({
-      el: document.body,
-      template: Templates["Application.html"],
-      data:
+  Ractive.components.Application = Ractive.extend({
+    template: Templates["Application.html"],
+    data:
+    {
+      User: false
+    },
+    init: function()
+    {
+      //store the root of the application
+      var applicationComp = this
+      this.set("AppRoot", applicationComp)
+      
+      //if the user has the remember_me cookie set,
+      //the initial interaction with the server will have
+      //already resulted in a server-side login.
+      //probe server for User information
+      Ajax.Post("/GetUser", false, function(response)
       {
-        //bind objects to the ractive instance
-        //enabling page access anywhere within ractive
-        Cart: cartPage,
-        Menus: menusPage,  
-        Account: accountPage,
-        Register: registerPage,
-        Login: loginPage,
-        Admin: adminPage,
-        Deliveries: deliveriesPage,
-        User: false
-      },
-      init: function()
+        if(!response.pkg)
+          return
+        
+        var pkg = JSON.parse(response.pkg)
+        
+        applicationComp.set("User", pkg.user)
+      })
+      
+      //init event handlers
+      this.on("*.LogoutClick", function(event)
       {
-        //store the root of the application
-        var root = this
-        this.set("RactiveRoot", root)
-        
-        //if the user has the remember_me cookie set,
-        //the initial interaction with the server will have
-        //already resulted in a server-side login.
-        //probe server for User information
-        Ajax.Post("/GetUser", false, function(response)
-        {
-          if(!response.pkg)
-            return
-          
-          var pkg = JSON.parse(response.pkg)
-          
-          ractive.set("User", pkg.user)
-        })
-        
-        //init event handlers
-        this.on("*.LogoutClick", function(event)
-        {
-          Ajax.Get("/Logout")
-          root.set("User", false)
-        })
-      }
-    })
-    
-    
-    
-    
-    
-    return{
+        Ajax.Get("/Logout")
+        applicationComp.set("User", false)
+      })
     }
-  }
-  
-  return Application
+  })
 })
   

@@ -3,16 +3,15 @@
 //and creation of the cart page
 
 //define module for requirejs
-define(["JS/Page", "Shared/JS/VenderIsOpen", "Shared/JS/CalcOrderPrice", "underscore", "jquery", "Ajax"], 
-function(Page, VenderIsOpen, CalcOrderPrice, _, $, Ajax)
-{
-  
-  function Cart()
-    {
-    /* PUBLIC METHODS */
+define(["Shared/JS/VenderIsOpen", "Shared/JS/CalcOrderPrice", "underscore", "jquery", "Ajax"], 
+  function(VenderIsOpen, CalcOrderPrice, _, $, Ajax)
+  {
+    //local variables
+    var cartComp
+    var chosenVender
     
     //Adds the given item to the cart
-    function AddToCart(item, parentVender)
+    function AddToCart(event, item, parentVender)
     {
       //validate parameters
       if(!item || !parentVender)
@@ -38,14 +37,14 @@ function(Page, VenderIsOpen, CalcOrderPrice, _, $, Ajax)
       chosenVender = parentVender;
       
       //add item to collection
-      ractive.push("Items", item)
+      cartComp.push("Items", item)
     }
     
     //Initiates the purchase of the current cart
-    function Purchase()
+    function Purchase(event)
     {
       //get items
-      var items = ractive.get("Items")
+      var items = cartComp.get("Items")
       //ensure nonempty order
       if(items.length <= 0)
         return
@@ -87,57 +86,22 @@ function(Page, VenderIsOpen, CalcOrderPrice, _, $, Ajax)
       })
     }
      
-    /* PRIVATE METHODS */
-    
-    //Required to inherit from class Page
-    //This method initiates ractive
-    //binding data and logic to the front end HTML
-    function _attachRactive()
-    {      
-        //bind page to container
-        var component = Ractive.extend({
-        template: Templates["Cart.html"],
-        data:
-        { 
-          Items: [],
-          Purchase: Purchase
-        },
-        init: function()
-        {
-          ractive = this
-          
-          //bind button clicks
-          this.on("Purchase", function(event)
-          {
-            Purchase()
-          })
-        }
-      })
+    //Define the component
+    Ractive.components.Cart = Ractive.extend({
+    template: Templates["Cart.html"],
+    data:
+    { 
+      Items: []
+    },
+    init: function()
+    {
+      cartComp = this
       
-      
-      Ractive.components.Cart = component
+      //attach functions
+      this.on("Purchase", Purchase)
+      this.on("AddToCart", AddToCart)
     }
-    
-    
-    
-    
-    
-    /* CONSTRUCTOR */ 
-   
-    
-    //local variables
-    var ractive
-    var chosenVender
-    _attachRactive()
-    
-    return{
-      __proto__: Page(),
-      AddToCart: AddToCart,
-      Purchase: Purchase
-    }
-  }
-  
-  return Cart
+  })
 })
 
 
