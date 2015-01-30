@@ -1,6 +1,4 @@
-//Client side Cart page.
-//Handles all of cart's calls to the server,
-//and creation of the cart page
+//Client side Register page
 
 //define module for requirejs
 define(["jquery", "Ajax"], 
@@ -27,7 +25,7 @@ function($, Ajax)
       registerComp.set("Processing", false)
       //if a response was given, parse it for its value
       if(response)
-        response = JSON.parse(response.pkg)
+        response = JSON.parse(response)
       //if the parsed response has content
       registerComp.set("Err", response.err)
 
@@ -40,7 +38,7 @@ function($, Ajax)
         //select menus page          
         registerComp.get("AppRoot")
           .findAllComponents("TabsLink")
-          .filter(function(link){ return link.get("PaneId") == "menusPane"})
+          .filter(function(link){ return link.get("PaneId") == "menusPane" })
           .map(function(link){ link.fire("Select") })
       }
     })

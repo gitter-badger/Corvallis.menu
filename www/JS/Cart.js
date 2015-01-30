@@ -1,6 +1,4 @@
 //Client side Cart page.
-//Handles all of cart's calls to the server,
-//and creation of the cart page
 
 //define module for requirejs
 define(["Shared/JS/VenderIsOpen", "Shared/JS/CalcOrderPrice", "underscore", "jquery", "Ajax"], 
@@ -62,7 +60,8 @@ define(["Shared/JS/VenderIsOpen", "Shared/JS/CalcOrderPrice", "underscore", "jqu
           //This method is triggered when the user has paid.
           //send purchase to server
           //send ajax request to server
-          var posting = Ajax.Post("SubmitOrder", {Order: JSON.stringify({Items: items, Vender: chosenVender, Token: token.id})})
+          var order = {Items: items, Vender: chosenVender, Token: token.id}
+          var posting = Ajax.Post("SubmitOrder", order)
           posting.done(function(response)
           {
             //if a response was given, parse it for its value

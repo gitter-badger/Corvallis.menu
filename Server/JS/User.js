@@ -1,6 +1,7 @@
 exports = module.exports = User;
 
-//This class reperesents a user within the mysql database.
+
+//This class reperesents a user within the sqlite database.
 //
 //Requires:
 //  db: reference to the sqlite database object
@@ -14,6 +15,7 @@ function User(db, user)
   function ToJson()
   {
     return{
+      userId: user.userId,
       Email: user.email,
       Name: user.name,
       Phone: user.phone,
@@ -29,16 +31,14 @@ function User(db, user)
   //
   //Parameters:
   //  pkg: Json object containing key value pairs for database columns.
-  //  callingUser: User who is making the function call. Necessary to ensure
-  //    only admins can change administrative priviledges.
-  function Update(pkg, callingUser)
+  //  callingUserIsAdmin: Bool
+  function Update(pkg, callingUserIsAdmin)
   {
     //validate parameters
     if(!pkg)throw "Package not sent to user.Update";
-    if(!callingUser) throw "CallingUser not sent to user.Update";
     
     //if the calling user does not have permission to make changes to this user
-    if(!callingUser.admin && !callingUser.userId == user.userId)
+    if(!callingUser.admin && callingUser.userId != user.userId)
       throw "User calling user.Update() does not have privilege to do so."
     
     //create sql query
@@ -52,9 +52,9 @@ function User(db, user)
       //ensure no priviledged properties are being changed
       if(prop.toLowerCase() == "userid")
         throw "Tried to change userId of a user. This should never change."
-      if(prop.toLowerCase() == "admin" && !callingUser.Admin)
+      if(prop.toLowerCase() == "admin" && !callingUserIsAdmin)
         throw "Incorrect priviledges to change the administrative priviledges of a user!"
-      if(prop.toLowerCase() == "employee" && !callingUser.Admin)
+      if(prop.toLowerCase() == "employee" && !callingUserIsAdmin)
         throw "Incorrect priviledges to change the employement of a user!"
         
       //md5 the password if necessary

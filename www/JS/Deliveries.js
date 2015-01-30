@@ -1,4 +1,5 @@
-//Deliveries page of the client
+//client side deliveries page
+
 //define module for requirejs
 define(["jquery", "Ajax"], 
 function($, Ajax)

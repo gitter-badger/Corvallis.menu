@@ -3,7 +3,8 @@
 */
 
 //load required files and components
-define(["jquery", "Ajax", "JS/Cart", "JS/Menus", "JS/Account", "JS/Register", 
+define(["jquery", "Ajax", 
+"JS/Cart", "JS/Menus", "JS/Account", "JS/Register", 
 "JS/TabsComponent", "JS/Login", "JS/Admin", "JS/Deliveries"], 
 function($, Ajax)
 {
@@ -25,12 +26,12 @@ function($, Ajax)
       //probe server for User information
       Ajax.Post("/GetUser", false, function(response)
       {
-        if(!response.pkg)
+        if(!response)
           return
         
-        var pkg = JSON.parse(response.pkg)
+        response = JSON.parse(response)
         
-        applicationComp.set("User", pkg.user)
+        applicationComp.set("User", response.user)
       })
       
       //init event handlers

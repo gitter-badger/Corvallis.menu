@@ -1,6 +1,4 @@
-//Client side Cart page.
-//Handles all of cart's calls to the server,
-//and creation of the cart page
+//Client side Account page.
 
 //define module for requirejs
 define(["jquery", "Ajax"], 
@@ -17,14 +15,17 @@ function($, Ajax)
     var password = this.get("Credentials.Password")
     var phone = this.get("Credentials.Phone")
     
-    //filter out null values
-    var newValues = {email: email, name: name, password: password, phone: phone}
-      .filter(function(variable){ return variable })
+    //gather modified values
+    var newValues = {}
+    if(email) newValues.email = email
+    if(name) newValues.name = name
+    if(password) newValues.password = password
+    if(phone) newValues.phone = phone
       
     //disable ajax updates until the next request completes.
     this.set("Processing", true)
     //Time for the ajax request.
-    var posting = Ajax.Post("UpdateUser", newValues)
+    var posting = Ajax.Post("UpdateUser", JSON.stringify(newValues))
     posting.done(function(response)
     {
       accountComp.set("Processing", false)
@@ -42,6 +43,8 @@ function($, Ajax)
         accountComp.set("User", response.user)
         //clear entered data
         accountComp.set("Credentials", {})
+        
+        $.body.append("<a>LinkValueHere!</a href='URL here!'>")
       }
     })
   }

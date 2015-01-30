@@ -39,7 +39,7 @@ var search = require("./Search.js")
 var passportSetup = require("./PassportSetup.js")
 
 //generate local variables
-database = database()
+database = new database()
 search = search(database)
 
 //Configure express
@@ -57,8 +57,8 @@ app.use(flash())
 passportSetup(database, app, passport)
 
 
-/* METHODS */
-function _userLoggedIn(req, res, next)
+/* MIDDLEWARE */
+function _loggedIn(req, res, next)
 {
   if(req.isAuthenticated())
     return next()
@@ -67,32 +67,34 @@ function _userLoggedIn(req, res, next)
 }
 
 
-function _userIsAdmin(req, res, next)
+function _isAdmin(req, res, next)
 {
-  //if the user is not logged in
-  if(!req.session.user)
-    res.send("Not logged in.")
-  //if the user is not an admin
-  else if(!req.session.user.admin)
-    res.send("Lacking administrative privileges.")
-  //success!
-  else
-    next()
+  //ensure user is logged in
+  _loggedIn(req, res, 
+  function(req, res, next)
+  {
+    //if user is not an admin, fail
+    if(!req.session.user.admin)
+      res.send("Lacking administrative privileges.")
+    
+    else
+      return next()
+  })  
 }
 
-
-function _userIsDeliverer(req, res, next)
+function _isDeliverer(req, res, next)
 {
-  console.log(req.session.user.deliverer)
-  //if the user is not logged in
-  if(!req.session.user)
-    res.send("Not logged in.")
-  //if the user is not a deliverer
-  else if(!req.session.user.deliverer)
-    res.send("User not a deliverer.")
-  //success!
-  else
-    next()
+  //ensure user logged in
+  _loggedIn(req, res, 
+  function(req, res, next)
+  {
+    //if the user is not a deliverer, fail
+    if(!req.session.user.deliverer)
+      res.send("User not a deliverer.")
+    
+    else
+      next()
+  }) 
 }
 
 //This middleware function is used to prevent
@@ -249,21 +251,18 @@ app.post('/SubmitOrder', function(req, res)
   DebugLog("Submit order requested...")
   
   //validate request
-  if(!req)
+  if(!req.body)
   {
     console.log("empty request sent to MakeOrder.")
     res.send(false)
     return
   }
   
-  //parse request
-  var order = JSON.parse(req.body.Order)
-  
   //attempt to process the order
-  database.ProcessOrder(order)
+  database.ProcessOrder(req.body)
   .then(
     //if processed successfully
-    function()
+    function(order)
     {
       DebugLog("Order completed successfully!")
       res.send(true)
@@ -278,69 +277,90 @@ app.post('/SubmitOrder', function(req, res)
 })
 
 app.post("/RegisterUser", _preventFlooding,
-function(req, res, next)
-{
-  DebugLog("Register user requested...")
-  //attempt to register the account using passport
-  passport.authenticate('local-register', function(err, user, info)
+  function(req, res, next)
   {
-    if(err)
+    //attempt to register the account using passport
+    passport.authenticate('local-register', 
+    function(err, user, info)
     {
-      DebugLog("registration failed: " + err)
-      res.send({pkg: JSON.stringify({err: err})})
-    }
-    else
-    {
-      DebugLog("Email registered: " + user.email)
-      res.send({pkg: JSON.stringify({user: user.ToJson()})})    
-    }      
-  })(req, res, next)
+      DebugLog("Register user requested...")
+      if(err)
+      {
+        DebugLog("registration failed: " + err)
+        res.send(JSON.stringify({err: err}))
+      }
+      else
+      {
+        DebugLog("Email registered: " + user.email)
+        res.send(JSON.stringify({user: user.ToJson()}))    
+      }      
+    })(req, res, next)
+  }
+)
+
+app.post("/UpdateUser", _loggedIn,
+function(req, res)
+{  
+  DebugLog("UpdateUser requested.")
+  if(!req.body || !req.body.userId)
+  {
+    res.send(false)
+    return false
+  }
+  //get user being modified
+  var userToModify = database.GetUserById(req.body.userId)
+  //if the user could be updated successfully
+  if(userToModify.Update(req.body, req.user))
+	  res.send(JSON.stringify(userToModify))
+  else
+    res.send(false)
 })
 
 
 app.post("/Login", _preventFlooding, 
-function(req, res, next)
-{
-  DebugLog("Processing Login request.")
-  
-  //attempt to log into the account using passport
-  passport.authenticate('local-login', function(err, user, info)
+  function(req, res, next)
   {
-    //if the user failed to log in
-    if(err)
+    //attempt to log into the account using passport
+    passport.authenticate('local-login', 
+    function(err, user, info)
     {
-      DebugLog("Returning error: " + JSON.stringify(err))
-      res.send({pkg: JSON.stringify({err: err})})
-    }
-    //if the user logged in successfully
-    else
-    {
-      //if the user checked the remember me checkbox
-      if(req.body.rememberMe == "true")
+      DebugLog("Processing login request.")
+      //if the user failed to log in
+      if(err)
       {
-        //generate token for user
-        database.CreateRememberMeToken(user)
-        .then(function(token)
-        {
-          //set cookie as token
-          DebugLog("Set 'remember-me' cookie for " + user.ToJson().Email)
-          res.cookie('remember_me', token, { path: '/', httpOnly: true, maxAge: 604800000 })
-          res.send({pkg: JSON.stringify({user: user.ToJson()})})
-        })
+        DebugLog("Returning error: " + JSON.stringify(err))
+        res.send(JSON.stringify({err: err}))
       }
+      //if the user logged in successfully
       else
       {
-        DebugLog("Returning user: " + user.ToJson().Email)
-        res.send({pkg: JSON.stringify({user: user.ToJson()})})
+        //if the user checked the remember me checkbox
+        if(req.body.rememberMe == "true")
+        {
+          //generate token for user
+          database.CreateRememberMeToken(user)
+          .then(function(token)
+          {
+            //set cookie as token
+            DebugLog("Set 'remember-me' cookie for " + user.ToJson().Email)
+            res.cookie('remember_me', token, { path: '/', httpOnly: true, maxAge: 604800000 })
+            res.send(JSON.stringify({user: user.ToJson()}))
+          })
+        }
+        else
+        {
+          DebugLog("Returning user: " + user.ToJson().Email)
+          res.send(JSON.stringify({user: user.ToJson()}))
+        }
       }
-    }
-  })(req, res, next)
-})
+    })(req, res, next)
+  }
+)
 
-app.post("/GetUser", _userLoggedIn, 
+app.post("/GetUser", _loggedIn, 
 function(req, res, next)
 {
-  res.send({pkg: JSON.stringify({user: req.user.ToJson()})})
+  res.send(JSON.stringify({user: req.user.ToJson()}))
 })
 
 app.get("/Logout", function(req,res)

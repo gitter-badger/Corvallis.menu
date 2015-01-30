@@ -1,4 +1,4 @@
-//Client side login section
+//client side login component
 
 //define module for requirejs
 define(["jquery", "Ajax"], 
@@ -34,21 +34,16 @@ function($, Ajax)
     {
       ractive.set("Processing", false)
       
-      //if login was unsuccessful
-      if(!response.pkg)
-        return
-       
-      var pkg = JSON.parse(response.pkg)
       
-      
-      ractive.set("Err", pkg.err)
+      response = JSON.parse(response)
+      ractive.set("Err", response.err)
       
       //This get call will make racitive find the
       //User data attached to the top of the application.
       //Without the get, set will not set the correct user variable.
       //This is more than a little troubling.
       ractive.get("User") 
-      ractive.set("User", pkg.user)
+      ractive.set("User", response.user)
     })
   }
   

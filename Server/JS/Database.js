@@ -3,17 +3,17 @@ exports = module.exports = Database;
 function Database()
 {
   /* PUBLIC METHODS */
-  function GetVenderData(){ return venderData }
-  function GetVersion(){ return version }
+  this.GetVenderData = function(){ return venderData }
+  this.GetVersion = function(){ return version }
   
-  function GetUserById(userId)
+  this.GetUserById = function(userId)
   {
     return Users[userId]
   }
   
   //Consumes the given token, finding its corresponding user
   //in the RememberMeTokens table, and returning said user.
-  function ConsumeRememberMeToken(token)
+  this.ConsumeRememberMeToken = function(token)
   {
     var tokenHash = md5(token)
     return new Promise(function(fulfill, reject)
@@ -56,7 +56,7 @@ function Database()
     })
   }
 
-  function CreateRememberMeToken(user)
+  this.CreateRememberMeToken = function(user)
   {
     return new Promise(function(fulfill, reject)
     {
@@ -105,14 +105,14 @@ function Database()
   
   //Processes the given order, validating it,
   //and adding it to the local database
-  function ProcessOrder(order)
+  this.ProcessOrder = function(order)
   {
     return orderManager.ProcessOrder(order) 
   }
   
   
   //Attempts to login the user with the given email and password.
-  function LoginUser(email, password)
+  this.LoginUser = function(email, password)
   {
     return new Promise(function(fulfill, reject)
     {
@@ -138,7 +138,7 @@ function Database()
   }
   
   //Creates a user with the given properties
-  function CreateUser(email, password, name, phone)
+  this.CreateUser = function(email, password, name, phone)
   {    
     //prepare the query checking if the given email address is available
     var emailNotTaken = new Promise(function(fulfill, reject)
@@ -384,12 +384,12 @@ function Database()
   //boot up database
   var db = new sqlite.Database(dbPath)
   //feed DB to order manager to boot it up
-  var orderManager = OrderManager(db, GetVenderData)
+  var orderManager = OrderManager(db, this)
   
   
   //Instantiate tables if they do not yet exist
-  db.run("CREATE TABLE IF NOT EXISTS Users(userId INTEGER PRIMARY KEY ASC, name TEXT, password TEXT, addressId INTEGER, email TEXT, phone TEXT, admin INTEGER DEFAULT 0, deliverer INTEGER DEFAULT 0, acceptingOrders INTEGER DEFAULT 0)")
-  db.run("CREATE TABLE IF NOT EXISTS Orders(orderId INTEGER PRIMARY KEY ASC, deliverer INTEGER DEFAULT -1, orderValue TEXT, stripeCharge TEXT, timeOrdered DATETIME DEFAULT CURRENT_TIMESTAMP, timePickedUp DATETIME, timeDelivered DATETIME, status TEXT DEFAULT \"new\")")
+  db.run("CREATE TABLE IF NOT EXISTS Users(userId INTEGER PRIMARY KEY ASC, name TEXT, password TEXT, addressId INTEGER, email TEXT, phone TEXT, admin INTEGER DEFAULT 0, deliverer INTEGER DEFAULT 0, acceptingOrders INTEGER DEFAULT 0, available INTEGER DEFAULT 0, locked INTEGER DEFAULT 0)")
+  db.run("CREATE TABLE IF NOT EXISTS Orders(orderId INTEGER PRIMARY KEY ASC, deliverer INTEGER DEFAULT -1, orderValue TEXT, stripeCharge TEXT, timeOrdered DATETIME DEFAULT CURRENT_TIMESTAMP, timePickedUp DATETIME, timeDelivered DATETIME, canceled TEXT)")
   db.run("CREATE TABLE IF NOT EXISTS Addresses(addressId INTEGER PRIMARY KEY ASC, userId INTEGER, address TEXT, instructions TEXT)")
   db.run("CREATE TABLE IF NOT EXISTS RememberMeTokens(tokenHash TEXT, userId INTEGER, timeOrdered DATETIME DEFAULT CURRENT_TIMESTAMP)")
   
@@ -397,16 +397,4 @@ function Database()
   _loadVenders()
   _loadUsers()
   _loadOrders()
-  
-  //specify which variables/functions are public
-  return{
-    GetVenderData: GetVenderData,
-    GetVersion: GetVersion,
-    ProcessOrder: ProcessOrder,
-    LoginUser: LoginUser,
-    CreateUser: CreateUser,
-    ConsumeRememberMeToken: ConsumeRememberMeToken,
-    CreateRememberMeToken: CreateRememberMeToken,
-    GetUserById: GetUserById
-  }
 }

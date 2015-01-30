@@ -1,4 +1,5 @@
-//Admin page of the client
+//Client side Admin page
+
 //define module for requirejs
 define(["jquery", "Ajax"], 
 function($, Ajax)

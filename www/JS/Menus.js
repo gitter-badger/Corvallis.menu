@@ -1,6 +1,4 @@
-//Client side Menus page.
-//Handles creation of Menus and
-//definition of their functionality
+//Client side Menus page
 
 //define module for requirejs
 define(["Shared/JS/VenderIsOpen", "jquery", "Ajax"], 

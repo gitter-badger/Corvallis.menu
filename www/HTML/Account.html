@@ -38,12 +38,9 @@
         {{Err.Phone}}
       </div>
     {{/if}}
-    NOTE: We will never give away your personal information.<br>
-    Phone numbers are required so that if an order has problems,<br>
-    we can give you a call and work it out.
   </div>
   
-  <button on-tap="RegisterClick" {{#if Processing}}disabled{{/if}}>Register</button>
+  <button on-tap="SaveClick" {{#if Processing}}disabled{{/if}}>Save</button>
 
 </div>
 {{/if}}
