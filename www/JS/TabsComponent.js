@@ -44,7 +44,7 @@ define(function(require)
         //The link subcomponent that will be used to select a page
         TabsLink: Ractive.extend(
           {
-            template: '<a on-tap="Select">{{>content}}</a>',
+            template: '<div on-tap="Select">{{>content}}</div>',
             data: { Selected: false },
             init: subCompInit
           }),
