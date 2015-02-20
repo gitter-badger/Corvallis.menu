@@ -3,13 +3,11 @@
   </div>
 
   <TabsComponent>
-    <div class="navBar cols2">
-      {{>NavBarLeft}}
-      {{>NavBarRight}}
+    <div class="navBar cols">
+			{{>NavBar}}
     </div>
     
-    
-    {{>Tabs}}
+    {{>TabsPanes}}
   </TabsComponent>
 </div>
 
@@ -18,31 +16,24 @@
                       unselectedTab  {{/if}}
 <!-- {{/TabClass}} -->
 
-<!-- {{>NavBarLeft}} -->
-<div class="navBarLeft ⅘">
+<!-- {{>NavBar}} -->
   <TabsLink PaneId="menusPane" Selected="true">
     <div class={{>TabClass}}>
 			<img src="Images/corvallis_menu.svg"/>
     </div>
   </TabsLink>
-  
   <TabsLink PaneId="deliveriesPane">
     <div class={{>TabClass}} {{#if !User.Deliverer}} style="display: none" {{/if}}>
       Deliveries
     </div>
   </TabsLink>
-  
+
   <TabsLink PaneId="adminPane">
     <div class={{>TabClass}} {{#if !User.Admin}} style="display: none" {{/if}}>
       Admin
     </div>
   </TabsLink>
-  
-</div>
-<!-- {{/NavBarLeft}} -->
 
-<!-- {{>NavBarRight}} -->
-<div class="navBarRight ⅕">
   {{#if !User}}
     <Login/>
   {{else}}
@@ -50,17 +41,15 @@
     <TabsLink PaneId="accountPane">Account</TabsLink>
     <div class="logoutButton" on-tap="LogoutClick">Logout</div>
   {{/if}}
-  
-  
+
   <TabsLink PaneId="cartPane">
     <div class={{>TabClass}}>
       <img src='Images/cart.svg'/>   
     </div>        
   </tabsLink>
-</div>
-<!-- {{/NavBarRight}} -->
+<!-- {{/NavBar}} -->
 
-<!-- {{>Tabs}} -->
+<!-- {{>TabsPanes}} -->
 <TabsPane PaneId="menusPane" Selected="true">
   <Menus/>
 </TabsPane>
@@ -79,4 +68,4 @@
 <TabsPane PaneId="accountPane">
   <Account/>
 </TabsPane>
-<!-- {{/Tabs}} -->
+<!-- {{/TabsPanes}} -->
