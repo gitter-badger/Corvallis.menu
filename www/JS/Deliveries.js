@@ -8,18 +8,12 @@ function($, Ajax)
     template: Templates["Deliveries.html"],
     data:
     { 
+	Stage: 0
     },
     init: function()
     {
-      ractive = this
-      this.on("testButtonClick",
-        function(event)
-        {
-          Ajax.Get("Test", null, function(response)
-          {
-            ractive.set("test", response)
-          })
-        })
+      var deliveriesComp = this
+      //window.open('https://connect.squareup.com/oauth2/authorize?client_id=y2y2pbZ7uU9clCF_uyHT5g&response_type=token', '_system')
     }
   })
 })

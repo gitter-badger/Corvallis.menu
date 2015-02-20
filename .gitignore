@@ -51,3 +51,6 @@ Keys/TwillioKey.txt
 *.log
 PhoneGap.exe
 node.exe
+PrivateKeys.json
+Keys.json
+Keys.js

@@ -1,15 +1,15 @@
 //Class used to abstract handling of orders by the server.
 //Used to process/validate new orders, adding them to the DB;
 //and to automatically assign orders to employees
-define(["Server/js/Order", "www/Shared/JS/VenderIsOpen", "www/Shared/JS/CalcOrderPrice"],
-function(Order, venderIsOpen, calcOrderPrice)
+define(["Server/js/Order", "www/Shared/JS/VenderIsOpen", "www/Shared/JS/CalcOrderPrice", "Keys"],
+function(Order, venderIsOpen, calcOrderPrice, Keys)
 {  
   function OrderManager(db, database)
   { 
     /* CONSTRUCTOR */
     
     //gather local variables
-    var stripe = require("stripe")("sk_test_xPKZSx74LUGSJUmmrwpRGwki")
+    var stripe = require("stripe")(Keys.StripeTestKey)
     var Promise = require("promise")
     var twilioClient = "TODO:FIX"//new twilio.ResetClient("asdf","asdf")
     var twilio = require("twilio")
