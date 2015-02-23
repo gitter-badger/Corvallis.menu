@@ -1,7 +1,7 @@
 <div id="menusPage">
   {{#if Venders}}
     <TabsComponent ToggleShowOptions="{{ToggleShowOptions}}">
-      <div class="venderTabContainer">
+      <div class="venderTabContainer cols">
         {{#Venders:vender}}
           {{#VenderIsOpen(this)}}
             {{>VenderLink}}
@@ -29,7 +29,7 @@
          
       {{#Venders[vender]}}
         {{#if Image}}
-          <img src="{{Image}}"/>
+          <img src="{{Image}}" class="venderLogo"/>
         {{else}}
           {{Name}}
         {{/if}}
@@ -40,9 +40,11 @@
   
 <!-- {{>VenderPane}} -->
   <TabsPane PaneId="{{Name}}">
+		<div class="cols">
     {{#Venders[vender].Items:item}}
       {{>Item}}
     {{/Venders[vender].Items}}
+		</div>
   </TabsPane>
 <!-- {{/VenderPane}} -->
 
@@ -50,7 +52,7 @@
   {{#if Header}}
     <div class="itemHeader">{{Header}}</div>
   {{else}}
-    <div {{#ShowOptions}}class="showOptions" {{/ShowOptions}}>
+    <div class="{{#ShowOptions}}showOptions {{/ShowOptions}}item" >
       <div on-tap="ToggleShowOptions: {{item}}, {{vender}}">
 	  	{{#if this.Image}}<img src="{{this.Image}}">{{/if}}
         <a {{#Description}} title="{{Description}}" {{/Description}}>{{Name}}</a>

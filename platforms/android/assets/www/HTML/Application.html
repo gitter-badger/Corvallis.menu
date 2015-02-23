@@ -1,16 +1,13 @@
 <div class="application">
   <div class="logo">
-    <img src="Images/corvallis_menu.svg"/>
   </div>
 
   <TabsComponent>
-    <div class="navBar">
-      {{>NavBarLeft}}
-      {{>NavBarRight}}
+    <div class="navBar cols">
+			{{>NavBar}}
     </div>
     
-    
-    {{>Tabs}}
+    {{>TabsPanes}}
   </TabsComponent>
 </div>
 
@@ -19,51 +16,56 @@
                       unselectedTab  {{/if}}
 <!-- {{/TabClass}} -->
 
-<!-- {{>NavBarLeft}} -->
-<div class="navBarLeft">
+<!-- {{>NavBar}} -->
   <TabsLink PaneId="menusPane" Selected="true">
     <div class={{>TabClass}}>
-      Menus
+			<img src="Images/corvallis_menu.svg"/>
     </div>
   </TabsLink>
-  
+  <TabsLink PaneId="deliveriesPane">
+    <div class={{>TabClass}} {{#if !User.Deliverer}} style="display: none" {{/if}}>
+      Deliveries
+    </div>
+  </TabsLink>
+
   <TabsLink PaneId="adminPane">
     <div class={{>TabClass}} {{#if !User.Admin}} style="display: none" {{/if}}>
       Admin
     </div>
   </TabsLink>
-  
-</div>
-<!-- {{/NavBarLeft}} -->
 
-<!-- {{>NavBarRight}} -->
-<div class="navBarRight">
   {{#if !User}}
     <Login/>
   {{else}}
-    Logged in as {{User.Name}}
+    Logged in as {{User.Name}}<br>
+    <TabsLink PaneId="accountPane">Account</TabsLink>
+    <div class="logoutButton" on-tap="LogoutClick">Logout</div>
   {{/if}}
-  
-  
+
   <TabsLink PaneId="cartPane">
     <div class={{>TabClass}}>
       <img src='Images/cart.svg'/>   
     </div>        
   </tabsLink>
-</div>
-<!-- {{/NavBarRight}} -->
+<!-- {{/NavBar}} -->
 
-<!-- {{>Tabs}} -->
+<!-- {{>TabsPanes}} -->
 <TabsPane PaneId="menusPane" Selected="true">
   <Menus/>
 </TabsPane>
 <TabsPane PaneId="cartPane">
   <Cart/>
 </TabsPane>
-<TabsPane PaneId="registerPane">
-  <Register/>
-</TabsPane>
 <TabsPane PaneId="adminPane">
   <Admin/>
 </TabsPane>
-<!-- {{/Tabs}} -->
+<TabsPane PaneId="deliveriesPane">
+  <Deliveries/>
+</TabsPane>
+<TabsPane PaneId="registerPane">
+  <Register/>
+</TabsPane>
+<TabsPane PaneId="accountPane">
+  <Account/>
+</TabsPane>
+<!-- {{/TabsPanes}} -->

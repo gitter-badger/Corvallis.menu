@@ -27,17 +27,14 @@ function _startApp()
     }
   })
   
-  //boot up requirejs
+  //boot up requirejs loading the application component
   requirejs(["JS/Application"], function(Application)
   {
-    try
-    {
-      //boot up webapp
-      var app = Application()
-    }
-    catch(error)
-    {
-      document.body.innerHTML = "Uh oh... Something went wrong! /n/n" + err
-    }
+    //instantiate the application as a component
+    //rooted at document.body
+    new Ractive({
+      el: document.body,
+      template: "<Application/>"
+    })
   })
 }

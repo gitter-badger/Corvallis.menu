@@ -4,86 +4,67 @@ define(function(require)
 {  
   if(!Ractive.components.TabsComponent)
   {
+    //counter for the number of tabs components that have been created
     var numTabsComponents = 0
-    var onLinkClick
-    
-    var component = Ractive.extend({
-      template:'{{>content}}',
-      components:
-      {
-        TabsLink: Ractive.extend(
-          {
-            template: '<a tabsId={{tabsId}} on-tap="clicked">{{>content}}</a>',
-            data: 
-            { 
-              Selected : false, 
-              tabsId : -1
-            }
-          }),
-        TabsPane: Ractive.extend(
-          {
-            template: '<div tabsId={{tabsId}} style={{>PaneStyle}}>{{>content}}</div>',
-            data: 
-            { 
-              Selected : false,
-              tabsId : -1
-            },
-            partials:
-            {
-              PaneStyle : '{{#if this.Selected}}display: block{{else}}display: none{{/if}}'
-            }
-          })
-      },
-      init: function()
-      {
-        //calculate id for new tabs component
-        var newId = numTabsComponents++
-        
-        //create helper methods used by init
-        function _newComponent(comp)
-        {
-          return comp.data.tabsId == -1
-        }
-        function _initComponent(comp)
-        {
-          //change ID from -1 to the new id
-          comp.set("tabsId", newId)
-        }
-        
-        
-        //set id on new tabs components
-        this.findAllComponents("TabsPane")
-          .filter(_newComponent)
-          .map(_initComponent)
-        this.findAllComponents("TabsLink")
-          .filter(_newComponent)
-          .map(_initComponent)
+    function subCompInit()
+    {
+      var parentComp = this.get("tabsComp")
+      var thisComp = this
       
-        if(onLinkClick) return
-        onLinkClick = this.on('TabsLink.clicked', function(event)
-        {
+      //set the tabsId for this component to that of its parent TabComponent
+      this.set("tabsId", this.get("tabsId"))
+      
+      this.on("Select", 
+        function()
+        {          
           //create helper functions
           function _sameComponent(comp)
           {
-            return comp.data.tabsId == event.context.tabsId
+            return comp.get("tabsId") === thisComp.get("tabsId")
           }
           function _setSelected(comp)
           {
-            comp.set("Selected", comp.data.PaneId === event.context.PaneId)
+            comp.set("Selected", comp.get("PaneId") === thisComp.get("PaneId"))
           }
           
-          this.findAllComponents("TabsPane")
+          parentComp.findAllComponents("TabsPane")
             .filter(_sameComponent)
             .map(_setSelected)
             
-          this.findAllComponents("TabsLink")
+          parentComp.findAllComponents("TabsLink")
             .filter(_sameComponent)
             .map(_setSelected)
         })
+    }
+    
+    Ractive.components.TabsComponent = Ractive.extend({
+      template:'{{>content}}',
+      components:
+      {
+        //The link subcomponent that will be used to select a page
+        TabsLink: Ractive.extend(
+          {
+            template: '<div on-tap="Select">{{>content}}</div>',
+            data: { Selected: false },
+            init: subCompInit
+          }),
+        //The pane subcomponent that will display a page
+        TabsPane: Ractive.extend(
+          {
+            template: '<div  {{^Selected}} style="display: none" {{/Selected}}>{{>content}}</div>',
+            data: { Selected: false },
+            init: subCompInit
+          })
+      },
+      
+      //Assigns a tabsId to the component,
+      //and assigns the select handlers for its subcomponents.
+      init: function()
+      {
+        //calculate id for this new tabs component
+        this.set("tabsId", numTabsComponents++)
+        this.set("tabsComp", this)
       }
     })
-    
-    Ractive.components.TabsComponent = component
   }
-  return true
 })

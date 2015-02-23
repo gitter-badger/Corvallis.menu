@@ -2,12 +2,12 @@
 //Handles all of search's calls to the server,
 //and creation of the Search page's <div>
 
-define(["JS/Page", "Ajax"], 
-function(Page, Ajax)
+define(["Ajax"], 
+function(Ajax)
 {
+  /*
   function Search()
   { 
-    /* PRIVATE METHODS */
     
     //Required to inherit from class Page
     //This method defines a single pulse of the heartbeat.
@@ -77,11 +77,6 @@ function(Page, Ajax)
       
       return false
     }   
-    
-    
-    
-    
-    /* CONSTRUCTOR */ 
    
     //local variables
     //client's data version
@@ -95,6 +90,7 @@ function(Page, Ajax)
   }
   
   return Search
+  */
 })
 
 

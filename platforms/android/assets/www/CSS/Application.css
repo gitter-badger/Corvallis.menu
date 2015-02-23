@@ -1,64 +1,114 @@
+*
+{
+	margin: 0;
+	padding: 0;
+}
+
+body
+{
+	background: darkgray;
+}
+
 div.application
 {
-  display: flex;
-  flex-flow: row wrap;
+	width: 80%;
+	max-width: 1280px;
+	margin: 0 auto;
+	font-family: Verdana,Geneva,sans-serif;
 }
 
 .logo,
 {
-  flex: 1 100%;
 }
 
 .navBar
 {
-  display: flex;
-  justify-content: space-between;
-  flex-flow: row wrap;
-  align-items: stretch;
-  flex-direction: row;
-  flex: 1 100%;
-  background-color: #AAAAAA;
+	padding 0.5%;
+	margin: 1% auto;
+	height: 100px;
+	background: rgb(126,126,126);
+	box-shadow: 1px 1px 1px black;
+	border-top: 1px solid rgb(202,202,202);
+	border-left: 1px solid rgb(74,74,74);
+	padding-top: 0.5rem;
+	padding-bottom: 0.5rem;
 }
 
-.loginTab
+.navBar img
 {
-  display: flex;
-  align-items: stretch;
-  justify-content: center;
-  flex: 1 100%;
-  flex-direction: column;
-}
-
-.navBarLeft
-{
-  display: flex;
-  justify-content: center;
-  flex-flow: row wrap;
-}
-
-.navBarRight
-{
-  display: flex;
-  align-items: stretch;
-  flex-flow: row wrap;
-  flex-direction: row-reverse;
-}
-
-
-
-.selectedTab
-{
-  background-color: #FFFFFF;
   height: 100%;
 }
 
-.unselectedTab
+.navBar > *
 {
-  margin: 1px;
+	height: 100%;
+}
+
+.logoutButton
+{
+  text-color: blue
+}
+
+.cols .loginTab
+/* using .cols .loginTab to be more specific than the [class*=cols] > * rule which contains text-align and font-size properties that need to be overwritten ~~~There may be a better way to do this~~~ */
+{
+	background: whitesmoke;
+	padding: 1em;
+	border-radius: 0.5em;
+	box-shadow: 1px 1px 1px black;
+	text-align: right;
 }
 
 .registerTab
 {
-  align-self: flex-end;
-  margin: 1px;
 }
+
+.selectedTab
+{
+	height: 100%;
+}
+
+.unselectedTab
+{
+	height: 100%;
+}
+
+.venderLogo
+{
+	width: 220px;
+	margin: 0 5px;
+}
+
+/* The Omega Maneuver */
+[class*=cols] 
+{
+   text-align: center; 
+   /* padding-left: 10px;  */
+   font-size: 0;
+   -ms-text-justify: distribute-all-lines;
+}
+
+[class*=cols]>* 
+{ 
+  display: inline-block; 
+  text-align: center; 
+  font-size: 13px;
+  word-spacing: normal; 
+  vertical-align: top;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+	height: 100%;
+}
+
+.cols2 { word-spacing: 20px; padding-right: 20px; }
+.cols3 { word-spacing: 30px; padding-right: 30px; }
+.cols4 { word-spacing: 40px; padding-right: 40px; }
+.cols5 { word-spacing: 50px; padding-right: 50px; }
+.cols6 { word-spacing: 60px; padding-right: 60px; }
+
+.cols2 > * { margin-right: -10px; }
+.cols3 > * { margin-right: -20px; }
+.cols4 > * { margin-right: -30px; }
+.cols5 > * { margin-right: -40px; }
+.cols6 > * { margin-right: -50px; }

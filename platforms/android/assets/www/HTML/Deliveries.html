@@ -1,0 +1,44 @@
+{{#if Stage == 0}}
+  {{>Oauth}}
+{{/if}}
+{{#if Stage == 1}}
+  {{>ClockIn}}
+{{/if}}
+{{#if Stage == 2}}
+  {{>AwaitingOrder}}
+{{/if}}
+{{#if Stage == 3}}
+  {{>AcceptedOrder}}
+{{/if}}
+{{#if Stage == 4}}
+  {{>RetrievedOrder}}
+{{/if}}
+{{#if Stage == 5}}
+  {{>DeliveredOrder}}
+{{/if}}
+
+
+<!-- {{>Oauth}} -->
+Before you can begin delivering, we need access to some of your Square account's data. 
+Please click button, and log into the square account you will be using to receive payments on delivery.
+<!-- {{/Oauth}} -->
+
+<!-- {{>ClockIn}} -->
+ClockIn page goes here!
+<!-- {{/ClockIn}} -->
+
+<!-- {{>AwaitingOrder}} -->
+AwaitingOrder page goes here!
+<!-- {{/AwaitingOrder}} -->
+
+<!-- {{>AcceptedOrder}} -->
+AcceptedOrder page goes here!
+<!-- {{/AcceptedOrder}} -->
+
+<!-- {{>RetrievedOrder}} -->
+RetrievedOrder page goes here!
+<!-- {{/RetrievedOrder}} -->
+
+<!-- {{>DeliveredOrder}} -->
+DeliveredOrder page goes here!
+<!-- {{/DeliveredOrder}} -->

@@ -12,7 +12,7 @@ define(function()
     var price = 0
     
     //get the price of each selected option
-    addon.Options.forEach(function(option)
+    addon.Options.map(function(option)
     {
       //if this option costs money and has been selected
       if(option.Selected && option.Price)
@@ -31,7 +31,7 @@ define(function()
     var price = 0
   
     //go through each item adding its cost to the total
-    items.forEach(function(item)
+    items.map(function(item)
     {
       //if this item has a base price
       if(item.Price)
@@ -40,7 +40,7 @@ define(function()
       //loop through each addon and add its price to the total
       if(item.Addons)
       {      
-        item.Addons.forEach(function(addon)
+        item.Addons.map(function(addon)
         {
           //make sure an InputType was given
           if(!addon.InputType) 
