@@ -26,7 +26,8 @@ div.application
 	padding 0.5%;
 	margin: 1% auto;
 	height: 100px;
-	background: rgb(126,126,126);
+	/*background: rgb(126,126,126);*/
+	background: rgb(255,0,126);
 	box-shadow: 1px 1px 1px black;
 	border-top: 1px solid rgb(202,202,202);
 	border-left: 1px solid rgb(74,74,74);
