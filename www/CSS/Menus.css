@@ -24,19 +24,19 @@ div.showOptions
 
 .cols .itemHeader
 {
-	color: white;
+	/*color: white;
 	text-shadow: 1px 1px 1px black;
 	margin: 0 0 0.2rem;
 	width: 100%;
 	font-size: 2rem;
-	padding: 0.5rem;
+	padding: 0.5rem; */
 	background: rgb(95,95,95);
 	border-bottom: 1px solid white;
 }
 
 .item
 {
-	width: 21rem;
-	padding: 0.3rem;
+	/*width: 21rem;
+	padding: 0.3rem; */
 	background: rgb(228,228,228);
 }
