@@ -30,6 +30,7 @@ C:\Users\Michael\Desktop\CorvallisMerge\Corvallis.menu\platforms\android\assets\
 C:\Users\Michael\Desktop\CorvallisMerge\Corvallis.menu\platforms\android\assets\www\Images \
 C:\Users\Michael\Desktop\CorvallisMerge\Corvallis.menu\platforms\android\assets\www\index.html \
 C:\Users\Michael\Desktop\CorvallisMerge\Corvallis.menu\platforms\android\assets\www\JS \
+C:\Users\Michael\Desktop\CorvallisMerge\Corvallis.menu\platforms\android\assets\www\plugins \
 C:\Users\Michael\Desktop\CorvallisMerge\Corvallis.menu\platforms\android\assets\www\Shared \
 C:\Users\Michael\Desktop\CorvallisMerge\Corvallis.menu\platforms\android\assets\www\CSS\Application.css \
 C:\Users\Michael\Desktop\CorvallisMerge\Corvallis.menu\platforms\android\assets\www\CSS\Cart.css \
