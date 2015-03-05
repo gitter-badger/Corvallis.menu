@@ -22,9 +22,9 @@
 			<img src="Images/corvallis_menu.svg"/>
     </div>
   </TabsLink>
-  <TabsLink PaneId="deliveriesPane">
+  <TabsLink PaneId="deliverPane">
     <div class={{>TabClass}} {{#if !User.Deliverer}} style="display: none" {{/if}}>
-      Deliveries
+      Deliver
     </div>
   </TabsLink>
 
@@ -59,8 +59,8 @@
 <TabsPane PaneId="adminPane">
   <Admin/>
 </TabsPane>
-<TabsPane PaneId="deliveriesPane">
-  <Deliveries/>
+<TabsPane PaneId="deliverPane">
+  <Deliver/>
 </TabsPane>
 <TabsPane PaneId="registerPane">
   <Register/>
