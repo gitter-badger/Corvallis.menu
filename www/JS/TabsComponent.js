@@ -8,32 +8,12 @@ define(function(require)
     var numTabsComponents = 0
     function subCompInit()
     {
-      var parentComp = this.get("tabsComp")
-      var thisComp = this
-      
-      //set the tabsId for this component to that of its parent TabComponent
-      this.set("tabsId", this.get("tabsId"))
-      
+      var thisComp = this  
+      var tabsComp = this.get("tabsComp")
       this.on("Select", 
         function()
-        {          
-          //create helper functions
-          function _sameComponent(comp)
-          {
-            return comp.get("tabsId") === thisComp.get("tabsId")
-          }
-          function _setSelected(comp)
-          {
-            comp.set("Selected", comp.get("PaneId") === thisComp.get("PaneId"))
-          }
-          
-          parentComp.findAllComponents("TabsPane")
-            .filter(_sameComponent)
-            .map(_setSelected)
-            
-          parentComp.findAllComponents("TabsLink")
-            .filter(_sameComponent)
-            .map(_setSelected)
+        {  
+          tabsComp.set("SelectedPane", thisComp.get("PaneId"))
         })
     }
     
@@ -56,14 +36,44 @@ define(function(require)
             init: subCompInit
           })
       },
-      
+      data: 
+      {
+        SelectedPane: false,
+        tabsId: -1
+      },
       //Assigns a tabsId to the component,
       //and assigns the select handlers for its subcomponents.
       init: function()
-      {
+      {   
         //calculate id for this new tabs component
         this.set("tabsId", numTabsComponents++)
         this.set("tabsComp", this)
+        var tabsComp = this
+        //observe SelectedPane so that when it changes,
+        //we will update the visibility of all child components accordingly
+        this.observe("SelectedPane", 
+          function(newVal, oldVal, keypath)
+          {
+            //create helper functions
+            function _sameComponent(comp)
+            {
+              return comp.get("tabsId") === tabsComp.get("tabsId")
+            }
+            function _setSelected(comp)
+            {
+              comp.set("Selected", comp.get("PaneId") === newVal)
+            }
+            
+            tabsComp.findAllComponents("TabsPane")
+              .filter(_sameComponent)
+              .map(_setSelected)
+              
+            tabsComp.findAllComponents("TabsLink")
+              .filter(_sameComponent)
+              .map(_setSelected)
+              
+            return false
+          })
       }
     })
   }

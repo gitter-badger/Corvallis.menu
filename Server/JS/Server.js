@@ -6,8 +6,10 @@ This file handles the initialization of the node server.
 var root = __dirname.substring(0, __dirname.toLowerCase().search("server"))
 var wwwFolder = root + "www/"
 var templatesFolder = wwwFolder + "HTML/"
+var cssFolder = wwwFolder + "CSS/"
 var thirdPartyFolder = wwwFolder + "Shared/3rdParty/"
 var templates
+var css
 
 // Load required packages
 var express = require("express")
@@ -66,9 +68,9 @@ function(Database)
   //ensuring that templates are reloaded if the
   //folder changes, and any templates may have changed.
   fs.watch(templatesFolder, _loadTemplates)
+  
   _loadTemplates()
-
-
+  _loadCSS()
   //make client side files accessible via GET
   _makeAccessableToClient(wwwFolder)
 
@@ -161,31 +163,15 @@ function(Database)
   //visible to the client via GET
   function _makeAccessableToClient(folder)
   {
-    //get subfiles and subfolders  
-    fs.readdirSync(folder).map(function(file)
+    findFiles(folder, function(subPath, filePath)
     {
-      //compute absolute file path
-      var filePath = folder + "/" +file;
+      //load file and store it in templates
+      DebugLog("File gettable: " + subPath)
       
-      //If file is a subfolder
-      var stat = fs.statSync(filePath);
-      if (stat && stat.isDirectory()) 
+      app.get('/'+subPath, function(req, res)
       {
-        _makeAccessableToClient(filePath)
-      } 
-      else 
-      {
-        //compute 'GET' path, which is the absolute path
-        //minus the prefixing location of the wwwFolder
-        var getPath = ""+filePath.substring(wwwFolder.length, filePath.length)
-        getPath = getPath.replace(/\\/g,"/")
-        
-        //prepare server to handle GET requests for this file
-        app.get(getPath, function(req, res)
-        {
-          res.sendFile(filePath)
-        });
-      }
+        res.sendFile(filePath)
+      });
     })
   }
 
@@ -195,21 +181,55 @@ function(Database)
   function _loadTemplates()
   {
     templates = {}
-    fs.readdir(templatesFolder, function(err, files)
+    findFiles(templatesFolder, function(subPath, filePath)
     {
-      files.map(function(file)
+      //load file and store it in templates
+      DebugLog("Loaded template: " + subPath)
+      fs.readFile(filePath, "utf8", function(err, data)
       {
-        //compute absolute file path
-        var filePath = templatesFolder + "/" +file
-        if(filePath.endsWith(".html"))
-        {
-          fs.readFile(filePath, "utf8", function(err, data)
-          {
-            if(err) throw err
-            templates[file] = data
-          })
-        }
-      })    
+        if(err) throw err
+        templates[subPath] = data
+      })
+    })
+  }
+  
+  function _loadCSS()
+  {
+    css = {}
+    findFiles(cssFolder, function(subPath, filePath)
+    {
+      //load file and store it in templates
+      DebugLog("Loaded css: " + subPath)
+      fs.readFile(filePath, "utf8", function(err, data)
+      {
+        if(err) throw err
+        css[subPath] = data
+      })
+    })
+  }
+  
+  //Helper function. Goes through the given folder and its subfolders.
+  //When a file is reached, "then" is called and fed the  
+  function findFiles(base, then, subPath)
+  {  
+    var folder = base + (subPath ? "/" + subPath : "")
+    //get subfiles and subfolders  
+    fs.readdirSync(folder).map(function(file)
+    {
+      //compute absolute file path
+      var filePath = folder + '/' +file;
+      var nextSubPath = (subPath ? subPath + "/" : "") + file
+      
+      //If file is a subfolder
+      var stat = fs.statSync(filePath);
+      if (stat && stat.isDirectory()) 
+      {
+        findFiles(base, then, nextSubPath)
+      } 
+      else 
+      {          
+        then(nextSubPath, filePath)
+      }
     })
   }
 
@@ -233,6 +253,17 @@ function(Database)
     {
       //return templates to client
       res.send("Templates = " + JSON.stringify(templates))
+      return
+    }
+  })
+  
+  app.get('/css',function(req, res)
+  {
+    //if the templates have already been loaded
+    if(templates)
+    {
+      //return templates to client
+      res.send("css = " + JSON.stringify(css))
       return
     }
   })

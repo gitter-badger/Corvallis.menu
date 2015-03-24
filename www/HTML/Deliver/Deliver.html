@@ -1,0 +1,43 @@
+<TabsComponent SelectedPane="{{Stage}}">
+  <TabsPane PaneId="ClockIn">
+    {{>ClockIn}}
+  </TabsPane>
+</TabsComponent>
+
+<!-- {{>ClockIn}} -->
+Set the location you would like to be rooted at:
+<button on-tap="RootClick">Root Here</button>
+{{#if Location}}
+
+  Lat: {{Location.Latitude}} <br>
+  Long: {{Location.Longitude}} <br>
+{{/if Location}}
+Set the maxiumum distance you're willing to travel for an order:
+<select>
+  <option value="1">1 Mile</option>
+  <option value="2">2 Miles</option>
+  <option value="3">3 Miles</option>
+  <option value="4">4 Miles</option>
+  <option value="5">5 Miles</option>
+</select>
+<!-- {{/ClockIn}} -->
+
+<!-- {{>AwaitingOrder}} -->
+AwaitingOrder page goes here!
+<!-- {{/AwaitingOrder}} -->
+
+<!-- {{>ProposeOrder}} -->
+ProposeOrder page goes here!
+<!-- {{/ProposeOrder}} -->
+
+<!-- {{>RetrievingOrder}} -->
+RetrievingOrder page goes here!
+<!-- {{/RetrievingOrder}} -->
+
+<!-- {{>DeliveringOrder}} -->
+DeliveringOrder page goes here!
+<!-- {{/DeliveringOrder}} -->
+
+<!-- {{>PostDelivery}} -->
+PostDelivery page goes here!
+<!-- {{/PostDelivery}} -->

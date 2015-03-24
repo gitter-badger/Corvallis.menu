@@ -2,7 +2,7 @@
   <div class="logo">
   </div>
 
-  <TabsComponent>
+  <TabsComponent SelectedPane="menusPane">
     <div class="navBar cols">
 			{{>NavBar}}
     </div>
@@ -12,14 +12,14 @@
 </div>
 
 <!-- {{>TabClass}} -->
-{{#if this.Selected}} selectedTab   {{else}} 
-                      unselectedTab  {{/if}}
+{{#if Selected}} selectedTab   {{else}} 
+                 unselectedTab  {{/if}}
 <!-- {{/TabClass}} -->
 
 <!-- {{>NavBar}} -->
-  <TabsLink PaneId="menusPane" Selected="true">
+  <TabsLink PaneId="menusPane">
     <div class={{>TabClass}}>
-			<img src="Images/corvallis_menu.svg"/>
+      <img src="Images/corvallis_menu.svg"/>
     </div>
   </TabsLink>
   <TabsLink PaneId="deliverPane">
@@ -46,11 +46,11 @@
     <div class={{>TabClass}}>
       <img src='Images/cart.svg'/>   
     </div>        
-  </tabsLink>
+  </TabsLink>
 <!-- {{/NavBar}} -->
 
 <!-- {{>TabsPanes}} -->
-<TabsPane PaneId="menusPane" Selected="true">
+<TabsPane PaneId="menusPane">
   <Menus/>
 </TabsPane>
 <TabsPane PaneId="cartPane">

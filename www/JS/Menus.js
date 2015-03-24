@@ -33,6 +33,7 @@ function(VenderIsOpen, $, Ajax)
   
   Ractive.components.Menus = Ractive.extend({
     template: Templates["Menus.html"],
+    css: css["Menus.css"],
     init: function()
     {
       menusComp = this
