@@ -4,17 +4,13 @@
 	padding: 0;
 }
 
-body
-{
-	background: darkgray;
-}
-
 div.application
 {
 	width: 80%;
 	max-width: 1280px;
 	margin: 0 auto;
 	font-family: Verdana,Geneva,sans-serif;
+	background: darkgray;
 }
 
 .logo,
@@ -90,7 +86,7 @@ div.application
 
 [class*=cols]>* 
 { 
-  display: inline-block; 
+  display: inline-block;
   text-align: center; 
   font-size: 13px;
   word-spacing: normal; 

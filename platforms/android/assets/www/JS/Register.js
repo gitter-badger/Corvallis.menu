@@ -47,6 +47,7 @@ function($, Ajax)
   //bind page to container
   Ractive.components.Register = Ractive.extend({
     template: Templates["Register.html"],
+    css: css["Register.css"],
     data:
     { 
       Credentials: {},

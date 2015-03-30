@@ -41,6 +41,7 @@ function(Ajax)
       ractive = new Ractive({
         el: "#searchPage",
         template: template,
+        css: css["Search.css"],
         data:
         {
           Filter: _filter

@@ -87,20 +87,21 @@ define(["Shared/JS/VenderIsOpen", "Shared/JS/CalcOrderPrice", "underscore", "jqu
      
     //Define the component
     Ractive.components.Cart = Ractive.extend({
-    template: Templates["Cart.html"],
-    data:
-    { 
-      Items: []
-    },
-    init: function()
-    {
-      cartComp = this
-      
-      //attach functions
-      this.on("Purchase", Purchase)
-      this.on("AddToCart", AddToCart)
-    }
-  })
+      template: Templates["Cart.html"],
+      css: css["Cart.css"],
+      data:
+      { 
+        Items: []
+      },
+      init: function()
+      {
+        cartComp = this
+        
+        //attach functions
+        this.on("Purchase", Purchase)
+        this.on("AddToCart", AddToCart)
+      }
+    })
 })
 
 

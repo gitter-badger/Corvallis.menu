@@ -1,7 +1,7 @@
 <div class="loginTab">
   <div>
     Email:
-    <input type="text" value="{{Credentials.Email}}" placeholder="example@email.com">
+    <input type="text" value="{{Credentials.Email}}" placeholder="example@email.com"/>
     {{#if Err.Email}}
       <div class="errorMessage">
         {{Err.Email}}
@@ -10,7 +10,7 @@
   </div>
   <div>
     Password:
-    <input type="password" value="{{Credentials.Password}}">
+    <input type="password" value="{{Credentials.Password}}"/>
     {{#if Err.Password}}
       <div class="errorMessage">
         {{Err.Password}}
@@ -19,7 +19,7 @@
   </div>
   <div>
     remember me 
-    <input type="checkbox" checked="{{Credentials.RememberMe}}">
+    <input type="checkbox" checked="{{Credentials.RememberMe}}"/>
     <button on-tap="LoginClick">Log In</button>
   </div>
   {{#if Err.Message}}
