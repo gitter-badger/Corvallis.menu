@@ -68,6 +68,7 @@ function(Database)
   //ensuring that templates are reloaded if the
   //folder changes, and any templates may have changed.
   fs.watch(templatesFolder, _loadTemplates)
+  fs.watch(cssFolder, _loadCSS)
   
   _loadTemplates()
   _loadCSS()

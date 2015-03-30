@@ -1,7 +1,7 @@
 //client side deliver page
 
 //define module for requirejs
-define(["jquery", "Ajax"], 
+define(["jquery", "Ajax", "JS/Deliver/ClockIn"], 
 function($, Ajax)
 {
   function setStage()
@@ -22,13 +22,22 @@ function($, Ajax)
     else if(!this.get("AssignedOrder").timeDelivered)
       this.set("Stage", "DeliveringOrder")
     //if the order has been picked up and delivered
-    else
+    else if(this.get("AssignedOrder").timeDelivered)
       this.set("Stage", "PostDelivery")
+    //if the stage of the order could not be determined
+    else
+      this.set("Stage", "Error")
+      
   }
   
   Ractive.components.Deliver = Ractive.extend({
     template: Templates["Deliver/Deliver.html"],
-    data: {Stage: "ClockIn"},
+    data: 
+    {
+      Stage: "ClockIn",
+      AssignedOrder: false,
+      ProposedOrder: false
+    },
     init: function()
     {
       var deliverComp = this
@@ -37,40 +46,6 @@ function($, Ajax)
       ractive.observe("AssignedOrder", setStage)
       ractive.observe("ProposedOrder", setStage)
       ractive.observe("User.acceptingOrders", setStage)
-      
-      
-      //hook phonegap's geotracking to ractive.
-      //Whenever the phone's location changes, it will be
-      //pushed into thisComp.Location
-      navigator.geolocation.watchPosition(
-        function(position)
-        {
-          var location = 
-          {
-            Latitude: position.coords.latitude,
-            Longitude: position.coords.longitude
-          }
-          deliverComp.set("Location", location)
-        })
-      this.on("RootClick", function()
-      {
-        navigator.geolocation.getCurrentPosition(
-          function(position)
-          {
-            var location = 
-            {
-              Latitude: position.coords.latitude,
-              Longitude: position.coords.longitude
-            }
-            deliverComp.set("Location", location)
-          },
-          //if phonegap could not get the current position
-          function(error)
-          {
-            deliverComp.set("Location", {Latitude: 44.56702151, Longitude: -123.27185869})
-          })
-      })
-      //window.open('https://connect.squareup.com/oauth2/authorize?client_id=y2y2pbZ7uU9clCF_uyHT5g&response_type=token', '_system')
     }
   })
 })
