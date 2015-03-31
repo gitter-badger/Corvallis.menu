@@ -1,14 +1,8 @@
 Set the location you would like to be rooted at:
 <button on-tap="RootClick">Root Here</button>
 
-{{#if Location}}
-
-  Lat: {{Location.Latitude}} <br>
-  Long: {{Location.Longitude}} <br>
-{{/if Location}}
-
 {{#if Root}}
-  Distance from root: {{ CalcDistance(Root, Location) }}
+  Distance from root: {{ CalcDistance(Root, Location) }} miles. <br>
 {{/if Root}}
 Set the maxiumum distance you're willing to travel for an order:
 <select>

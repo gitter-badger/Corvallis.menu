@@ -30,23 +30,7 @@ function($, Ajax, CalcDistance)
         })
       this.on("RootClick", function()
       {
-        navigator.geolocation.getCurrentPosition(
-          function(position)
-          {
-            //get current location
-            var location = 
-            {
-              Latitude: position.coords.latitude,
-              Longitude: position.coords.longitude
-            }
-            
-            clockInComp.set("root", location)
-          },
-          //if phonegap could not get the current position
-          function(error)
-          {
-            clockInComp.set("Location", {Latitude: 44.56702151, Longitude: -123.27185869})
-          })
+        clockInComp.set("Root", clockInComp.get("Location"))
       })
       
     }

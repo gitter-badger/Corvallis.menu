@@ -7,7 +7,7 @@ define(function()
     var radlat2 = Math.PI * pos2.Latitude/180
     var radlon1 = Math.PI * pos1.Longitude/180
     var radlon2 = Math.PI * pos2.Longitude/180
-    var theta = lon1-lon2
+    var theta = pos1.Longitude-pos2.Longitude
     var radtheta = Math.PI * theta/180
     var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
     dist = Math.acos(dist)

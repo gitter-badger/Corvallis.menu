@@ -3,7 +3,7 @@
   </div>
 
   <TabsComponent SelectedPane="menusPane">
-    <div class="navBar cols">
+    <div class="navBar">
 			{{>NavBar}}
     </div>
     
@@ -50,22 +50,24 @@
 <!-- {{/NavBar}} -->
 
 <!-- {{>TabsPanes}} -->
-<TabsPane PaneId="menusPane">
-  <Menus/>
-</TabsPane>
-<TabsPane PaneId="cartPane">
-  <Cart/>
-</TabsPane>
-<TabsPane PaneId="adminPane">
-  <Admin/>
-</TabsPane>
-<TabsPane PaneId="deliverPane">
-  <Deliver/>
-</TabsPane>
-<TabsPane PaneId="registerPane">
-  <Register/>
-</TabsPane>
-<TabsPane PaneId="accountPane">
-  <Account/>
-</TabsPane>
+<div class="TabsPanes">
+  <TabsPane PaneId="menusPane">
+    <Menus/>
+  </TabsPane>
+  <TabsPane PaneId="cartPane">
+    <Cart/>
+  </TabsPane>
+  <TabsPane PaneId="adminPane">
+    <Admin/>
+  </TabsPane>
+  <TabsPane PaneId="deliverPane">
+    <Deliver/>
+  </TabsPane>
+  <TabsPane PaneId="registerPane">
+    <Register/>
+  </TabsPane>
+  <TabsPane PaneId="accountPane">
+    <Account/>
+  </TabsPane>
+</div>
 <!-- {{/TabsPanes}} -->
