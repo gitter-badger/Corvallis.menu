@@ -20,6 +20,7 @@
     "stripe": "x.x",
     "twilio": "x.x",
     "underscore": "x.x",
-    "validator": "x.x"
+    "validator": "x.x",
+    "node-watch": "x.x"
   }
 }

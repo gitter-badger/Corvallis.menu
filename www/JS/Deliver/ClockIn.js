@@ -1,7 +1,7 @@
 //define module for requirejs
 define(["jquery", "Ajax", "Shared/JS/CalcDistance"], 
 function($, Ajax, CalcDistance)
-{
+{  
   Ractive.components.ClockIn = Ractive.extend({
     template: Templates["Deliver/ClockIn.html"],
     data: 
@@ -28,11 +28,18 @@ function($, Ajax, CalcDistance)
           }
           clockInComp.set("Location", location)
         })
+        
+      //Handler for the root button
       this.on("RootClick", function()
       {
-        clockInComp.set("Root", clockInComp.get("Location"))
+        clockInComp.get("User").set("Root", clockInComp.get("Location"))
       })
       
+      //Handler for the ready button
+      this.on("ReadyClick", function()
+      {
+        //send ajax request to server
+      })
     }
   })
 })

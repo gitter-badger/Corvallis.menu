@@ -1,14 +1,17 @@
 Set the location you would like to be rooted at:
 <button on-tap="RootClick">Root Here</button>
 
-{{#if Root}}
-  Distance from root: {{ CalcDistance(Root, Location) }} miles. <br>
+{{#if User.Root}}
+  Distance from current root: {{ CalcDistance(Root, Location) }} miles. <br>
+  Maxiumum delivery range:
+  <select value="{{User.DeliveryRange}}">
+    <option value="1">1 Mile</option>
+    <option value="2">2 Miles</option>
+    <option value="3">3 Miles</option>
+    <option value="4">4 Miles</option>
+    <option value="5">5 Miles</option>
+  </select><br>
+  {{#if User.DeliveryRange}}
+    <button on-tap="ReadyClick">Ready to deliver</button>
+  {{/if DeliveryRange}}
 {{/if Root}}
-Set the maxiumum distance you're willing to travel for an order:
-<select>
-  <option value="1">1 Mile</option>
-  <option value="2">2 Miles</option>
-  <option value="3">3 Miles</option>
-  <option value="4">4 Miles</option>
-  <option value="5">5 Miles</option>
-</select>

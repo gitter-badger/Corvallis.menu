@@ -22,6 +22,7 @@ var flash = require('connect-flash')
 var fs = require("fs")
 var requirejs = require("requirejs")
 var _ = require("underscore")
+var watch = require("node-watch")
 
 require(thirdPartyFolder + "polyfill.js")
 var search = require("./Search.js")
@@ -67,8 +68,8 @@ function(Database)
   //starts the watching of the HTML folder,
   //ensuring that templates are reloaded if the
   //folder changes, and any templates may have changed.
-  fs.watch(templatesFolder, _loadTemplates)
-  fs.watch(cssFolder, _loadCSS)
+  watch(templatesFolder, _loadTemplates)
+  watch(cssFolder, _loadCSS)
   
   _loadTemplates()
   _loadCSS()

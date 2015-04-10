@@ -21,7 +21,9 @@ function()
         Phone: user.phone,
         Admin: user.admin,
         Deliverer: user.deliverer,
-        AcceptingOrders: user.acceptingOrders
+        AcceptingOrders: user.acceptingOrders,
+        DeliveryRange: user.deliveryRange,
+        Root: user.root.ToJson(),
       }
     }
     

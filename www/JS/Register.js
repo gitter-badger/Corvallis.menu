@@ -14,6 +14,25 @@ function($, Ajax)
     var password = registerComp.get("Credentials.Password")
     var phone = registerComp.get("Credentials.Phone")
     
+    //validate current user input
+    var err = {}
+    if(!email)
+      err.Email = "Please enter email."
+    if(!name)
+      err.Name = "Please enter name."
+    if(!password)
+      err.Password = "Please enter password."
+    if(!phone)
+      err.Phone = "Please enter phone number."
+    
+    //if invalid parameters given
+    if(Object.keys(err).length > 0)
+    {
+      registerComp.set("Err", err)
+      return 
+    }
+    
+    
     //Time to register the account.
     //disable any further attempts to register
     registerComp.set("Processing", true)

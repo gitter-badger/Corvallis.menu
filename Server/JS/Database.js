@@ -385,7 +385,7 @@ function(req, PhoneFormat, OrderManager, User)
     
     
     //Instantiate tables if they do not yet exist
-    db.run("CREATE TABLE IF NOT EXISTS Users(userId INTEGER PRIMARY KEY ASC, name TEXT, password TEXT, addressId INTEGER, email TEXT, phone TEXT, admin INTEGER DEFAULT 0, deliverer INTEGER DEFAULT 0, acceptingOrders INTEGER DEFAULT 0, available INTEGER DEFAULT 0, locked INTEGER DEFAULT 0)")
+    db.run("CREATE TABLE IF NOT EXISTS Users(userId INTEGER PRIMARY KEY ASC, name TEXT, password TEXT, addressId INTEGER, email TEXT, phone TEXT, admin INTEGER DEFAULT 0, deliverer INTEGER DEFAULT 0, acceptingOrders INTEGER DEFAULT 0, available INTEGER DEFAULT 0, root TEXT, deliveryRange REAL, locked INTEGER DEFAULT 0)")
     db.run("CREATE TABLE IF NOT EXISTS Orders(orderId INTEGER PRIMARY KEY ASC, deliverer INTEGER DEFAULT -1, orderValue TEXT, stripeCharge TEXT, timeOrdered DATETIME DEFAULT CURRENT_TIMESTAMP, timePickedUp DATETIME, timeDelivered DATETIME, canceled TEXT)")
     db.run("CREATE TABLE IF NOT EXISTS Addresses(addressId INTEGER PRIMARY KEY ASC, userId INTEGER, address TEXT, instructions TEXT)")
     db.run("CREATE TABLE IF NOT EXISTS RememberMeTokens(tokenHash TEXT, userId INTEGER, timeOrdered DATETIME DEFAULT CURRENT_TIMESTAMP)")
