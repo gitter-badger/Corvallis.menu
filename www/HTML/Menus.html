@@ -1,7 +1,7 @@
 <div id="menusPage">
   {{#if Venders}}
     <TabsComponent ToggleShowOptions="{{ToggleShowOptions}}">
-      <div class="venderTabContainer cols">
+      <div class="venderTabContainer">
         {{#Venders:vender}}
           {{#VenderIsOpen(this)}}
             {{>VenderLink}}
@@ -40,7 +40,7 @@
   
 <!-- {{>VenderPane}} -->
   <TabsPane PaneId="{{Name}}">
-		<div class="cols">
+		<div class="items">
     {{#Venders[vender].Items:item}}
       {{>Item}}
     {{/Venders[vender].Items}}

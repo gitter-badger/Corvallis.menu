@@ -1,7 +1,7 @@
 <div class="loginTab">
   <div>
     Email:
-    <input type="text" value="{{Credentials.Email}}" placeholder="example@email.com"/>
+		<input type="text" value="{{Credentials.Email}}" placeholder="example@email.com"/>
     {{#if Err.Email}}
       <div class="errorMessage">
         {{Err.Email}}
@@ -9,8 +9,7 @@
     {{/if}}
   </div>
   <div>
-    Password:
-    <input type="password" value="{{Credentials.Password}}"/>
+    Password:<input type="password" value="{{Credentials.Password}}"/>
     {{#if Err.Password}}
       <div class="errorMessage">
         {{Err.Password}}
