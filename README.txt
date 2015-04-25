@@ -11,3 +11,4 @@ Steps for setting up the server:
 6) Start up the server by executing "node server\js\server.js"
 
 The server should now be running at 127.0.0.1:3030
+Join the chat at https://gitter.im/michaelthearnold/Corvallis.menu
